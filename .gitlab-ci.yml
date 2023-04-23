@@ -42,7 +42,6 @@ generatepdf:
     - sudo apt-key fingerprint 0EBFCD88
     - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu/xenial/stable/dists/xenial/stable/"
     - sudo apt-get update
-    - #
     - apt-get update  # apt-get er en pakkehåndterer som kan laste ned og installere pakker på linux-system
     - apt-get install -y wget  # installerer et tool som heter "wget", som kan fyre av HTML-requester på kommandolinja
     - apt-get install -y fontconfig libfreetype6 libjpeg-turbo8 libpng16-16 libx11-6 libxcb1 libxext6 libxrender1 xfonts-75dpi xfonts-base  # installerer en bunsj med libs vi trenger for konverteringen til PDF
