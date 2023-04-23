@@ -35,7 +35,7 @@ generatepdf:
   image: ubuntu:latest #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
   stage: package # vi kjører den parallelt med å publisere javadoc til Pages
   script:
-    #- apt-get update  # apt-get er en pakkehåndterer som kan laste ned og installere pakker på linux-system
+    - apt-get update  # apt-get er en pakkehåndterer som kan laste ned og installere pakker på linux-system
     - apt-get install -y wget  # installerer et tool som heter "wget", som kan fyre av HTML-requester på kommandolinja
     - apt-get install -y fontconfig libfreetype6 libjpeg-turbo8 libpng16-16 libx11-6 libxcb1 libxext6 libxrender1 xfonts-75dpi xfonts-base  # installerer en bunsj med libs vi trenger for konverteringen til PDF
     - wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb  # Henter HTML-til-PDF-konverterer fra git. Vi bruker denne spesifikke pakken fordi vi vet at den fungerer i miljøet vi kjører i
