@@ -35,13 +35,7 @@ generatepdf:
   image: ubuntu:21.04 #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
   stage: package # vi kjører den parallelt med å publisere javadoc til Pages
   script:
-    - apt-get remove docker docker-engine docker.io
-    - apt-get update
-    - apt-get install apt-transport-https ca-certificates curl software-properties-common
-    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    - apt-key fingerprint 0EBFCD88
-    - add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu/xenial/stable/dists/xenial/stable/"
-    - apt-get update
+    - add-apt-repository --remove ppa:docker
     - apt-get update  # apt-get er en pakkehåndterer som kan laste ned og installere pakker på linux-system
     - apt-get install -y wget  # installerer et tool som heter "wget", som kan fyre av HTML-requester på kommandolinja
     - apt-get install -y fontconfig libfreetype6 libjpeg-turbo8 libpng16-16 libx11-6 libxcb1 libxext6 libxrender1 xfonts-75dpi xfonts-base  # installerer en bunsj med libs vi trenger for konverteringen til PDF
