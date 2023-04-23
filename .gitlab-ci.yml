@@ -32,7 +32,7 @@ package:
       - target/idatt2002demo-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 generatepdf:
-  image: ubuntu:20.04 #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
+  image: ubuntu:22.04 #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
   stage: package # vi kjører den parallelt med å publisere javadoc til Pages
   script:
     - add-apt-repository --remove ppa:docker
