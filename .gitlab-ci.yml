@@ -32,7 +32,7 @@ package:
       - target/idatt2002demo-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 generatepdf:
-  image: debian:latest #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
+  image: ubuntu:20.10 #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
   stage: package # vi kjører den parallelt med å publisere javadoc til Pages
   script:
     - apt-get update  # apt-get er en pakkehåndterer som kan laste ned og installere pakker på linux-system
