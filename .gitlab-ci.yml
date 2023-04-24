@@ -66,6 +66,8 @@ pages:
   script:
     - mvn clean package
     - mvn javadoc:javadoc
+    - ls target/site/
+    - ls target/site/apidocs/
     - mkdir .public
     - cp -rf target/site/apidocs/* .public
     - cp -rf target/jacoco/* .public
