@@ -4,6 +4,7 @@ stages:
   - build
   - test
   - package
+  - deploy
 
 build:
   stage: build
@@ -33,7 +34,7 @@ package:
 
 generatepdf:
   image: ubuntu:20.04 #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
-  stage: package # vi kjører den parallelt med å publisere javadoc til Pages
+  stage: deploy # vi kjører den parallelt med å publisere javadoc til Pages
   when: manual
   script:
     - apt-get update --allow-insecure-repositories  # apt-get er en pakkehåndterer som kan laste ned og installere pakker på linux-system
@@ -60,7 +61,8 @@ generatepdf:
 # NB! Javadoc genereres IKKE under bygging av prosjektet. Man må kjøre javadoc lokalt og legge til katalogen (med navnet "javadoc")
 # til roten av prosjektet. Ellers vil denne delen feile.
 pages:
-  stage: package
+  stage: deploy
+  when: manual
   script:
     - mvn clean package
     - mvn javadoc:javadoc
@@ -71,5 +73,3 @@ pages:
   artifacts:
     paths:
       - public
-  only:
-    - web
