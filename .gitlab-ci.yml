@@ -34,6 +34,7 @@ package:
 generatepdf:
   image: ubuntu:20.04 #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
   stage: package # vi kjører den parallelt med å publisere javadoc til Pages
+  when: manual
   script:
     - apt-get update --allow-insecure-repositories  # apt-get er en pakkehåndterer som kan laste ned og installere pakker på linux-system
     - apt-get install -y wget  # installerer et tool som heter "wget", som kan fyre av HTML-requester på kommandolinja
