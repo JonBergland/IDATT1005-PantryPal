@@ -69,6 +69,9 @@ pages:
     - ls target/site/
     - ls target/site/apidocs/
     - mkdir .public
+    - cd .public
+    - mkdir apidocs
+    - cd ..
     - cp -rf target/site/apidocs/* .public/apidocs/
     - cp -rf target/jacoco/* .public
     - mv -f .public public
