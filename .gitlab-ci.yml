@@ -69,7 +69,7 @@ pages:
     - ls target/site/
     - ls target/site/apidocs/
     - mkdir .public
-    - cp -rf target/site/apidocs/* .public
+    - cp -rf target/site/apidocs/* .public/apidocs/
     - cp -rf target/jacoco/* .public
     - mv -f .public public
   artifacts:
