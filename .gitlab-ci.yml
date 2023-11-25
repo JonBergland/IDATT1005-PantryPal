@@ -74,6 +74,7 @@ pages:
     - cd ..
     - cp -rf target/site/apidocs/* .public/apidocs/
     - cp -rf target/jacoco/* .public
+    - cp -rf page/index.html .public
     - mv -f .public public
   artifacts:
     paths:
