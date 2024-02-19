@@ -1,7 +1,7 @@
-package no.ntnu.idatt1002.demo.view;
+package no.ntnu.idatt1005.view;
 
-import no.ntnu.idatt1002.demo.repo.MyEntityRepo;
-import no.ntnu.idatt1002.demo.data.MyEntity;
+import no.ntnu.idatt1005.repo.MyEntityRepo;
+import no.ntnu.idatt1005.data.MyEntity;
 
 import java.awt.*;
 import javax.swing.*;
