@@ -1,45 +1,88 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
-
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.shape.Rectangle;
 
-
-
+/**
+ * A class for the navigation bar.
+ * Goal: To be able to switch between different views in the application fast and easy.
+ */
 public class NavBar extends Control {
+  /**
+   * The main toolbar that holds navigation buttons.
+   */
   ToolBar navBar = new ToolBar();
+  /**
+   * Button for navigating to the home page.
+   */
   Button homeButton = new Button("Home");
+  /**
+   * Button for navigating to the pantry page.
+   */
   Button pantryButton = new Button("Pantry");
+  /**
+   * Button for navigating to the shopping list page.
+   */
   Button shoppingListButton = new Button("Shopping List");
+  /**
+   * Button for navigating to the recipes page.
+   */
   Button recipesButton = new Button("Recipes");
+  /**
+   * Button for logging in.
+   */
   Button login = new Button("Login");
 
+  /**
+   * A separator between the navigation buttons and the login button.
+   */
   Rectangle separator = new Rectangle(2, 38);
-  Label spacing = new Label("                                                                              ");
-  Label spacing2= new Label(" ");
 
+  /**
+   * Spacing between the home button and pantry button.
+   */
+  Rectangle spacing = new Rectangle(8, 0);
+  /**
+   * Spacing between the recipes button and the login button.
+   */
+  Rectangle spacing2 = new Rectangle(200, 0);
 
+  /**
+   * Constructor for NavBar.
+   * Initializes the buttons, styles, and layout components.
+   */
   public NavBar() {
 
-    homeButton.setStyle("-fx-background-color: #FFFFF; -fx-text-fill:black;");
-    pantryButton.setStyle("-fx-background-color: #FFFFF; -fx-text-fill: black; ");
-    shoppingListButton.setStyle("-fx-background-color: #FFFFF; -fx-text-fill: black;");
-    recipesButton.setStyle("-fx-background-color: #FFFFF; -fx-text-fill: black;");
-    login.setStyle("-fx-background-color: #FFFFF; -fx-text-fill: black;");
+    homeButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:black;"
+        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
 
-    navBar.setMinHeight(Control.USE_PREF_SIZE);
-    navBar.setMaxHeight(30);
+    pantryButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
+        + "-fx-font-family: 'Arial'; -fx-font-size: 14; ");
 
-    navBar.setStyle("-fx-background-color: #FFFFF;-fx-spacing:30;-fx-border-color:#000000;");
-    navBar.getItems().addAll(spacing2, homeButton, pantryButton, shoppingListButton, recipesButton, spacing, separator, login);
+    shoppingListButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
+        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
+
+    recipesButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
+        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
+
+    login.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
+        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
+
+    navBar.setStyle("-fx-background-color: #FFFFFF;-fx-spacing:30;"
+        + "-fx-border-color:#000000;");
+
+    navBar.getItems().addAll(spacing, homeButton,
+        pantryButton, shoppingListButton, recipesButton, spacing2, separator, login);
   }
-
+  /**
+   * Gets the main navigation bar instance.
+   *
+   * @return The ToolBar representing the navigation bar.
+   */
   public ToolBar getNavBar() {
     return navBar;
   }
-
 
 }
