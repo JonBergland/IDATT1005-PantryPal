@@ -13,7 +13,13 @@ public class ShoppingListElement {
 
   public ShoppingListElement(Grocery grocery) {
 
-    StyledCheckBox checkBox = new StyledCheckBox("", false);
+    // Make the checkbox
+    StackPane checkBox = new StackPane(new StyledCheckBox("", false));
+    StyledCheckBox centerCheckBox = new StyledCheckBox("", false);
+    centerCheckBox.setAlignment(Pos.CENTER);
+    checkBox.getChildren().add(centerCheckBox);
+
+    // Make the text
     Text groceryName = new Text(grocery.getName());
     Text groceryCategory = new Text(grocery.getCategory());
     Text groceryAmount = new Text(grocery.getQuantity() + "stk");
@@ -31,12 +37,19 @@ public class ShoppingListElement {
     StackPane stackGroceryAmount = new StackPane(groceryAmount);
     stackGroceryAmount.setPadding(new Insets(0, 10, 0, 10));
 
+    // Add the text to a HBox
+    HBox textBox = new HBox(stackGroceryName, stackGroceryCategory, stackGroceryAmount);
+    textBox.setSpacing(25);
+    textBox.setAlignment(Pos.CENTER);
+
+    // Make the delete button
     StyledButton deleteButton = new StyledButton("Delete", StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM);
 
-    this.groceryInfo = new HBox(checkBox, stackGroceryName, stackGroceryCategory, stackGroceryAmount, deleteButton);
-
-
-    this.grocery = grocery;
+    // Add the checkbox, text and delete button to a BorderPane
+    this.groceryInfo = new BorderPane();
+    this.groceryInfo.setLeft(checkBox);
+    this.groceryInfo.setCenter(textBox);
+    this.groceryInfo.setRight(deleteButton);
   }
 
   public HBox getGroceryInfo() {
