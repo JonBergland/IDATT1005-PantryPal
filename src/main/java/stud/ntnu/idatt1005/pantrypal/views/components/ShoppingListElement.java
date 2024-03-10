@@ -7,10 +7,19 @@ import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 
+/**
+ * Class representing a shopping list element
+ */
 public class ShoppingListElement {
-  private Grocery grocery;
-  private HBox groceryInfo;
+  /**
+   * The {@link BorderPane} with the shoppinglist element
+   */
+  private final BorderPane groceryInfo;
 
+  /**
+   * Constructor for the shopping list element
+   * @param grocery The grocery to be displayed
+   */
   public ShoppingListElement(Grocery grocery) {
 
     // Make the checkbox
@@ -52,7 +61,11 @@ public class ShoppingListElement {
     this.groceryInfo.setRight(deleteButton);
   }
 
-  public HBox getGroceryInfo() {
+  /**
+   * Retrieves the shopping list element
+   * @return the shopping list element
+   */
+  public BorderPane getGroceryInfo() {
     return groceryInfo;
   }
 
