@@ -3,7 +3,11 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Rectangle;
+import stud.ntnu.idatt1005.pantrypal.controllers.SceneManager;
+import stud.ntnu.idatt1005.pantrypal.views.HomeView;
+import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 
 /**
  * A class for the navigation bar.
@@ -52,8 +56,11 @@ public class NavBar extends Control {
   /**
    * Constructor for NavBar.
    * Initializes the buttons, styles, and layout components.
+   * On action, the buttons will navigate to the corresponding view.
    */
   public NavBar() {
+    homeButton.setOnAction(event -> SceneManager.setScene(new HomeView(800, 600)));
+    recipesButton.setOnAction(event -> SceneManager.setScene(new RecipeView(new BorderPane(), 800, 600)));
 
     homeButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:black;"
         + "-fx-font-family: 'Arial'; -fx-font-size: 14;");

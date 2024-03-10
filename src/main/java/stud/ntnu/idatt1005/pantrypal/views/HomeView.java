@@ -2,9 +2,10 @@ package stud.ntnu.idatt1005.pantrypal.views;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import stud.ntnu.idatt1005.pantrypal.controllers.SceneManager;
 import stud.ntnu.idatt1005.pantrypal.views.components.NavBar;
 
 public class HomeView extends Scene {
@@ -19,16 +20,13 @@ public class HomeView extends Scene {
     NavBar navBar = new NavBar();
     root.setTop(navBar.getNavBar());
 
-
     addGroceryButton = new Button("Add Grocery");
     addRecipeButton = new Button("Add Recipe");
-
 
     VBox buttonContainer = new VBox(10);
     buttonContainer.getChildren().addAll(
         addGroceryButton,
         addRecipeButton
-
     );
     root.setLeft(buttonContainer);
   }
@@ -40,7 +38,6 @@ public class HomeView extends Scene {
   public Button getAddRecipeButton() {
     return addRecipeButton;
   }
-
 
   public static HomeView create(Stage stage) {
     HomeView homeView = new HomeView(800, 600);
