@@ -1,6 +1,8 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
@@ -12,7 +14,7 @@ import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
  */
 public class ShoppingListElement {
   /**
-   * The {@link BorderPane} with the shoppinglist element
+   * The {@link BorderPane} with the shopping list element
    */
   private final BorderPane groceryInfo;
 
