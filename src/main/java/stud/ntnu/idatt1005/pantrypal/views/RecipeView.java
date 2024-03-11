@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.views;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
@@ -22,9 +23,10 @@ public class RecipeView extends Scene {
   }
 
   public static void createAndShow(Stage stage) {
+    Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
     BorderPane root = new BorderPane();
-    RecipeView recipeView = new RecipeView(root, 800, 600);
-    stage.setScene(new Scene(root, 800, 600));
+    RecipeView recipeView = new RecipeView(root, primaryScreenBounds.getWidth(), 600);
+    stage.setScene(new Scene(root, primaryScreenBounds.getWidth(), 600));
     stage.show();
   }
 

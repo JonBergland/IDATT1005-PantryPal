@@ -1,9 +1,13 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import stud.ntnu.idatt1005.pantrypal.controllers.SceneManager;
 import stud.ntnu.idatt1005.pantrypal.views.HomeView;
@@ -18,26 +22,6 @@ public class NavBar extends Control {
    * The main toolbar that holds navigation buttons.
    */
   ToolBar navBar = new ToolBar();
-  /**
-   * Button for navigating to the home page.
-   */
-  Button homeButton = new Button("Home");
-  /**
-   * Button for navigating to the pantry page.
-   */
-  Button pantryButton = new Button("Pantry");
-  /**
-   * Button for navigating to the shopping list page.
-   */
-  Button shoppingListButton = new Button("Shopping List");
-  /**
-   * Button for navigating to the recipes page.
-   */
-  Button recipesButton = new Button("Recipes");
-  /**
-   * Button for logging in.
-   */
-  Button login = new Button("Login");
 
   /**
    * A separator between the navigation buttons and the login button.
@@ -45,44 +29,59 @@ public class NavBar extends Control {
   Rectangle separator = new Rectangle(2, 38);
 
   /**
-   * Spacing between the home button and pantry button.
-   */
-  Rectangle spacing = new Rectangle(8, 0);
-  /**
-   * Spacing between the recipes button and the login button.
-   */
-  Rectangle spacing2 = new Rectangle(200, 0);
-
-  /**
    * Constructor for NavBar.
    * Initializes the buttons, styles, and layout components.
    * On action, the buttons will navigate to the corresponding view.
    */
   public NavBar() {
-    homeButton.setOnAction(event -> SceneManager.setScene(new HomeView(800, 600)));
-    recipesButton.setOnAction(event -> SceneManager.setScene(new RecipeView(new BorderPane(), 800, 600)));
+    // Create buttons
+    Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+    Button homeButton = createButton("Home", () -> SceneManager.setScene(
+        new HomeView(primaryScreenBounds.getWidth(), 600)));
+    Button pantryButton = createButton("Pantry", null); // Add action if needed
+    Button shoppingListButton = createButton("Shopping List", null); // Add action if needed
+    Button recipesButton = createButton("Recipes", () -> SceneManager.setScene(new RecipeView(
+        new BorderPane(), primaryScreenBounds.getWidth(), 600)));
+    Button loginButton = createButton("Login", null); // Add action if needed
 
-    homeButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:black;"
-        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
+    // Create an HBox for the first four buttons
+    HBox navigationButtonsBox = new HBox(
+        homeButton, pantryButton, shoppingListButton, recipesButton);
+    navigationButtonsBox.setStyle("-fx-spacing: 40; -fx-padding: 5 10 5 10;");
 
-    pantryButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
-        + "-fx-font-family: 'Arial'; -fx-font-size: 14; ");
+    // Create an HBox for the login button
+    HBox loginButtonBox = new HBox(loginButton);
+    loginButtonBox.setStyle("-fx-spacing: 10; -fx-padding: 5 10 5 10;");
 
-    shoppingListButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
-        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
+    // Use Region to make spacing between the two HBox containers flexible
+    Region spacer = new Region();
+    HBox.setHgrow(spacer, Priority.ALWAYS);
 
-    recipesButton.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
-        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
+    // Add components to the main toolbar
+    navBar.getItems().addAll(navigationButtonsBox, spacer, separator, loginButtonBox);
 
-    login.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill: black;"
-        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
-
-    navBar.setStyle("-fx-background-color: #FFFFFF;-fx-spacing:30;"
-        + "-fx-border-color:#000000;");
-
-    navBar.getItems().addAll(spacing, homeButton,
-        pantryButton, shoppingListButton, recipesButton, spacing2, separator, login);
+    // Set styles and preferences
+    navBar.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:#000000;");
+    navBar.setPrefWidth(primaryScreenBounds.getWidth());
   }
+
+  /**
+   * Creates a styled button with the specified text and action.
+   *
+   * @param text   Text for the button.
+   * @param action Action to be executed on button click.
+   * @return Styled Button.
+   */
+  private Button createButton(String text, Runnable action) {
+    Button button = new Button(text);
+    button.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:black;"
+        + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
+    if (action != null) {
+      button.setOnAction(event -> action.run());
+    }
+    return button;
+  }
+
   /**
    * Gets the main navigation bar instance.
    *
@@ -91,5 +90,4 @@ public class NavBar extends Control {
   public ToolBar getNavBar() {
     return navBar;
   }
-
 }

@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.views;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
@@ -39,7 +40,8 @@ public class HomeView extends Scene {
   }
 
   public static HomeView create(Stage stage) {
-    HomeView homeView = new HomeView(800, 600);
+    Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+    HomeView homeView = new HomeView(primaryScreenBounds.getWidth(), 650);
     stage.setScene(homeView);
     stage.show();
     return homeView;
