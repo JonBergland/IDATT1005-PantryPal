@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import stud.ntnu.idatt1005.pantrypal.controllers.SceneManager;
 import stud.ntnu.idatt1005.pantrypal.views.components.NavBar;
 
 public class HomeView extends Scene {
