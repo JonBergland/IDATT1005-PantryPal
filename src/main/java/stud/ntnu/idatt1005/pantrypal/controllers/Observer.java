@@ -1,6 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
-import stud.ntnu.idatt1005.pantrypal.utils.ButtonEnum;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 
 /**
  * Interface for the observer role in the observer pattern

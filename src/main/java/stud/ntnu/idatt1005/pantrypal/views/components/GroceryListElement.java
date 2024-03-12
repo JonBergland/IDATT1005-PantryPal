@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.utils.ButtonEnum;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
 

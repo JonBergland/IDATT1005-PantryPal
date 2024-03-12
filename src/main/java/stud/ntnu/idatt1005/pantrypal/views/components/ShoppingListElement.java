@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.utils.ButtonEnum;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 
 /**
  * Class representing a shopping list element
@@ -30,7 +30,7 @@ public class ShoppingListElement extends GroceryListElement {
     centerCheckBox.setAlignment(Pos.CENTER);
     checkBox.getChildren().add(centerCheckBox);
 
-    HBox textBox = createTextBox(grocery.getName(), grocery.getCategory(), grocery.getQuantity() + "stk");
+    HBox textBox = createTextBox(grocery.getKey(), grocery.getCategory(), grocery.getQuantity() + "stk");
 
     // Make the delete button
     StyledButton deleteButton = createButton("Delete", StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
