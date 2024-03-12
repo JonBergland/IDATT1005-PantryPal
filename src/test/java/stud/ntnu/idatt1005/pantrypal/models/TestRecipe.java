@@ -23,8 +23,8 @@ class TestRecipe {
     Grocery apple = new Grocery("apple", 1, "fruit", null);
     Grocery banana = new Grocery("banana", 2, "fruit", null);
     groceries = new GroceryRegister();
-    groceries.addGrocery(apple);
-    groceries.addGrocery(banana);
+    groceries.addItem(apple);
+    groceries.addItem(banana);
 
     steps = new StepRegister();
     steps.addStep("Step 1");
@@ -37,17 +37,17 @@ class TestRecipe {
   @Test
   @DisplayName("Test getName()")
   void testGetName() {
-    assertEquals("Apple Banana Smoothie", recipe.getName());
+    assertEquals("Apple Banana Smoothie", recipe.getKey());
   }
 
   @Test
   @DisplayName("Test getRecipeGroceries()")
   void testGetRecipeGroceries() {
-    assertEquals(2, recipe.getRecipeGroceries().getRegister().size());
+    assertEquals(2, recipe.getRecipeGroceries().getRegisterMap().size());
     assertEquals(groceries.getGrocery("apple"),
-        recipe.getRecipeGroceries().getRegister().get("apple"));
+        recipe.getRecipeGroceries().getRegisterMap().get("apple"));
     assertEquals(groceries.getGrocery("banana"),
-        recipe.getRecipeGroceries().getRegister().get("banana"));
+        recipe.getRecipeGroceries().getRegisterMap().get("banana"));
   }
 
   @Test
