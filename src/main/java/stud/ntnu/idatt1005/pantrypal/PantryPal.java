@@ -10,7 +10,7 @@ public class PantryPal extends Application {
   @Override
   public void start(Stage primaryStage) {
     SceneManager.setPrimaryStage(primaryStage);
-    SceneManager.setScene(HomeView.create(primaryStage));
+    SceneManager.setScene(new HomeView());
     primaryStage.setTitle("PantryPal");
     primaryStage.show();
   }
