@@ -1,18 +1,13 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
 import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
-import stud.ntnu.idatt1005.pantrypal.controllers.SceneManager;
-import stud.ntnu.idatt1005.pantrypal.views.HomeView;
-import stud.ntnu.idatt1005.pantrypal.views.LogInView;
-import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
-import stud.ntnu.idatt1005.pantrypal.views.View;
+import stud.ntnu.idatt1005.pantrypal.enums.Route;
 
 /**
  * A class for the navigation bar.
@@ -37,13 +32,11 @@ public class NavBar extends Control {
   public NavBar() {
     // Create buttons
     Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
-    Button homeButton = createButton("Home", () -> SceneManager.setScene(
-        new HomeView()));
-    Button pantryButton = createButton("Pantry", null);
-    Button shoppingListButton = createButton("Shopping List", null);
-    Button recipesButton = createButton("Recipes", () -> SceneManager.setScene(new RecipeView(
-        View.ViewType.DEFAULT)));
-    Button loginButton = createButton("Login",()-> SceneManager.setScene(new LogInView(View.ViewType.DEFAULT)));
+    NavLink homeButton = createButton("Home", () -> controller.onNavLinkPress(Route.HOME));
+    NavLink pantryButton = createButton("Pantry", null);
+    NavLink shoppingListButton = createButton("Shopping List", null);
+    NavLink recipesButton = createButton("Recipes", () -> controller.onNavLinkPress(Route.COOKBOOK));
+    NavLink loginButton = createButton("Login",()-> controller.onNavLinkPress(Route.LOGIN));
 
     // Create an HBox for the first four buttons
     HBox navigationButtonsBox = new HBox(
@@ -73,14 +66,14 @@ public class NavBar extends Control {
    * @param action Action to be executed on button click.
    * @return Styled Button.
    */
-  private Button createButton(String text, Runnable action) {
-    Button button = new Button(text);
-    button.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:black;"
+  private NavLink createButton(String text, Runnable action) {
+    NavLink link = new NavLink(text);
+    link.setStyle("-fx-background-color: #FFFFFF; -fx-text-fill:black;"
         + "-fx-font-family: 'Arial'; -fx-font-size: 14;");
     if (action != null) {
-      button.setOnAction(event -> action.run());
+      link.setOnAction(event -> action.run());
     }
-    return button;
+    return link;
   }
 
   /**

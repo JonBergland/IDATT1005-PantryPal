@@ -3,15 +3,18 @@ package stud.ntnu.idatt1005.pantrypal.views;
 import javafx.geometry.Pos;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
+import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledTextField;
 
 /**
- * This class represents the LogInView in the application.
- * It extends the View class and sets the scene for the stage.
- * The LogInView includes a title, username input field and a login button.
+ * This class represents the LogInView in the application. It extends the View class and sets the
+ * scene for the stage. The LogInView includes a title, username input field and a login button.
  */
 public class LogInView extends View {
+
+  private final LogInController controller;
 
   // Text representing the login title
   Text loginText = new Text("Login");
@@ -20,6 +23,12 @@ public class LogInView extends View {
   // Login button
   StyledButton loginButton = new StyledButton(
       "Login", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
+
+  public LogInView(LogInController controller) {
+    super(Route.LOGIN);
+    this.controller = controller;
+    initialize();
+  }
 
   /**
    * Initializes the LogInView by setting up the layout and styling.
@@ -44,19 +53,7 @@ public class LogInView extends View {
     loginText.setStyle("-fx-font-size: 30;-fx-font-family:'Arial';-fx-font-weight: bold;");
     loginButton.setStyle("-fx-text-fill: black; -fx-font-family: 'Arial'");
 
-
     // Add the VBox to the root of the scene
     root.setCenter(loginContainer);
-  }
-
-  /**
-   * Constructor for the LogInView class.
-   * Calls the superclass constructor with a specific viewType.
-   *
-   * @param viewType Type of the view to be created.
-   */
-  public LogInView(ViewType viewType) {
-    super(viewType);
-    initialize();
   }
 }
