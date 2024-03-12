@@ -62,12 +62,12 @@ public class CookbookView extends View {
     HBox row = new HBox(spacing);
     for (Recipe recipe : recipes.values()) {
       if (row.getChildren().size() < amountOfRecipesPerRow) {
-        row.getChildren().add(new CookbookRecipeComponent(recipe.getKey()).getBorderPane());
+        row.getChildren().add(new CookbookRecipeComponent(recipe.getName()).getBorderPane());
       } else {
         row.setAlignment(Pos.CENTER);
         recipeContainer.getChildren().add(row);
         row = new HBox(spacing);
-        row.getChildren().add(new CookbookRecipeComponent(recipe.getKey()).getBorderPane());
+        row.getChildren().add(new CookbookRecipeComponent(recipe.getName()).getBorderPane());
       }
 
     }
