@@ -36,12 +36,12 @@ public class NavBar extends Control {
     NavLink homeButton = createButton("Home", () -> controller.onNavLinkPress(Route.HOME));
     NavLink pantryButton = createButton("Pantry", null);
     NavLink shoppingListButton = createButton("Shopping List", null);
-    NavLink recipesButton = createButton("Recipes", () -> controller.onNavLinkPress(Route.COOKBOOK));
+    NavLink cookbookButton = createButton("Cookbook", () -> controller.onNavLinkPress(Route.COOKBOOK));
     NavLink loginButton = createButton("Login",()-> controller.onNavLinkPress(Route.LOGIN));
 
     // Create an HBox for the first four buttons
     HBox navigationButtonsBox = new HBox(
-        homeButton, pantryButton, shoppingListButton, recipesButton);
+        homeButton, pantryButton, shoppingListButton, cookbookButton);
     navigationButtonsBox.setStyle("-fx-spacing: 40; -fx-padding: 5 10 5 10;");
 
     // Create an HBox for the login button
@@ -56,8 +56,8 @@ public class NavBar extends Control {
     navBar.getItems().addAll(navigationButtonsBox, spacer, separator, loginButtonBox);
 
     // Set styles and preferences
-    navBar.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:#000000;");
-    navBar.setPrefWidth(primaryScreenBounds.getWidth());
+    navBar.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:#000000; -fx-border-width: 1 0 1 0;");
+    navBar.setPrefWidth(primaryScreenBounds.getWidth()-2);
   }
 
   /**
