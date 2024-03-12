@@ -1,6 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.views;
 
-import stud.ntnu.idatt1005.pantrypal.controllers.Controller;
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 
 /**
  * Interface for the observable role in the observer pattern
@@ -9,14 +9,14 @@ public interface Observable {
 
   /**
    * Adds an observer to the observable
-   * @param controller the observer to be added
+   * @param observer the observer to be added
    */
-  void addController(Controller controller);
+  void addObserver(Observer observer);
 
   /**
    * Removes an observer from the observable
-   * @param controller the observer to be removed
+   * @param observer the observer to be removed
    */
-  void removeController(Controller controller);
+  void removeObserver(Observer observer);
 
 }
