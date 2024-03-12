@@ -4,7 +4,6 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -12,6 +11,7 @@ import javafx.scene.shape.Rectangle;
 import stud.ntnu.idatt1005.pantrypal.controllers.SceneManager;
 import stud.ntnu.idatt1005.pantrypal.views.HomeView;
 import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
+import stud.ntnu.idatt1005.pantrypal.views.View;
 
 /**
  * A class for the navigation bar.
@@ -37,11 +37,11 @@ public class NavBar extends Control {
     // Create buttons
     Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
     Button homeButton = createButton("Home", () -> SceneManager.setScene(
-        new HomeView(primaryScreenBounds.getWidth(), 600)));
+        new HomeView()));
     Button pantryButton = createButton("Pantry", null);
     Button shoppingListButton = createButton("Shopping List", null);
     Button recipesButton = createButton("Recipes", () -> SceneManager.setScene(new RecipeView(
-        new BorderPane(), primaryScreenBounds.getWidth(), 600)));
+        View.ViewType.DEFAULT)));
     Button loginButton = createButton("Login", null);
 
     // Create an HBox for the first four buttons
