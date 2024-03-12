@@ -6,8 +6,9 @@ import java.util.Date;
  * This is an entity class representing groceries It contains the name, quantity, category and
  * expiration date of the grocery
  */
-public class Grocery extends Model{
+public class Grocery {
 
+  final String name;
   final int quantity;
   final String category;
   final Date expirationDate;
@@ -21,7 +22,7 @@ public class Grocery extends Model{
    * @param expirationDate the expiration date of the grocery
    */
   public Grocery(String name, int quantity, String category, Date expirationDate) {
-    super(name);
+    this.name = name;
     this.quantity = quantity;
     this.category = category;
     this.expirationDate = expirationDate;
@@ -33,10 +34,19 @@ public class Grocery extends Model{
    * @param grocery the grocery to be copied
    */
   public Grocery(Grocery grocery) {
-    super(grocery.getKey());
-    this.quantity = grocery.getQuantity();
-    this.category = grocery.getCategory();
-    this.expirationDate = grocery.getExpirationDate();
+    this.name = grocery.name;
+    this.quantity = grocery.quantity;
+    this.category = grocery.category;
+    this.expirationDate = grocery.expirationDate;
+  }
+
+  /**
+   * Get the name of the grocery
+   *
+   * @return the name of the grocery
+   */
+  public String getName() {
+    return name;
   }
 
   /**
@@ -68,7 +78,7 @@ public class Grocery extends Model{
 
   @Override
   public String toString() {
-    return "Name: " + getKey() + ", Quantity: " + quantity + ", Category: " + category
+    return "Name: " + name + ", Quantity: " + quantity + ", Category: " + category
         + ", Expiration date: " + expirationDate;
   }
 

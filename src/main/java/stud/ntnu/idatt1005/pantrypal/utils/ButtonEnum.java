@@ -1,4 +1,4 @@
-package stud.ntnu.idatt1005.pantrypal.enums;
+package stud.ntnu.idatt1005.pantrypal.utils;
 
 public enum ButtonEnum {
   ADD,

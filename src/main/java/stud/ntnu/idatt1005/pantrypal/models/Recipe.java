@@ -10,7 +10,12 @@ import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
  * It contains the name, groceries and steps of the recipe.
  * Goal: act as a model for a recipe.
  */
-public class Recipe extends Model {
+public class Recipe {
+
+  /**
+   * The name of the recipe.
+   */
+  private final String name;
 
   /**
    * The groceries needed for the recipe.
@@ -30,9 +35,18 @@ public class Recipe extends Model {
    * @param steps the steps needed to make the recipe.
    */
   public Recipe(String name, GroceryRegister recipeGroceries, StepRegister steps) {
-    super(name);
+    this.name = name;
     this.recipeGroceries = recipeGroceries;
     this.steps = steps;
+  }
+
+  /**
+   * Get the name of the recipe.
+   *
+   * @return the name of the recipe.
+   */
+  public String getName() {
+    return name;
   }
 
   /**

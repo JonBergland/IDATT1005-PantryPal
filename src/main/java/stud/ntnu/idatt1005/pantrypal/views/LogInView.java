@@ -9,15 +9,11 @@ import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledTextField;
 
 /**
- * This class represents the LogInView in the application.
- * It extends the View class and sets the scene for the stage.
- * The LogInView includes a title, username input field and a login button.
- * The class is associated with a LogInController to handle the logic
- * and actions related to logging in.
+ * This class represents the LogInView in the application. It extends the View class and sets the
+ * scene for the stage. The LogInView includes a title, username input field and a login button.
  */
 public class LogInView extends View {
 
-  // The controller responsible for managing the logic and actions associated with user login.
   private final LogInController controller;
 
   // Text representing the login title
@@ -28,11 +24,6 @@ public class LogInView extends View {
   StyledButton loginButton = new StyledButton(
       "Login", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
 
-  /**
-   * Constructor for LogInView.
-   *
-   * @param controller The LogInController associated with this view.
-   */
   public LogInView(LogInController controller) {
     super(controller, Route.LOGIN);
     this.controller = controller;
@@ -63,6 +54,6 @@ public class LogInView extends View {
     loginButton.setStyle("-fx-text-fill: black; -fx-font-family: 'Arial'");
 
     // Add the VBox to the root of the scene
-    root.setCenter(loginContainer);
+    getBorderPane().setCenter(loginContainer);
   }
 }

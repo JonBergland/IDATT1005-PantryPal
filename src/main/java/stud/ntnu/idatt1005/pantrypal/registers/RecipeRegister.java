@@ -1,6 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
 
-import stud.ntnu.idatt1005.pantrypal.models.Model;
+import java.util.HashMap;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 
 
@@ -9,35 +9,53 @@ import stud.ntnu.idatt1005.pantrypal.models.Recipe;
  * It contains a register of recipes structured in a hashmap.
  * Goal: act as a register for recipes.
  */
-public class RecipeRegister extends Register {
+public class RecipeRegister {
+
+  /**
+   * A register of recipes.
+   */
+  HashMap<String, Recipe> recipeRegister;
+
   /**
    * Constructor for the RecipeRegister class.
    * Initializes the recipe register.
    */
   public RecipeRegister() {
-    super();
+    recipeRegister = new HashMap<>();
   }
 
   /**
-   * Deep-copy constructor for the RecipeRegister class.
-   * @param register the register to be used.
+   * Get the recipe register.
+   *
+   * @return the recipe register.
    */
-  public RecipeRegister(RecipeRegister register) {
-    super(register);
+  public HashMap<String, Recipe> getRegister() {
+    return recipeRegister;
+  }
+
+  /**
+   * Get a recipe by name.
+   *
+   * @param name the name of the recipe.
+   * @return the recipe with the given name.
+   */
+  public Recipe getRecipeByName(String name) throws IllegalArgumentException {
+    if (!recipeRegister.containsKey(name)) {
+      throw new IllegalArgumentException("Recipe does not exist in register");
+    }
+    return recipeRegister.get(name);
   }
 
   /**
    * Add a recipe to the recipe register.
    *
-   * @param model the recipe to be added to the recipe register.
+   * @param recipe the recipe to be added to the recipe register.
    */
-  @Override
-  public void addItem(Model model) throws IllegalArgumentException {
-    Recipe recipe = (Recipe) model;
-    if (super.registerMap.containsKey(recipe.getKey())) {
+  public void addRecipe(Recipe recipe) throws IllegalArgumentException {
+    if (recipeRegister.containsKey(recipe.getName())) {
       throw new IllegalArgumentException("Recipe already exists in register");
     }
-    super.registerMap.put(recipe.getKey(), recipe);
+    recipeRegister.put(recipe.getName(), recipe);
   }
 
   /**
@@ -49,10 +67,23 @@ public class RecipeRegister extends Register {
    */
   public void addRecipe(String name, GroceryRegister groceries, StepRegister steps)
       throws IllegalArgumentException {
-    if (super.registerMap.containsKey(name)) {
+    if (recipeRegister.containsKey(name)) {
       throw new IllegalArgumentException("Recipe already exists in register");
     }
-    super.registerMap.put(name, new Recipe(name, groceries, steps));
+    recipeRegister.put(name, new Recipe(name, groceries, steps));
+  }
+
+  /**
+   * Remove a recipe from the recipe register.
+   *
+   * @param name the name of the recipe to be removed from the recipe register.
+   */
+  public void removeRecipe(String name)
+      throws IllegalArgumentException {
+    if (!recipeRegister.containsKey(name)) {
+      throw new IllegalArgumentException("Recipe does not exist in register");
+    }
+    recipeRegister.remove(name);
   }
 
   /**
@@ -62,10 +93,10 @@ public class RecipeRegister extends Register {
    */
   public void updateRecipe(Recipe recipe)
       throws IllegalArgumentException {
-    if (!super.registerMap.containsKey(recipe.getKey())) {
+    if (!recipeRegister.containsKey(recipe.getName())) {
       throw new IllegalArgumentException("Recipe does not exist in register");
     }
-    super.registerMap.replace(recipe.getKey(), recipe);
+    recipeRegister.replace(recipe.getName(), recipe);
   }
 
   /**
@@ -77,10 +108,10 @@ public class RecipeRegister extends Register {
    */
   public void updateRecipe(String name, GroceryRegister groceries, StepRegister steps)
       throws IllegalArgumentException{
-    if (!super.registerMap.containsKey(name)) {
+    if (!recipeRegister.containsKey(name)) {
       throw new IllegalArgumentException("Recipe does not exist in register");
     }
-    super.registerMap.replace(name, new Recipe(name, groceries, steps));
+    recipeRegister.replace(name, new Recipe(name, groceries, steps));
   }
 }
 

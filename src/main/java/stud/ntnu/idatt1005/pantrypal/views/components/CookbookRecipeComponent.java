@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
@@ -18,6 +19,8 @@ import javafx.scene.shape.Rectangle;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 
+import static javafx.stage.Screen.getPrimary;
+
 /**
  * This class represents a component for displaying a recipe within a cookbook.
  * It provides methods to create a visual representation of a recipe, including its image and name.
@@ -35,7 +38,6 @@ public class CookbookRecipeComponent {
    * @param recipeName The name of the recipe.
    */
   public CookbookRecipeComponent(Image image, String recipeName) {
-    // Set up the background with the provided image
     BackgroundSize backgroundSize = new BackgroundSize(320, 200,
             true, true, false, true);
     BackgroundImage backgroundImage = new BackgroundImage(image,
@@ -68,14 +70,16 @@ public class CookbookRecipeComponent {
    */
   private void setUpBorderPane() {
     borderPane = new BorderPane();
-    borderPane.setMaxWidth(320);
+    borderPane.setMaxWidth(getWidth());
     borderPane.setMaxHeight(200);
+    borderPane.setMinWidth(getWidth());
+    borderPane.setMinHeight(200);
     BorderStroke borderStroke = new BorderStroke(ColorPalette.BLACK,
             BorderStrokeStyle.SOLID,
             new CornerRadii(10),
             new BorderWidths(1));
     borderPane.setBorder(new Border(borderStroke));
-    Rectangle clip = new Rectangle(320, 200);
+    Rectangle clip = new Rectangle(getWidth(), 200);
     clip.setArcWidth(20);
     clip.setArcHeight(20);
     borderPane.setClip(clip);
@@ -100,5 +104,14 @@ public class CookbookRecipeComponent {
    */
   public BorderPane getBorderPane() {
     return borderPane;
+  }
+
+  public static double getWidth() {
+    Rectangle2D visualBounds = getPrimary().getVisualBounds();
+    return visualBounds.getWidth()/4 - 40;
+  }
+
+  public static double getHeight() {
+    return getWidth() * 0.625;
   }
 }
