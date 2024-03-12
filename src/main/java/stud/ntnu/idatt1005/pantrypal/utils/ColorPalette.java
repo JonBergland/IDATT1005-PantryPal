@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 
 public final class ColorPalette {
   public static final Color WHITE = Color.web("#FFF");
+  public static final Color GRAY = Color.web("#D9D9D9");
   public static final Color BLACK = Color.web("#000");
   public static final Color TEXT = Color.web("#000");
   public static final Color BACKGROUND = Color.web("#FFF");
