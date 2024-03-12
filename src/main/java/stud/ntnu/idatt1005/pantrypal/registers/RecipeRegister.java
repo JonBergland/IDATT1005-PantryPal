@@ -1,6 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
 
-import java.util.HashMap;
+import stud.ntnu.idatt1005.pantrypal.models.Model;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 
 
@@ -9,53 +9,35 @@ import stud.ntnu.idatt1005.pantrypal.models.Recipe;
  * It contains a register of recipes structured in a hashmap.
  * Goal: act as a register for recipes.
  */
-public class RecipeRegister {
-
-  /**
-   * A register of recipes.
-   */
-  HashMap<String, Recipe> recipeRegister;
-
+public class RecipeRegister extends Register {
   /**
    * Constructor for the RecipeRegister class.
    * Initializes the recipe register.
    */
   public RecipeRegister() {
-    recipeRegister = new HashMap<>();
+    super();
   }
 
   /**
-   * Get the recipe register.
-   *
-   * @return the recipe register.
+   * Deep-copy constructor for the RecipeRegister class.
+   * @param register the register to be used.
    */
-  public HashMap<String, Recipe> getRegister() {
-    return recipeRegister;
-  }
-
-  /**
-   * Get a recipe by name.
-   *
-   * @param name the name of the recipe.
-   * @return the recipe with the given name.
-   */
-  public Recipe getRecipeByName(String name) throws IllegalArgumentException {
-    if (!recipeRegister.containsKey(name)) {
-      throw new IllegalArgumentException("Recipe does not exist in register");
-    }
-    return recipeRegister.get(name);
+  public RecipeRegister(RecipeRegister register) {
+    super(register);
   }
 
   /**
    * Add a recipe to the recipe register.
    *
-   * @param recipe the recipe to be added to the recipe register.
+   * @param model the recipe to be added to the recipe register.
    */
-  public void addRecipe(Recipe recipe) throws IllegalArgumentException {
-    if (recipeRegister.containsKey(recipe.getName())) {
+  @Override
+  public void addItem(Model model) throws IllegalArgumentException {
+    Recipe recipe = (Recipe) model;
+    if (super.registerMap.containsKey(recipe.getKey())) {
       throw new IllegalArgumentException("Recipe already exists in register");
     }
-    recipeRegister.put(recipe.getName(), recipe);
+    super.registerMap.put(recipe.getKey(), recipe);
   }
 
   /**
@@ -67,23 +49,10 @@ public class RecipeRegister {
    */
   public void addRecipe(String name, GroceryRegister groceries, StepRegister steps)
       throws IllegalArgumentException {
-    if (recipeRegister.containsKey(name)) {
+    if (super.registerMap.containsKey(name)) {
       throw new IllegalArgumentException("Recipe already exists in register");
     }
-    recipeRegister.put(name, new Recipe(name, groceries, steps));
-  }
-
-  /**
-   * Remove a recipe from the recipe register.
-   *
-   * @param name the name of the recipe to be removed from the recipe register.
-   */
-  public void removeRecipe(String name)
-      throws IllegalArgumentException {
-    if (!recipeRegister.containsKey(name)) {
-      throw new IllegalArgumentException("Recipe does not exist in register");
-    }
-    recipeRegister.remove(name);
+    super.registerMap.put(name, new Recipe(name, groceries, steps));
   }
 
   /**
@@ -93,10 +62,10 @@ public class RecipeRegister {
    */
   public void updateRecipe(Recipe recipe)
       throws IllegalArgumentException {
-    if (!recipeRegister.containsKey(recipe.getName())) {
+    if (!super.registerMap.containsKey(recipe.getKey())) {
       throw new IllegalArgumentException("Recipe does not exist in register");
     }
-    recipeRegister.replace(recipe.getName(), recipe);
+    super.registerMap.replace(recipe.getKey(), recipe);
   }
 
   /**
@@ -108,10 +77,10 @@ public class RecipeRegister {
    */
   public void updateRecipe(String name, GroceryRegister groceries, StepRegister steps)
       throws IllegalArgumentException{
-    if (!recipeRegister.containsKey(name)) {
+    if (!super.registerMap.containsKey(name)) {
       throw new IllegalArgumentException("Recipe does not exist in register");
     }
-    recipeRegister.replace(name, new Recipe(name, groceries, steps));
+    super.registerMap.replace(name, new Recipe(name, groceries, steps));
   }
 }
 
