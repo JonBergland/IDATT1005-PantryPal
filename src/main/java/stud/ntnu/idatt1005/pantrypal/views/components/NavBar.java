@@ -10,6 +10,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import stud.ntnu.idatt1005.pantrypal.controllers.SceneManager;
 import stud.ntnu.idatt1005.pantrypal.views.HomeView;
+import stud.ntnu.idatt1005.pantrypal.views.LogInView;
 import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 import stud.ntnu.idatt1005.pantrypal.views.View;
 
@@ -42,7 +43,7 @@ public class NavBar extends Control {
     Button shoppingListButton = createButton("Shopping List", null);
     Button recipesButton = createButton("Recipes", () -> SceneManager.setScene(new RecipeView(
         View.ViewType.DEFAULT)));
-    Button loginButton = createButton("Login", null);
+    Button loginButton = createButton("Login",()-> SceneManager.setScene(new LogInView(View.ViewType.DEFAULT)));
 
     // Create an HBox for the first four buttons
     HBox navigationButtonsBox = new HBox(
