@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.utils.ButtonEnum;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 
 /**
  * Class representing a shopping list element
