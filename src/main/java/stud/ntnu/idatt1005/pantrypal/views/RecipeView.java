@@ -9,8 +9,17 @@ import stud.ntnu.idatt1005.pantrypal.enums.Route;
  */
 public class RecipeView extends View {
 
+  /**
+   * The controller responsible for managing the logic and
+   * actions associated with the recipe functionality.
+   */
   private final RecipeController controller;
 
+  /**
+   * Constructor for RecipeView.
+   *
+   * @param controller The controller for the view.
+   */
   public RecipeView(RecipeController controller) {
     super(controller, Route.RECIPE);
     this.controller = controller;

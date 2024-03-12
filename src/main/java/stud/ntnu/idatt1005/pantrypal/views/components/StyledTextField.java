@@ -14,19 +14,36 @@ import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 
 /**
- * A custom TextField with a default style and a search style
- * Goal: Create a custom TextField with a default style and a search style
+ * A custom TextField with a default style and a search style.
+ * Goal: Create a custom TextField with a default style and a search style.
  */
 public class StyledTextField extends TextField {
+  /**
+   * Enum for the different variants of the text field.
+   */
   public enum Variant {
     DEFAULT, SEARCH
   }
+
+  /**
+   * Constructor for StyledTextField.
+   * Sets the default style for the text field.
+   *
+   * @param promptText The text to be displayed on the text field.
+   */
   public StyledTextField(String promptText) {
     super();
     this.setPromptText(promptText);
     this.setDefaultStyle();
   }
 
+  /**
+   * Constructor for StyledTextField.
+   * Sets the default style for the text field.
+   *
+   * @param promptText The text to be displayed on the text field.
+   * @param variant The variant of the text field.
+   */
   public StyledTextField(String promptText, Variant variant) {
     super();
     this.setPromptText(promptText);
@@ -37,6 +54,10 @@ public class StyledTextField extends TextField {
     }
   }
 
+  /**
+   * Sets the default style for the text field.
+   * This style is used for all text fields.
+   */
   public void setDefaultStyle() {
     this.setBackground(new Background(new BackgroundFill(
             ColorPalette.WHITE, new CornerRadii(5), null)));
@@ -44,6 +65,10 @@ public class StyledTextField extends TextField {
             ColorPalette.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));
   }
 
+  /**
+   * Sets the search style for the text field.
+   * This style is used for search fields.
+   */
   public void setSearchStyle() {
     this.setBackground(new Background(new BackgroundFill(
             ColorPalette.WHITE, null, null)));

@@ -21,8 +21,10 @@ import stud.ntnu.idatt1005.pantrypal.views.components.NavBar;
  */
 class View extends Scene {
 
+  // The route of the view.
   private final Route route;
 
+  // The controller responsible for managing the logic and actions associated with the view.
   private final Controller controller;
   /**
    * Root pane of the view.
@@ -45,6 +47,12 @@ class View extends Scene {
   }
 
 
+  /**
+   * Method for setting the view of the scene.
+   * The method is called in the constructor and sets the view based on the viewType.
+   * The method is overridden in the subclasses to provide a specific view for each type.
+   * The method is also called when the view is updated.
+   */
   public void view() {
     if (route == Route.HOME) {
       VBox topContainer = new VBox(0);
