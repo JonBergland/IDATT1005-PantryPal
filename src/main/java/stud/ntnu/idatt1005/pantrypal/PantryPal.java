@@ -41,7 +41,7 @@ public class PantryPal extends Application {
 
     //Init view
     this.viewManager.setView(Route.HOME);
-
+    primaryStage.show();
 
   }
 
