@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TestGrocery {
+class TestGrocery {
   @Test
   void testGetCategory() {
     // Create a Grocery object
@@ -31,7 +31,7 @@ public class TestGrocery {
     Grocery grocery = new Grocery("Apple", 5, "Fruit", new Date());
 
     // Test the getName() method
-    assertEquals("Apple", grocery.getName());
+    assertEquals("Apple", grocery.getKey());
   }
 
   @Test
