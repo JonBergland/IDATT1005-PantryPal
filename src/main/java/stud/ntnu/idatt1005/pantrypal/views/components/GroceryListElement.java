@@ -6,7 +6,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import stud.ntnu.idatt1005.pantrypal.controllers.Controller;
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.utils.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public abstract class GroceryListElement implements Observable {
   private final Grocery grocery;
-  private final List<Controller> controllers = new ArrayList<>();
+  private final List<Observer> observers = new ArrayList<>();
 
   /**
    * Constructor for the list element
@@ -103,13 +103,13 @@ public abstract class GroceryListElement implements Observable {
   }
 
   @Override
-  public void addController(Controller controller) {
-    controllers.add(controller);
+  public void addObserver(Observer observer) {
+    observers.add(observer);
   }
 
   @Override
-  public void removeController(Controller controller) {
-    controllers.remove(controller);
+  public void removeObserver(Observer observer) {
+    observers.remove(observer);
   }
 
   /**
@@ -118,8 +118,8 @@ public abstract class GroceryListElement implements Observable {
    * @param buttonEnum the enum to be notified
    */
   public void notifyObservers(ButtonEnum buttonEnum) {
-    for (Controller controller : controllers) {
-      controller.update(buttonEnum, this.grocery);
+    for (Observer observer : observers) {
+      observer.update(buttonEnum, this.grocery);
     }
   }
 }
