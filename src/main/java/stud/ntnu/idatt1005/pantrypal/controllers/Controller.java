@@ -8,4 +8,5 @@ import stud.ntnu.idatt1005.pantrypal.utils.ButtonEnum;
 public interface Controller {
     void update(ButtonEnum buttonEnum, String buttonData);
 
+    void update(ButtonEnum buttonEnum, Object object);
 }
