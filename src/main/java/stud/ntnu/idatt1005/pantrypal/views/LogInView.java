@@ -54,6 +54,6 @@ public class LogInView extends View {
     loginButton.setStyle("-fx-text-fill: black; -fx-font-family: 'Arial'");
 
     // Add the VBox to the root of the scene
-    root.setCenter(loginContainer);
+    getBorderPane().setCenter(loginContainer);
   }
 }
