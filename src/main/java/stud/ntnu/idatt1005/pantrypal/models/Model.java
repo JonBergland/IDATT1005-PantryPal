@@ -7,16 +7,16 @@ public abstract class Model {
   private final String key;
 
   /**
-   * Contructor for Model class
-   * @param key
+   * Constructor for Model class
+   * @param key the key of the model
    */
   protected Model(String key) {
     this.key = key;
   }
 
   /**
-   * Deep-copy contstructor of Model-class
-   * @param model
+   * Deep-copy constructor of Model-class
+   * @param model the model to be copied
    */
   protected Model(Model model) {
     this.key = model.getKey();
