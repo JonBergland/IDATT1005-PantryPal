@@ -62,12 +62,12 @@ public class CookbookView extends View {
     HBox row = new HBox(spacing);
     for (Recipe recipe : recipes.values()) {
       if (row.getChildren().size() < amountOfRecipesPerRow) {
-        row.getChildren().add(new CookbookRecipeComponent(recipe.getName()).getBorderPane());
+        row.getChildren().add(new CookbookRecipeComponent(recipe.getKey()).getBorderPane());
       } else {
         row.setAlignment(Pos.CENTER);
         recipeContainer.getChildren().add(row);
         row = new HBox(spacing);
-        row.getChildren().add(new CookbookRecipeComponent(recipe.getName()).getBorderPane());
+        row.getChildren().add(new CookbookRecipeComponent(recipe.getKey()).getBorderPane());
       }
 
     }
@@ -85,6 +85,6 @@ public class CookbookView extends View {
   private double calculateSpacing() {
     Rectangle2D visualBounds = getPrimary().getVisualBounds();
     return ((visualBounds.getWidth() - amountOfRecipesPerRow * CookbookRecipeComponent.getWidth())
-            / (amountOfRecipesPerRow + 1));
+        / (amountOfRecipesPerRow + 1));
   }
 }
