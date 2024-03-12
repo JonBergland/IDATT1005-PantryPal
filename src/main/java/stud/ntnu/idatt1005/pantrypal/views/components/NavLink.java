@@ -3,7 +3,6 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 import javafx.geometry.Insets;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.text.Font;
-import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 
 /**
@@ -16,7 +15,6 @@ public class NavLink extends Hyperlink {
    * Constructor for NavLink.
    *
    * @param text The text to be displayed on the hyperlink.
-   * @param route The scene to be navigated to when the hyperlink is clicked.
    */
   public NavLink(String text) {
     super(text);

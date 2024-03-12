@@ -2,10 +2,10 @@ package stud.ntnu.idatt1005.pantrypal.views;
 
 import static javafx.stage.Screen.getPrimary;
 
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.controllers.Controller;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -21,13 +21,15 @@ import stud.ntnu.idatt1005.pantrypal.views.components.NavBar;
  */
 class View extends Scene {
 
+  // The route of the view.
   private final Route route;
 
+  // The controller responsible for managing the logic and actions associated with the view.
   private final Controller controller;
   /**
    * Root pane of the view.
    */
-  private final ScrollPane root;
+  BorderPane root;
 
   /**
    * Constructor for the View class. Initializes the view based on the viewType.
@@ -35,42 +37,35 @@ class View extends Scene {
    * @param route The route of the view.
    */
   public View(Controller controller, Route route) {
-    super(new ScrollPane(), getPrimary().getVisualBounds().getWidth(),
-            getPrimary().getVisualBounds().getHeight());
+    super(new BorderPane(), getPrimary().getVisualBounds().getWidth(),
+        getPrimary().getVisualBounds().getHeight());
     this.route = route;
     this.controller = controller;
-    this.widthProperty().lessThanOrEqualTo(getPrimary().getVisualBounds().getWidth()-100);
-    root = (ScrollPane) getRoot();
-    BorderPane borderPane = new BorderPane();
-    borderPane.setPadding(new Insets(0));
-    borderPane.maxWidthProperty().bind(root.widthProperty());
-    root.setContent(borderPane);
-    root.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-    BackgroundFill backgroundColor = new BackgroundFill(ColorPalette.PRIMARY_LIGHT, CornerRadii.EMPTY,
-            Insets.EMPTY);
-    root.setBackground(new Background(backgroundColor));
+    root = (BorderPane) getRoot();
     this.setFill(ColorPalette.PRIMARY_LIGHT);
-    this.view(borderPane);
+    this.view();
   }
 
 
-  public void view(BorderPane borderPane) {
+  /**
+   * Method for setting the view of the scene.
+   * The method is called in the constructor and sets the view based on the viewType.
+   * The method is overridden in the subclasses to provide a specific view for each type.
+   * The method is also called when the view is updated.
+   */
+  public void view() {
     if (route == Route.HOME) {
       VBox topContainer = new VBox(0);
       topContainer.setAlignment(javafx.geometry.Pos.CENTER);
       Text title = new Text("Pantry Pal");
       title.setFont(FontPalette.HEADER);
       topContainer.getChildren().addAll(
-              title,
-              new NavBar(controller).getNavBar()
+          title,
+          new NavBar(controller).getNavBar()
       );
-      borderPane.setTop(topContainer);
+      root.setTop(topContainer);
     } else {
-      borderPane.setTop(new NavBar(controller).getNavBar());
+      root.setTop(new NavBar(controller).getNavBar());
     }
-  }
-
-  public BorderPane getBorderPane() {
-    return (BorderPane) root.getContent();
   }
 }
