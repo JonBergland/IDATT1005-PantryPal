@@ -3,7 +3,7 @@ package stud.ntnu.idatt1005.pantrypal.controllers;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 
-class Controller {
+public class Controller {
 
   final ViewManager viewManager;
 

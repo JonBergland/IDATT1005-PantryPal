@@ -10,6 +10,6 @@ import stud.ntnu.idatt1005.pantrypal.enums.Route;
 public class HomeView extends View {
 
   public HomeView(HomeController controller) {
-    super(Route.HOME);
+    super(controller, Route.HOME);
   }
 }

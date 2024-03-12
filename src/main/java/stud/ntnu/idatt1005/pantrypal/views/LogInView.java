@@ -25,7 +25,7 @@ public class LogInView extends View {
       "Login", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
 
   public LogInView(LogInController controller) {
-    super(Route.LOGIN);
+    super(controller, Route.LOGIN);
     this.controller = controller;
     initialize();
   }

@@ -8,7 +8,7 @@ public class ShoppingListView extends View {
   private final ShoppingListController controller;
 
   public ShoppingListView(ShoppingListController controller) {
-    super(Route.SHOPPING_LIST);
+    super(controller, Route.SHOPPING_LIST);
     this.controller = controller;
   }
 }

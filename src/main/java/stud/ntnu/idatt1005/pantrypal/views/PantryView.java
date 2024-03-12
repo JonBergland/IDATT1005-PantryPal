@@ -8,7 +8,7 @@ public class PantryView extends View {
   private final PantryController controller;
 
   public PantryView(PantryController controller) {
-    super(Route.PANTRY);
+    super(controller, Route.PANTRY);
     this.controller = controller;
   }
 }

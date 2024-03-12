@@ -12,7 +12,7 @@ public class RecipeView extends View {
   private final RecipeController controller;
 
   public RecipeView(RecipeController controller) {
-    super(Route.RECIPE);
+    super(controller, Route.RECIPE);
     this.controller = controller;
   }
 

@@ -7,6 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
+import stud.ntnu.idatt1005.pantrypal.controllers.Controller;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 
 /**
@@ -29,7 +30,7 @@ public class NavBar extends Control {
    * Initializes the buttons, styles, and layout components.
    * On action, the buttons will navigate to the corresponding view.
    */
-  public NavBar() {
+  public NavBar(Controller controller) {
     // Create buttons
     Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
     NavLink homeButton = createButton("Home", () -> controller.onNavLinkPress(Route.HOME));

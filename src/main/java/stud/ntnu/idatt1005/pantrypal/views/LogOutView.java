@@ -8,7 +8,7 @@ public class LogOutView extends View {
   private final LogOutController controller;
 
   public LogOutView(LogOutController controller) {
-    super(Route.LOGOUT);
+    super(controller, Route.LOGOUT);
     this.controller = controller;
   }
 }

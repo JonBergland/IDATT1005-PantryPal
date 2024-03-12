@@ -8,7 +8,7 @@ public class AddRecipeView extends View {
   private final AddRecipeController controller;
 
   public AddRecipeView(AddRecipeController controller) {
-    super(Route.ADD_RECIPE);
+    super(controller, Route.ADD_RECIPE);
     this.controller = controller;
   }
 }

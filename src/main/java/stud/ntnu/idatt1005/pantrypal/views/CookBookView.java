@@ -8,7 +8,7 @@ public class CookBookView extends View {
   private final CookBookController controller;
 
   public CookBookView(CookBookController controller) {
-    super(Route.COOKBOOK);
+    super(controller, Route.COOKBOOK);
     this.controller = controller;
   }
 }
