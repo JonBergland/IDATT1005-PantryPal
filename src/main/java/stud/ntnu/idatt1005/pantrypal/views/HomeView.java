@@ -201,9 +201,6 @@ public class HomeView extends View {
     createButton(shoppingListButton, () -> controller.onNavLinkPress(Route.SHOPPING_LIST));
   }
 
-
-
-
   /**
    * Creates a button with the specified text and action.
    *
