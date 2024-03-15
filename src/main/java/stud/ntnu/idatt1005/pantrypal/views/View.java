@@ -21,7 +21,7 @@ import java.util.Objects;
  * provides a base structure for other views. It has two types of views: HOME and DEFAULT. The HOME
  * view includes a title and a navigation bar. The DEFAULT view only includes a navigation bar.
  */
-class View extends Scene {
+public class View extends Scene {
 
   private final Route route;
 
