@@ -61,15 +61,15 @@ public class HomeView extends View {
 
   // Button for the "Pantry" section.
   private final StyledButton pantryButton = new StyledButton(
-      "Pantry", StyledButton.Variant.SOLID, StyledButton.Size.LARGE);
+      "Pantry", StyledButton.Variant.BLACK, StyledButton.Size.LARGE);
 
   // Button for the "Cook Book" section.
   private final StyledButton cookBookButton = new StyledButton(
-      "Cook Book", StyledButton.Variant.SOLID, StyledButton.Size.LARGE);
+      "Cook Book", StyledButton.Variant.BLACK, StyledButton.Size.LARGE);
 
   // Button for the "Shopping List" section.
   private final StyledButton shoppingListButton = new StyledButton(
-      "Shopping List", StyledButton.Variant.SOLID, StyledButton.Size.LARGE);
+      "Shopping List", StyledButton.Variant.BLACK, StyledButton.Size.LARGE);
 
   // The primary screen bounds.
   private final Rectangle2D primaryScreenBounds =
@@ -82,7 +82,7 @@ public class HomeView extends View {
    * @param controller The HomeController associated with this view.
    */
   public HomeView(HomeController controller) {
-    super(controller, Route.HOME);
+    super(controller, Route.HOME, "/styles/home.css");
     this.controller = controller;
     initializeHomeView();
   }

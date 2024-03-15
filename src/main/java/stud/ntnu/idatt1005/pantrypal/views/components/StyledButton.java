@@ -41,8 +41,15 @@ public class StyledButton extends Button {
    */
   public StyledButton(String text) {
     super(text);
-    this.medium();
-    this.solid();
+    this.getStyleClass().addAll("button", "button-medium", "button-solid");
+  }
+
+  private void addStyleClass(String style) {
+    this.getStyleClass().add(style);
+  }
+
+  private void addStyleClasses(String... styles) {
+    this.getStyleClass().addAll(styles);
   }
 
   /**
@@ -54,19 +61,19 @@ public class StyledButton extends Button {
    */
   public StyledButton(String text, Variant variant) {
     super(text);
-    this.medium();
+    this.addStyleClasses("button", "button-medium");
 
     if (variant == Variant.SOLID) {
-      this.solid();
+      this.addStyleClass("button-solid");
     }
     if (variant == Variant.OUTLINE) {
-      this.outline();
+      this.addStyleClass("button-outline");
     }
     if (variant == Variant.DANGER) {
-      this.danger();
+      this.addStyleClass("button-danger");
     }
     if (variant == Variant.BLACK) {
-      this.black();
+      this.addStyleClass("button-black");
     }
   }
 
@@ -79,13 +86,13 @@ public class StyledButton extends Button {
    */
   public StyledButton(String text, Size size) {
     super(text);
-    this.solid();
+    this.addStyleClasses("button", "button-solid");
 
     if (size == Size.MEDIUM) {
-      this.medium();
+      this.addStyleClass("button-medium");
     }
     if (size == Size.LARGE) {
-      this.large();
+      this.addStyleClass("button-large");
     }
   }
 
@@ -99,85 +106,26 @@ public class StyledButton extends Button {
    */
   public StyledButton(String text, Variant variant, Size size) {
     super(text);
+    this.addStyleClass("button");
 
     if (size == Size.MEDIUM) {
-      this.medium();
+      this.addStyleClass("button-medium");
     }
     if (size == Size.LARGE) {
-      this.large();
+        this.addStyleClass("button-large");
     }
 
     if (variant == Variant.SOLID) {
-      this.solid();
+      this.addStyleClass("button-solid");
     }
     if (variant == Variant.OUTLINE) {
-      this.outline();
+      this.addStyleClass("button-outline");
     }
     if (variant == Variant.DANGER) {
-      this.danger();
+      this.addStyleClass("button-danger");
     }
     if (variant == Variant.BLACK) {
-      this.black();
+      this.addStyleClass("button-black");
     }
-  }
-
-  /**
-   * Sets the style for a medium button.
-   */
-  private void medium() {
-    this.setPadding(new Insets(10));
-    this.setFont(Font.font("roboto", FontWeight.MEDIUM, 16));
-  }
-
-  /**
-   * Sets the style for a large button.
-   */
-  private void large() {
-    this.setPadding(new Insets(15));
-    this.setFont(Font.font("roboto", FontWeight.MEDIUM, 20));
-  }
-
-  /**
-   * Sets the style for a solid button.
-   */
-  private void solid() {
-    this.setBackground(
-        new Background(new BackgroundFill(ColorPalette.PRIMARY, new CornerRadii(5), null)));
-    this.setTextFill(ColorPalette.WHITE);
-
-    this.setOnMouseEntered(e -> this.setBackground(
-        new Background(new BackgroundFill(ColorPalette.PRIMARY_DARK, new CornerRadii(5), null))));
-    this.setOnMouseExited(e -> this.setBackground(
-        new Background(new BackgroundFill(ColorPalette.PRIMARY, new CornerRadii(5), null))));
-  }
-
-  /**
-   * Sets the style for an outlined button.
-   */
-  private void outline() {
-    this.setBackground(new Background(new BackgroundFill(
-        ColorPalette.PRIMARY_LIGHT, new CornerRadii(5), null)));
-    this.setBorder(new Border(new BorderStroke(
-        ColorPalette.PRIMARY_DARK, BorderStrokeStyle.DASHED, new CornerRadii(5),
-        new BorderWidths(2))));
-    this.setTextFill(ColorPalette.PRIMARY_DARK);
-  }
-
-  /**
-   * Sets the style for a danger button.
-   */
-  private void danger() {
-    this.setBackground(new Background(new BackgroundFill(
-        ColorPalette.DANGER, new CornerRadii(5), null)));
-    this.setTextFill(ColorPalette.WHITE);
-  }
-
-  /**
-   * Sets the style for a black button.
-   */
-  private void black() {
-    this.setBackground(new Background(new BackgroundFill(
-        ColorPalette.BLACK, new CornerRadii(5), null)));
-    this.setTextFill(ColorPalette.WHITE);
   }
 }

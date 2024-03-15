@@ -21,7 +21,7 @@ public class RecipeView extends View {
    * @param controller The controller for the view.
    */
   public RecipeView(RecipeController controller) {
-    super(controller, Route.RECIPE);
+    super(controller, Route.RECIPE, "/styles/recipe.css");
     this.controller = controller;
   }
 

@@ -1,0 +1,11 @@
+.form{
+    -fx-max-width: 800px;
+    -fx-padding: 10px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-color: #fff;
+    -fx-border-color: #000;
+    -fx-border-width: 1px;
+}
