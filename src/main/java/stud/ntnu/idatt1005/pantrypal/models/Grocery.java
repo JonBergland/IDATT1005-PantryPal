@@ -72,4 +72,7 @@ public class Grocery extends Model{
         + ", Expiration date: " + expirationDate;
   }
 
+  public Object getName() {
+    return getKey();
+  }
 }
