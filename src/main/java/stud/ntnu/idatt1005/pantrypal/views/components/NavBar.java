@@ -35,12 +35,16 @@ public class NavBar extends Control {
   public NavBar(Controller controller) {
     // Create buttons
     Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
-    NavLink homeButton = createButton("Home", () -> controller.onNavLinkPress(Route.HOME));
-    NavLink pantryButton = createButton("Pantry", null);
-    NavLink shoppingListButton = createButton("Shopping List", null);
-    NavLink cookbookButton = createButton("Cookbook",
-        () -> controller.onNavLinkPress(Route.COOKBOOK));
-    NavLink loginButton = createButton("Login", () -> controller.onNavLinkPress(Route.LOGIN));
+    NavLink homeButton = createButton(
+        "Home", () -> controller.onNavLinkPress(Route.HOME));
+    NavLink pantryButton = createButton(
+        "Pantry", () -> controller.onNavLinkPress(Route.PANTRY));
+    NavLink shoppingListButton = createButton(
+        "Shopping List", () -> controller.onNavLinkPress(Route.SHOPPING_LIST));
+    NavLink cookbookButton = createButton(
+        "Cookbook", () -> controller.onNavLinkPress(Route.COOKBOOK));
+    NavLink loginButton = createButton(
+        "Login", () -> controller.onNavLinkPress(Route.LOGIN));
 
     // Create an HBox for the first four buttons
     HBox navigationButtonsBox = new HBox(
