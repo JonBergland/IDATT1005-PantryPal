@@ -92,7 +92,7 @@ public class HomeView extends View {
    */
   private void initializeHomeView() {
     setPantryBox();
-    setRecipeBox();
+    setCookBookBox();
     setShoppingListBox();
     setLayout();
     applyHeaderText();
@@ -111,10 +111,10 @@ public class HomeView extends View {
     pantryBox.setAlignment(Pos.TOP_LEFT);
     pantryBox.setPadding(new Insets(0, 0, 0, 60));
     pantryBox.setSpacing(5);
+    pantryUndertext.setWrappingWidth(300);
     homeViewPantryBackground.getChildren().add(pantryBox);
     homeViewPantryBackground.setAlignment(Pos.CENTER_LEFT);
-    homeViewPantryBackground.setStyle(
-        "-fx-background-color:#9ACD32; -fx-border-width: 0 2 0 0; -fx-border-color: black;");
+    homeViewPantryBackground.getStyleClass().add("pantry-background");
     setBoxSize(homeViewPantryBackground, 0.5, 1.0);
     getBorderPane().setLeft(homeViewPantryBackground);
   }
@@ -125,15 +125,15 @@ public class HomeView extends View {
    * The box is styled and added to the right side of the view.
    * The box is set to take up 50% of the width and 50% of the height of the view.
    */
-  private void setRecipeBox() {
+  private void setCookBookBox() {
     VBox recipeBox = new VBox(cookBookText, cookBookUndertext, cookBookButton);
     recipeBox.setAlignment(Pos.TOP_LEFT);
     recipeBox.setPadding(new Insets(0, 0, 0, 60));
     recipeBox.setSpacing(5);
+    cookBookUndertext.setWrappingWidth(300);
     homeViewCookBookBackground.getChildren().add(recipeBox);
     homeViewCookBookBackground.setAlignment(Pos.CENTER_LEFT);
-    homeViewCookBookBackground.setStyle(
-        "-fx-background-color: #DDEEDF;-fx-border-width: 0 0 2 0; -fx-border-color: black");
+    homeViewCookBookBackground.getStyleClass().add("cookbook-background");
     setBoxSize(homeViewCookBookBackground, 0.5, 0.5);
   }
 
@@ -148,9 +148,10 @@ public class HomeView extends View {
     shoppingListBox.setAlignment(Pos.TOP_LEFT);
     shoppingListBox.setPadding(new Insets(0, 0, 0, 60));
     shoppingListBox.setSpacing(5);
+    shoppingListUndertext.setWrappingWidth(300);
     homeViewShoppingListBackground.getChildren().add(shoppingListBox);
     homeViewShoppingListBackground.setAlignment(Pos.CENTER_LEFT);
-    homeViewShoppingListBackground.setStyle("-fx-background-color: #FFFFFF;");
+    homeViewShoppingListBackground.getStyleClass().add("shopping-list-background");
     setBoxSize(homeViewShoppingListBackground, 0.5, 0.5);
   }
 
@@ -173,51 +174,35 @@ public class HomeView extends View {
    * Styles the header text for all the sections.
    */
   private void applyHeaderText() {
-    styleHeaderText(pantryText);
-    styleHeaderText(cookBookText);
-    styleHeaderText(shoppingListText);
+
+    pantryText.getStyleClass().add("header-text");
+    cookBookText.getStyleClass().add("header-text");
+    shoppingListText.getStyleClass().add("header-text");
   }
 
   /**
    * Styles the subheader text for all the sections.
    */
   private void applySubHeaderText() {
-    styleSubHeaderText(pantryUndertext);
-    styleSubHeaderText(cookBookUndertext);
-    styleSubHeaderText(shoppingListUndertext);
+    pantryUndertext.getStyleClass().add("subheader-text");
+    cookBookUndertext.getStyleClass().add("subheader-text");
+    shoppingListUndertext.getStyleClass().add("subheader-text");
   }
 
   /**
    * Uses the buttons to navigate to the corresponding view.
    */
   private void applyButtons() {
+    pantryButton.getStyleClass().add("styled-button");
+    cookBookButton.getStyleClass().add("styled-button");
+    shoppingListButton.getStyleClass().add("styled-button");
     createButton(pantryButton, () -> controller.onNavLinkPress(Route.PANTRY));
     createButton(cookBookButton, () -> controller.onNavLinkPress(Route.COOKBOOK));
     createButton(shoppingListButton, () -> controller.onNavLinkPress(Route.SHOPPING_LIST));
   }
 
-  /**
-   * Applies the header text styling to the header text.
-   *
-   * @param headerText The header text to apply the styling to.
-   */
-  private void styleHeaderText(Text headerText) {
-    headerText.setFont(Font.font("Times New Roman", FontWeight.BOLD, 40));
-    headerText.setFill(Color.BLACK);
-    headerText.setTextAlignment(TextAlignment.LEFT);
-  }
 
-  /**
-   * Applies the subheader text styling to the subheader text.
-   *
-   * @param subHeaderText The subheader text to apply the styling to.
-   */
-  private void styleSubHeaderText(Text subHeaderText) {
-    subHeaderText.setFont(Font.font("Times New Roman", FontWeight.NORMAL, 25));
-    subHeaderText.setFill(Color.BLACK);
-    subHeaderText.setTextAlignment(TextAlignment.LEFT);
-    subHeaderText.setWrappingWidth(300);
-  }
+
 
   /**
    * Creates a button with the specified text and action.
@@ -228,8 +213,6 @@ public class HomeView extends View {
   private NavLink createButton(StyledButton button, Runnable action) {
     button.setBackground(new Background(
         new BackgroundFill(Color.BLACK, new CornerRadii(10), Insets.EMPTY)));
-    button.setTextFill(Color.WHITE);
-    button.setPrefWidth(200);
     NavLink link = new NavLink(button.getText());
     if (action != null) {
       button.setOnAction(event -> action.run());
