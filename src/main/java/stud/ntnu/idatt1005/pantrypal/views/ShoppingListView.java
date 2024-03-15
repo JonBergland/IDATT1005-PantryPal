@@ -5,6 +5,7 @@ import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Model;
+import stud.ntnu.idatt1005.pantrypal.views.components.AddShoppingListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.ShoppingListElement;
 
 /**
@@ -42,6 +43,9 @@ public class ShoppingListView extends View {
       element.addObserver(controller);
       vBox.getChildren().add(element.getPane());
     }
+    AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
+    addShoppingListElement.addObserver(controller);
+    vBox.getChildren().add(addShoppingListElement);
     getBorderPane().setCenter(vBox);
   }
 }
