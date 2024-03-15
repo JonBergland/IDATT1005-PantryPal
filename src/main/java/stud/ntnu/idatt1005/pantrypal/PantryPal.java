@@ -6,7 +6,6 @@ import stud.ntnu.idatt1005.pantrypal.controllers.AddRecipeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
-import stud.ntnu.idatt1005.pantrypal.controllers.LogOutController;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
 import stud.ntnu.idatt1005.pantrypal.controllers.RecipeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
@@ -36,8 +35,6 @@ public class PantryPal extends Application {
   private ShoppingListController shoppingListController;
   // Controllers for the log in functionality.
   private LogInController logInController;
-  // Controllers for the log out functionality.
-  private LogOutController logOutController;
 
   /**
    * The start method is called after the init method has returned,
@@ -59,7 +56,6 @@ public class PantryPal extends Application {
     pantryController = new PantryController(viewManager);
     shoppingListController = new ShoppingListController(viewManager);
     logInController = new LogInController(viewManager);
-    logOutController = new LogOutController(viewManager);
 
     //Init view
     this.viewManager.setView(Route.HOME);

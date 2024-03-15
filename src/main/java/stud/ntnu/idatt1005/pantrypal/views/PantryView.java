@@ -23,7 +23,7 @@ public class PantryView extends View {
    * @param controller The controller for the view.
    */
   public PantryView(PantryController controller) {
-    super(controller, Route.PANTRY);
+    super(controller, Route.PANTRY, "/styles/pantry.css");
     this.controller = controller;
   }
 }
