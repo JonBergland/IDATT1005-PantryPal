@@ -26,6 +26,10 @@ public class AddShoppingListElement extends HBox implements Observable {
         StyledTextField quantity = new StyledTextField("Quantity");
         StyledButton add = new StyledButton("Add", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
 
+        name.setMaxWidth(200);
+        category.setMaxWidth(200);
+        quantity.setMaxWidth(100);
+
         add.setOnAction(e -> {
             if (!name.getText().isEmpty() && !category.getText().isEmpty() && !quantity.getText().isEmpty()) {
                 notifyObservers(ButtonEnum.ADD, name.getText(), Integer.parseInt(quantity.getText()), category.getText(), new Date());
