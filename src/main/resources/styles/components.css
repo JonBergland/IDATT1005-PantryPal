@@ -1,0 +1,128 @@
+/*
+    Theme:
+    Primary: #8BC34A
+    Primary light: #DDEEDF
+    Primary dark: #388E3C
+    Accent: #D9D9D9
+    Background: #FFF
+    Text: #000
+    Danger: #EF4444
+*/
+
+/*
+    Button
+*/
+.button {
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button-medium {
+    -fx-padding: 15px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-font-size: 16px;
+}
+
+.button-large {
+    -fx-padding: 20px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-font-size: 20px;
+}
+
+.button-solid {
+    -fx-background-color: #8BC34A;
+    -fx-text-fill: #FFF;
+}
+
+.button-solid:hover {
+    -fx-background-color: #7EB83D;
+}
+
+.button-outline {
+    -fx-background-color: #DDEEDF;
+    -fx-border-color: #388E3C;
+    -fx-border-width: 2px;
+    -fx-text-fill: #388E3C;
+}
+
+.button-danger {
+    -fx-background-color: #EF4444;
+    -fx-text-fill: #FFF;
+}
+
+.button-danger:hover {
+    -fx-background-color: #E11414;
+}
+
+.button-black {
+    -fx-background-color: #000;
+    -fx-text-fill: #FFF;
+}
+
+/*
+    Text Area
+*/
+.text-area {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-padding: 10px;
+    -fx-background-color: #FFF;
+    -fx-border-color: "D9D9D9";
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-font-size: 16px;
+}
+
+.text-area .content {
+    -fx-background-color: #fff;
+    -fx-padding: 0px;
+}
+
+
+/*
+    Text Field
+*/
+
+.text-field {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-padding: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #D9D9D9;
+    -fx-border-width: 1px;
+    -fx-background-color: #FFF;
+    -fx-font-size: 16px;
+}
+
+/*
+    Add Shopping List Element
+*/
+
+.add-shopping-list-element {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-padding: 5px;
+    -fx-border-color: #388E3C;
+    -fx-border-width: 2px;
+    -fx-border-style: dashed;
+    -fx-background-color: #DDEEDF;
+
+}
+
+
+
+
+*.scroll-bar:vertical, *.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}

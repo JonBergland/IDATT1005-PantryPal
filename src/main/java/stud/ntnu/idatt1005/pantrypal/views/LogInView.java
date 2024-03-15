@@ -34,7 +34,7 @@ public class LogInView extends View {
    * @param controller The LogInController associated with this view.
    */
   public LogInView(LogInController controller) {
-    super(controller, Route.LOGIN);
+    super(controller, Route.LOGIN, "/styles/login.css");
     this.controller = controller;
     initialize();
   }

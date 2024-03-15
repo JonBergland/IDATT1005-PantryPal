@@ -13,6 +13,8 @@ import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.components.NavBar;
 
+import java.util.Objects;
+
 
 /**
  * This class represents a View in the application. It extends the Scene class from JavaFX and
@@ -34,9 +36,11 @@ class View extends Scene {
    *
    * @param route The route of the view.
    */
-  public View(Controller controller, Route route) {
+  public View(Controller controller, Route route, String stylePath) {
     super(new ScrollPane(), getPrimary().getVisualBounds().getWidth(),
             getPrimary().getVisualBounds().getHeight());
+    this.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/components.css")).toExternalForm());
+    this.getStylesheets().add(Objects.requireNonNull(getClass().getResource(stylePath)).toExternalForm());
     this.route = route;
     this.controller = controller;
     this.widthProperty().lessThanOrEqualTo(getPrimary().getVisualBounds().getWidth()-100);

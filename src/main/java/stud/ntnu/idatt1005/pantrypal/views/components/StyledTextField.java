@@ -34,7 +34,7 @@ public class StyledTextField extends TextField {
   public StyledTextField(String promptText) {
     super();
     this.setPromptText(promptText);
-    this.setDefaultStyle();
+    this.getStyleClass().add("text-field");
   }
 
   /**
@@ -47,39 +47,6 @@ public class StyledTextField extends TextField {
   public StyledTextField(String promptText, Variant variant) {
     super();
     this.setPromptText(promptText);
-    if (variant == Variant.DEFAULT) {
-      this.setDefaultStyle();
-    } else if (variant == Variant.SEARCH) {
-      this.setSearchStyle();
-    }
-  }
-
-  /**
-   * Sets the default style for the text field.
-   * This style is used for all text fields.
-   */
-  public void setDefaultStyle() {
-    this.setBackground(new Background(new BackgroundFill(
-            ColorPalette.WHITE, new CornerRadii(5), null)));
-    this.setBorder(new Border(new BorderStroke(
-            ColorPalette.BLACK, BorderStrokeStyle.SOLID, new CornerRadii(5), new BorderWidths(1))));
-  }
-
-  /**
-   * Sets the search style for the text field.
-   * This style is used for search fields.
-   */
-  public void setSearchStyle() {
-    this.setBackground(new Background(new BackgroundFill(
-            ColorPalette.WHITE, null, null)));
-    this.setBorder(new Border(new BorderStroke(
-            ColorPalette.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(2))));
-
-    this.setPrefHeight(100);
-    Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
-    this.setPrefWidth(primaryScreenBounds.getWidth());
-
-    this.setFont(FontPalette.INPUT_PROMPT_SEARCH);
-    this.setPadding(new Insets(0, 0, 0, 20));
+    this.getStyleClass().add("text-field");
   }
 }

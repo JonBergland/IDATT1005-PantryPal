@@ -23,7 +23,7 @@ public class ShoppingListView extends View {
    * @param controller The controller for the view.
    */
   public ShoppingListView(ShoppingListController controller) {
-    super(controller, Route.SHOPPING_LIST);
+    super(controller, Route.SHOPPING_LIST, "/styles/shopping-list.css");
     this.controller = controller;
   }
 }

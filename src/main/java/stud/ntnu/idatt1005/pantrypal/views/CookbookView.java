@@ -44,7 +44,7 @@ public class CookbookView extends View {
    * @param controller the CookBookController that this view interacts with
    */
   public CookbookView(CookBookController controller) {
-    super(controller, Route.COOKBOOK);
+    super(controller, Route.COOKBOOK, "/styles/cookbook.css");
     amountOfRecipesPerRow = 4;
     spacing = calculateSpacing();
     recipes = controller.getRecipes();
