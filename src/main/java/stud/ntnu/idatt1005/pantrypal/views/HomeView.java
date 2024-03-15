@@ -9,10 +9,8 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.views.components.NavLink;
@@ -163,10 +161,10 @@ public class HomeView extends View {
    * @param heightFactor The factor to multiply the height of the box with.
    */
   private void setBoxSize(VBox box, double widthFactor, double heightFactor) {
-    box.setMaxWidth(widthFactor * primaryScreenBounds.getWidth());
-    box.setPrefWidth(widthFactor * primaryScreenBounds.getWidth());
-    box.setMaxHeight(heightFactor * primaryScreenBounds.getHeight());
-    box.setPrefHeight(heightFactor * primaryScreenBounds.getHeight());
+    box.setMaxWidth(widthFactor * Sizing.getScreenWidth());
+    box.setPrefWidth(widthFactor * Sizing.getScreenWidth());
+    box.setMaxHeight(heightFactor * Sizing.getScreenHeight());
+    box.setPrefHeight(heightFactor * Sizing.getScreenHeight());
     VBox.setVgrow(box, Priority.ALWAYS);
   }
 
