@@ -1,6 +1,7 @@
 package stud.ntnu.idatt1005.pantrypal;
 
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import stud.ntnu.idatt1005.pantrypal.controllers.AddRecipeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
@@ -59,6 +60,9 @@ public class PantryPal extends Application {
 
     //Init view
     this.viewManager.setView(Route.HOME);
+
+    Image icon = new Image("/images/PantryPalLogo.png");
+    primaryStage.getIcons().add(icon);
     primaryStage.show();
 
   }
