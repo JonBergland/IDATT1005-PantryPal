@@ -58,11 +58,11 @@ public class ShoppingListController extends Controller implements Observer {
     switch (buttonEnum) {
       case ADD:
         register.addItem(model);
-        view.updateView();
+        view.render();
         break;
       case REMOVE:
         register.removeItem(model);
-        view.updateView();
+        view.render();
         break;
       default:
         System.out.println("Button not supported by class");
