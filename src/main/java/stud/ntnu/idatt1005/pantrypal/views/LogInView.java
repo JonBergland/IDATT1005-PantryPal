@@ -49,7 +49,7 @@ public class LogInView extends View {
 
     // Add the usernameField and loginButton directly to the VBox
     loginContainer.getChildren().addAll(loginText, usernameField, loginButton);
-    loginContainer.setMaxWidth(175);
+    loginContainer.setMaxWidth(200);
     loginContainer.setMaxHeight(usernameField.prefHeight(-1) + loginButton.prefHeight(-1) + 20);
 
     // Set the maximum height and width of the loginButton
@@ -57,10 +57,10 @@ public class LogInView extends View {
     loginButton.setMaxHeight(Double.MAX_VALUE);
 
     // Apply styling to the loginContainer, loginText and loginButton
-    loginContainer.setStyle("-fx-border-color: black; -fx-border-width: 2;"
-        + " -fx-border-radius: 5;-fx-padding: 15 10 10 10; -fx-background-color: #FFFFFF;");
-    loginText.setStyle("-fx-font-size: 30;-fx-font-family:'Arial';-fx-font-weight: bold;");
-    loginButton.setStyle("-fx-text-fill: black; -fx-font-family: 'Arial'");
+    loginContainer.getStyleClass().add("login-container");
+    loginText.getStyleClass().add("login-title");
+    loginButton.getStyleClass().add("login-button");
+
 
     // Add the VBox to the root of the scene
     getBorderPane().setCenter(loginContainer);
