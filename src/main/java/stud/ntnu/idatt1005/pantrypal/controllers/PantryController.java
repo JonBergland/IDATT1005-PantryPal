@@ -3,6 +3,7 @@ package stud.ntnu.idatt1005.pantrypal.controllers;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.PantryView;
+import stud.ntnu.idatt1005.pantrypal.views.components.ShelfComp;
 
 /**
  * Controller for the PantryView. This class is responsible for handling the logic for the
@@ -22,7 +23,10 @@ public class PantryController extends Controller {
    */
   public PantryController(ViewManager viewManager) {
     super(viewManager);
-    this.view = new PantryView(this);
+
+    ShelfComp shelfComp = new ShelfComp();
+
+    this.view = new PantryView(this, shelfComp);
     this.viewManager.addView(Route.PANTRY, this.view);
   }
 }
