@@ -1,10 +1,16 @@
 package stud.ntnu.idatt1005.pantrypal.models;
 
+import java.util.UUID;
+
 /**
  * This is an abstract class representing a model. It contains the key of the model
  */
 public abstract class Model {
-  private final String key;
+  private String key;
+
+  protected Model() {
+    this.key = UUID.randomUUID().toString();
+  }
 
   /**
    * Constructor for Model class
@@ -20,6 +26,10 @@ public abstract class Model {
    */
   protected Model(Model model) {
     this.key = model.getKey();
+  }
+
+  public void setKey(String key) {
+    this.key = key;
   }
 
   /**

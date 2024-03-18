@@ -4,42 +4,47 @@ import stud.ntnu.idatt1005.pantrypal.models.Model;
 
 import java.util.*;
 
-public abstract class Register {
-  Map<String, Model> registerMap;
+public abstract class Register<T extends Model> {
+  LinkedHashMap<String, T> register;
 
   protected Register() {
-    this.registerMap = new HashMap<>();
+    this.register = new LinkedHashMap<>();
   }
 
-  protected Register(Register registerMap) {
-    this.registerMap = new HashMap<>(registerMap.getRegisterMap());
+  protected Register(Register<T> register) {
+    this.register = new LinkedHashMap<>(register.getRegister());
   }
 
   /**
    * Get the register map
    * @return the register map
    */
-  public Map<String, Model> getRegisterMap() {
-    return registerMap;
+  public LinkedHashMap<String, T> getRegister() {
+    return this.register;
   }
 
   /**
    * Get a model from the register
    *
    * @param key the key of the model to be retrieved
+   * @throws IllegalArgumentException if the item does not exist in the register
    * @return the model with the specified name
    */
-  public Model getItem(String key) {
-    return registerMap.get(key);
+  protected T getModel(String key) throws IllegalArgumentException {
+    if(!register.containsKey(key)){
+      throw new IllegalArgumentException("Item does not exist in register");
+    }
+    return register.get(key);
   }
 
   /**
    * Add an item to the register
    *
    * @param  model item to be added
-   * @throws IllegalArgumentException if the item already exists in the register
    */
-  public abstract void addItem(Model model);
+  protected void addModel(T model){
+    register.put(model.getKey(), model);
+  };
 
   /**
    * Remove an item from the register
@@ -47,11 +52,11 @@ public abstract class Register {
    * @param model the key of the item to be removed
    * @throws IllegalArgumentException if the item does not exist in the register
    */
-  public void removeItem(Model model) {
-    if (!registerMap.containsKey(model.getKey())) {
+  protected void removeModel(T model) throws IllegalArgumentException {
+    if (!register.containsKey(model.getKey())) {
       throw new IllegalArgumentException("Item does not exist in register");
     }
-    registerMap.remove(model.getKey());
+    register.remove(model.getKey());
   }
 
   /**
@@ -59,9 +64,9 @@ public abstract class Register {
    *
    * @return a list of items sorted in ascending order
    */
-  public List<Model> sortItemsAscending() {
-    List<Model> sortedItems = new ArrayList<>(registerMap.values());
-    sortedItems.sort(Comparator.comparing(Model::getKey));
+  protected List<T> sortModelsAscending() {
+    List<T> sortedItems = new ArrayList<>(register.values());
+    sortedItems.sort(Comparator.comparing(T::getKey));
     return sortedItems;
   }
 
@@ -70,9 +75,9 @@ public abstract class Register {
    *
    * @return a list of items sorted in descending order
    */
-  public List<Model> sortItemsDescending() {
-    List<Model> sortedGroceries = new ArrayList<>(registerMap.values());
-    sortedGroceries.sort(Comparator.comparing(Model::getKey).reversed());
+  protected List<T> sortModelsDescending() {
+    List<T> sortedGroceries = new ArrayList<>(register.values());
+    sortedGroceries.sort(Comparator.comparing(T::getKey).reversed());
     return sortedGroceries;
   }
 }
