@@ -1,9 +1,13 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
+import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
+import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
+import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
+import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +35,16 @@ public class CookBookController extends Controller {
     this.recipes = new HashMap<>();
 
     for (int i = 1; i <= 18; i++) {
-      Recipe recipe = new Recipe("Recipe " + i, null, null);
-      addRecipe(recipe);
+      GroceryRegister groceries = new GroceryRegister();
+      groceries.addItem(new Grocery("Grocery " + 1, 1, "category", null));
+      groceries.addItem(new Grocery("Grocery " + 2, 1, "category", null));
+      groceries.addItem(new Grocery("Grocery " + 3, 1, "category", null));
+      StepRegister steps = new StepRegister();
+      steps.addStep("Step 1");
+      steps.addStep("Step 2");
+      steps.addStep("Step 3");
+      Recipe recipe = new Recipe("Recipe " + i, groceries, steps, null);
+              addRecipe(recipe);
     }
     this.view = new CookbookView(this);
     this.viewManager.addView(Route.COOKBOOK, this.view);
@@ -44,6 +56,11 @@ public class CookBookController extends Controller {
 
   public void addRecipe(Recipe recipe) {
     this.recipes.put(recipe.getKey(), recipe);
+  }
+
+  public void openRecipe(Recipe recipe) {
+    this.viewManager.addView(Route.RECIPE, new RecipeView(this, recipe));
+    this.viewManager.setView(Route.RECIPE);
   }
 
 }

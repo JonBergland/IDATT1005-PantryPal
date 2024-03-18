@@ -8,7 +8,6 @@ import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
-import stud.ntnu.idatt1005.pantrypal.controllers.RecipeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
@@ -26,8 +25,6 @@ public class PantryPal extends Application {
   private HomeController homeController;
   // Controllers for the cookBook.
   private CookBookController cookBookController;
-  // Controllers for the recipe.
-  private RecipeController recipeController;
   // Controllers for adding a recipe.
   private AddRecipeController addRecipeController;
   // Controllers for the pantry.
@@ -52,7 +49,6 @@ public class PantryPal extends Application {
     // Init controllers
     homeController = new HomeController(viewManager);
     cookBookController = new CookBookController(viewManager);
-    recipeController = new RecipeController(viewManager);
     addRecipeController = new AddRecipeController(viewManager);
     pantryController = new PantryController(viewManager);
     shoppingListController = new ShoppingListController(viewManager);

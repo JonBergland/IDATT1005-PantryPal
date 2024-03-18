@@ -16,6 +16,8 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.shape.Rectangle;
+import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 
@@ -37,43 +39,38 @@ public class CookbookRecipeComponent {
    * @param image      The image representing the recipe.
    * @param recipeName The name of the recipe.
    */
-  public CookbookRecipeComponent(Image image, String recipeName) {
+  public CookbookRecipeComponent(Recipe recipe, CookBookController controller) {
     BackgroundSize backgroundSize = new BackgroundSize(320, 200,
         true, true, false, true);
-    BackgroundImage backgroundImage = new BackgroundImage(image,
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundPosition.CENTER,
-        backgroundSize);
-    setUpBorderPane();
-    borderPane.setBackground(new Background(backgroundImage));
-    setLabel(recipeName);
+    if (recipe.getImagePath() == null || recipe.getImagePath().isEmpty()) {
+      BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
+              new CornerRadii(10), null);
+      setUpBorderPane(controller, recipe);
+      borderPane.setBackground(new Background(backgroundFill));
+      setLabel(recipe.getKey());
+    } else {
+      Image image = new Image(recipe.getImagePath());
+      BackgroundImage backgroundImage = new BackgroundImage(image,
+              BackgroundRepeat.NO_REPEAT,
+              BackgroundRepeat.NO_REPEAT,
+              BackgroundPosition.CENTER,
+              backgroundSize);
+      setUpBorderPane(controller, recipe);
+      borderPane.setBackground(new Background(backgroundImage));
+      setLabel(recipe.getKey());
+    }
   }
 
-  /**
-   * Constructs a CookbookRecipeComponent with only a recipe name.
-   * This constructor sets up the visual representation of the recipe
-   * with a default background color and the provided name.
-   *
-   * @param recipeName The name of the recipe.
-   */
-  public CookbookRecipeComponent(String recipeName) {
-    BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
-        new CornerRadii(10), null);
-    setUpBorderPane();
-    borderPane.setBackground(new Background(backgroundFill));
-    setLabel(recipeName);
-  }
 
   /**
    * Sets up the BorderPane for the recipe component.
    */
-  private void setUpBorderPane() {
+  private void setUpBorderPane(CookBookController controller, Recipe recipe) {
     borderPane = new BorderPane();
     borderPane.setMaxWidth(getWidth());
-    borderPane.setMaxHeight(200);
+    borderPane.setMaxHeight(getHeight());
     borderPane.setMinWidth(getWidth());
-    borderPane.setMinHeight(200);
+    borderPane.setMinHeight(getHeight());
     BorderStroke borderStroke = new BorderStroke(ColorPalette.BLACK,
         BorderStrokeStyle.SOLID,
         new CornerRadii(10),
@@ -83,7 +80,7 @@ public class CookbookRecipeComponent {
     clip.setArcWidth(20);
     clip.setArcHeight(20);
     borderPane.setClip(clip);
-    borderPane.setOnMouseClicked(e -> System.out.println("Recipe clicked"));
+    borderPane.setOnMouseClicked(e -> controller.openRecipe(recipe));
   }
 
   /**

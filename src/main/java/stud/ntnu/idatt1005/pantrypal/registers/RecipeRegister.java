@@ -47,12 +47,12 @@ public class RecipeRegister extends Register {
    * @param groceries the groceries needed for the recipe.
    * @param steps the steps needed to make the recipe.
    */
-  public void addRecipe(String name, GroceryRegister groceries, StepRegister steps)
+  public void addRecipe(String name, GroceryRegister groceries, StepRegister steps, String imagePath)
       throws IllegalArgumentException {
     if (super.registerMap.containsKey(name)) {
       throw new IllegalArgumentException("Recipe already exists in register");
     }
-    super.registerMap.put(name, new Recipe(name, groceries, steps));
+    super.registerMap.put(name, new Recipe(name, groceries, steps, imagePath));
   }
 
   /**
@@ -75,12 +75,12 @@ public class RecipeRegister extends Register {
    * @param groceries the groceries needed for the recipe.
    * @param steps the steps needed to make the recipe.
    */
-  public void updateRecipe(String name, GroceryRegister groceries, StepRegister steps)
+  public void updateRecipe(String name, GroceryRegister groceries, StepRegister steps, String imagePath)
       throws IllegalArgumentException{
     if (!super.registerMap.containsKey(name)) {
       throw new IllegalArgumentException("Recipe does not exist in register");
     }
-    super.registerMap.replace(name, new Recipe(name, groceries, steps));
+    super.registerMap.replace(name, new Recipe(name, groceries, steps, imagePath));
   }
 }
 

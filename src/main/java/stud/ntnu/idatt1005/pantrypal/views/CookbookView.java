@@ -25,15 +25,16 @@ public class CookbookView extends View {
   /**
    * The number of recipes per row in the view.
    */
-  int amountOfRecipesPerRow;
+  private final int amountOfRecipesPerRow;
   /**
    * The spacing between the recipes in the view.
    */
-  double spacing;
+  private final double spacing;
   /**
    * A map containing the recipes to be displayed in the view.
    */
-  Map<String, Recipe> recipes;
+  private final Map<String, Recipe> recipes;
+  private final CookBookController controller;
 
   /**
    * Constructs a CookbookView with a given CookBookController.
@@ -45,12 +46,13 @@ public class CookbookView extends View {
    */
   public CookbookView(CookBookController controller) {
     super(controller, Route.COOKBOOK, "/styles/cookbook.css");
+    this.controller = controller;
+    this.setScrollPane();
     amountOfRecipesPerRow = 4;
     spacing = calculateSpacing();
     recipes = controller.getRecipes();
     createView();
   }
-
   /**
    * Creates the view for the cookbook.
    * It creates a VBox to contain the rows of recipes, and an HBox for each row.
@@ -62,12 +64,12 @@ public class CookbookView extends View {
     HBox row = new HBox(spacing);
     for (Recipe recipe : recipes.values()) {
       if (row.getChildren().size() < amountOfRecipesPerRow) {
-        row.getChildren().add(new CookbookRecipeComponent(recipe.getKey()).getBorderPane());
+        row.getChildren().add(new CookbookRecipeComponent(recipe, this.controller).getBorderPane());
       } else {
         row.setAlignment(Pos.CENTER);
         recipeContainer.getChildren().add(row);
         row = new HBox(spacing);
-        row.getChildren().add(new CookbookRecipeComponent(recipe.getKey()).getBorderPane());
+        row.getChildren().add(new CookbookRecipeComponent(recipe, this.controller).getBorderPane());
       }
 
     }
