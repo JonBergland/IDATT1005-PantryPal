@@ -1,9 +1,16 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
+import stud.ntnu.idatt1005.pantrypal.models.Grocery;
+import stud.ntnu.idatt1005.pantrypal.models.Shelf;
+import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.PantryView;
-import stud.ntnu.idatt1005.pantrypal.views.components.ShelfComp;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
 
 /**
  * Controller for the PantryView. This class is responsible for handling the logic for the
@@ -16,17 +23,57 @@ public class PantryController extends Controller {
    */
   private final PantryView view;
 
+  private final ShelfRegister register;
+
+  private int shelfCount = 0;
+
   /**
    * Constructor for the PantryController.
    *
    * @param viewManager The view manager for the application.
    */
-  public PantryController(ViewManager viewManager) {
+  public PantryController(ViewManager viewManager, ShelfRegister register) {
     super(viewManager);
-
-    ShelfComp shelfComp = new ShelfComp();
-
-    this.view = new PantryView(this, shelfComp);
+    this.view = new PantryView(this);
     this.viewManager.addView(Route.PANTRY, this.view);
+    this.register = register;
+
+    this.view.render();
   }
+
+    public Shelf[] getShelves() {
+      Collection<Shelf> shelves = register.getRegister().values();
+
+      return shelves.toArray(new Shelf[0]);
+    }
+
+    public void addShelf(){
+        shelfCount++;
+        Shelf shelf = new Shelf("New Shelf " + shelfCount);
+        register.addShelf(shelf);
+        view.render();
+    }
+
+    public void deleteShelf(Shelf shelf){
+        register.removeShelf(shelf);
+        view.render();
+    }
+
+    public void editShelfName(Shelf shelf, String name){
+        shelf.setName(name);
+        view.render();
+
+    }
+
+    public Grocery[] getGroceries(Shelf shelf){
+        return shelf.getGroceries().values().toArray(new Grocery[0]);
+    }
+
+    public void addGrocery(Shelf shelf, String name, int amount, String expirationDate) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
+        Date expirationDateParsed = formatter.parse(expirationDate);
+        Grocery grocery = new Grocery(name, amount, null, expirationDateParsed);
+        shelf.addGrocery(grocery);
+        view.render();
+    }
 }
