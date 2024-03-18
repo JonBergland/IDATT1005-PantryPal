@@ -32,6 +32,11 @@ public class ShoppingListController extends Controller implements Observer {
     this.register = new GroceryRegister();
     this.register.addItem(new Grocery("Milk", 1, "Dairy", null));
     this.register.addItem(new Grocery("Bread", 1, "Bread", null));
+    this.register.addItem(new Grocery("Butter", 1, "Dairy", null));
+    this.register.addItem(new Grocery("Cheese", 1, "Dairy", null));
+    this.register.addItem(new Grocery("Egg", 1, "Dairy", null));
+    this.register.addItem(new Grocery("Apple", 1, "Fruit", null));
+    this.register.addItem(new Grocery("Banana", 1, "Fruit", null));
 
     this.view = new ShoppingListView(this);
     this.viewManager.addView(Route.SHOPPING_LIST, view);
