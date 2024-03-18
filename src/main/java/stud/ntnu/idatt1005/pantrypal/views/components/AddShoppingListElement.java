@@ -13,6 +13,11 @@ public class AddShoppingListElement extends HBox {
         StyledTextField category = new StyledTextField("Category");
         StyledTextField quantity = new StyledTextField("Quantity");
         StyledButton add = new StyledButton("Add");
+        add.setOnAction(e -> {
+            name.clear();
+            category.clear();
+            quantity.clear();
+        });
 
         this.getChildren().addAll(name, category, quantity, add);
     }
