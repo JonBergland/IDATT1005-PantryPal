@@ -27,7 +27,7 @@ class TestRecipeRegister {
     steps.addStep("Step 1");
     steps.addStep("Step 2");
 
-    recipe = new Recipe("Apple Banana Smoothie", groceries, steps);
+    recipe = new Recipe("Apple Banana Smoothie", groceries, steps, null);
     recipeRegister = new RecipeRegister();
     recipeRegister.addItem(recipe);
   }
@@ -51,7 +51,7 @@ class TestRecipeRegister {
     @Test
     @DisplayName("Test addRecipe() with recipe as parameter")
     public void testAddRecipeWithRecipeAsParameter() {
-      Recipe newRecipe = new Recipe("Fruit salad", groceries, steps);
+      Recipe newRecipe = new Recipe("Fruit salad", groceries, steps, null);
       recipeRegister.addItem(newRecipe);
       assertEquals(2, recipeRegister.getRegisterMap().size());
       assertEquals(newRecipe, recipeRegister.getItem("Fruit salad"));
@@ -60,7 +60,7 @@ class TestRecipeRegister {
     @Test
     @DisplayName("Test addRecipe() with name, groceries and steps as parameters")
     void testAddRecipeWithRecipeFieldsAsParameter() {
-      recipeRegister.addRecipe("Fruit salad", groceries, steps);
+      recipeRegister.addRecipe("Fruit salad", groceries, steps, null);
       assertEquals(2, recipeRegister.getRegisterMap().size());
       assertEquals("Fruit salad", recipeRegister.getItem("Fruit salad").getKey());
     }
@@ -76,7 +76,7 @@ class TestRecipeRegister {
     @DisplayName("Test updateRecipe() with recipe as parameter")
     void testUpdateRecipeWithRecipeAsParameter() {
       steps.addStep("Step 3");
-      Recipe newRecipe = new Recipe("Apple Banana Smoothie", groceries, steps);
+      Recipe newRecipe = new Recipe("Apple Banana Smoothie", groceries, steps, null);
       recipeRegister.updateRecipe(newRecipe);
       assertEquals(1, recipeRegister.getRegisterMap().size());
       assertEquals(newRecipe, recipeRegister.getRegisterMap().get("Apple Banana Smoothie"));
@@ -86,7 +86,7 @@ class TestRecipeRegister {
     @DisplayName("Test updateRecipe() with name, groceries and steps as parameters")
     void testUpdateRecipeWithRecipeFieldsAsParameter() {
       steps.addStep("Step 3");
-      recipeRegister.updateRecipe("Apple Banana Smoothie", groceries, steps);
+      recipeRegister.updateRecipe("Apple Banana Smoothie", groceries, steps, null);
       assertEquals(1, recipeRegister.getRegisterMap().size());
       assertEquals("Apple Banana Smoothie", recipeRegister.getItem("Apple Banana Smoothie").getKey());
     }
@@ -119,7 +119,7 @@ class TestRecipeRegister {
     @DisplayName("Test addRecipe() with existing recipe name")
     void testAddRecipeWithExistingRecipeName() {
       try {
-        recipeRegister.addRecipe("Apple Banana Smoothie", groceries, steps);
+        recipeRegister.addRecipe("Apple Banana Smoothie", groceries, steps, null);
       } catch (IllegalArgumentException e) {
         assertEquals("Recipe already exists in register", e.getMessage());
       }
@@ -129,7 +129,7 @@ class TestRecipeRegister {
     @DisplayName("Test removeRecipe() with non-existing recipe")
     void testRemoveRecipeWithNonExistingRecipe() {
       try {
-        Recipe fakeRecipe = new Recipe("Fruit salad", groceries, steps);
+        Recipe fakeRecipe = new Recipe("Fruit salad", groceries, steps, null);
         recipeRegister.removeItem(fakeRecipe);
       } catch (IllegalArgumentException e) {
         assertEquals("Item does not exist in register", e.getMessage());
@@ -140,7 +140,7 @@ class TestRecipeRegister {
     @DisplayName("Test updateRecipe() with non-existing recipe")
     void testUpdateRecipeWithNonExistingRecipe() {
       try {
-        Recipe newRecipe = new Recipe("Fruit salad", groceries, steps);
+        Recipe newRecipe = new Recipe("Fruit salad", groceries, steps, null);
         recipeRegister.updateRecipe(newRecipe);
       } catch (IllegalArgumentException e) {
         assertEquals("Recipe does not exist in register", e.getMessage());
@@ -151,7 +151,7 @@ class TestRecipeRegister {
     @DisplayName("Test updateRecipe() with non-existing recipe name")
     void testUpdateRecipeWithNonExistingRecipeName() {
       try {
-        recipeRegister.updateRecipe("Fruit salad", groceries, steps);
+        recipeRegister.updateRecipe("Fruit salad", groceries, steps, null);
       } catch (IllegalArgumentException e) {
         assertEquals("Recipe does not exist in register", e.getMessage());
       }

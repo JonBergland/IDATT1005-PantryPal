@@ -30,7 +30,7 @@ class TestRecipe {
     steps.addStep("Step 1");
     steps.addStep("Step 2");
 
-    recipe = new Recipe("Apple Banana Smoothie", groceries, steps);
+    recipe = new Recipe("Apple Banana Smoothie", groceries, steps, null);
 
   }
 
