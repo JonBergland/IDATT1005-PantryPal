@@ -3,21 +3,25 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
+import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 
 public class FavoriteButton extends Button {
 
   private final BooleanProperty isFavorite;
   private final SVGPath star;
 
+  private final StackPane stackPane;
   public FavoriteButton() {
     super();
 
     // Create a less sharp star shape using SVG
     star = new SVGPath();
-    star.setContent("M 30,10 35,25 50,25 40,35 45,50 30,40 15,50 20,35 10,25 25,25 z");
+    star.setContent("M 15,5 17.5,12.5 25,12.5 20,17.5 22.5,25 15,20 7.5,25 10,17.5 5,12.5 12.5,12.5 z");
 
     // Set the initial fill color of the star to the same color as the rectangle
     star.setFill(Color.web("#8BC34A"));
@@ -34,8 +38,13 @@ public class FavoriteButton extends Button {
     // Set the star shape as the button graphic
     setGraphic(star);
 
-    // Set the background color of the Button to the same color as the star
-    setStyle("-fx-background-color: #8BC34A;");
+    Rectangle starBackground = new Rectangle(45, 45);
+    starBackground.setFill(ColorPalette.PRIMARY);
+    starBackground.setArcWidth(15);
+    starBackground.setArcHeight(15);
+
+    stackPane = new StackPane();
+    stackPane.getChildren().addAll(starBackground, star);
 
     // Initialize the isFavorite property
     isFavorite = new SimpleBooleanProperty(this, "isFavorite", false);
@@ -55,8 +64,8 @@ public class FavoriteButton extends Button {
     setOnAction(event -> isFavorite.set(!isFavorite.get()));
   }
 
-  public FavoriteButton getFavoriteButton() {
-    return this;
+  public StackPane getFavoriteButton() {
+    return stackPane;
   }
 
 }
