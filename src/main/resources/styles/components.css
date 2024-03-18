@@ -120,8 +120,20 @@
 
 }
 
+.shopping-list-element {
+    -fx-border-color: black;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+}
 
-
+.shopping-list-box {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 10px;
+}
 
 *.scroll-bar:vertical, *.scroll-bar:horizontal {
     -fx-background-color: transparent;
