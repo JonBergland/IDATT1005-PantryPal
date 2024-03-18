@@ -15,6 +15,7 @@ module stud.ntnu.idatt1005.pantrypal {
   exports stud.ntnu.idatt1005.pantrypal;
   exports stud.ntnu.idatt1005.pantrypal.views.components;
   exports stud.ntnu.idatt1005.pantrypal.models;
+  exports stud.ntnu.idatt1005.pantrypal.registers;
   exports stud.ntnu.idatt1005.pantrypal.controllers;
   exports stud.ntnu.idatt1005.pantrypal.utils;
   exports stud.ntnu.idatt1005.pantrypal.enums;
