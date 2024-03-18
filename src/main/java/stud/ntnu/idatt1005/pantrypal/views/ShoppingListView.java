@@ -1,6 +1,12 @@
 package stud.ntnu.idatt1005.pantrypal.views;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Background;
+
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -34,18 +40,46 @@ public class ShoppingListView extends View {
   }
 
   public void render() {
-    VBox vBox = new VBox();
+    VBox shoppingListBox = new VBox();
+    shoppingListBox.setMaxWidth(610);
+    shoppingListBox.setMaxHeight(500);
+    shoppingListBox.setAlignment(Pos.CENTER);
+    shoppingListBox.setBackground(Background.fill(Color.WHITE));
+    shoppingListBox.getStyleClass().add("shopping-list-box");
+
+    ScrollPane scrollPane = new ScrollPane();
+    scrollPane.setFitToWidth(true);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setMinHeight(450);
+    scrollPane.setMaxWidth(590);
+    scrollPane.setMaxHeight(500);
+    scrollPane.setPadding(new Insets(10, 0, 0, 0));
+    scrollPane.setBackground(Background.fill(Color.WHITE));
+
+
+    VBox shoppingList = new VBox();
+    scrollPane.setContent(shoppingList);
+    shoppingList.setBackground(Background.fill(Color.WHITE));
 
     // render the scene
     for (Model m : controller.getRegister().getRegisterMap().values()) {
       Grocery g = (Grocery) m;
       ShoppingListElement element = new ShoppingListElement(g);
       element.addObserver(controller);
-      vBox.getChildren().add(element.getPane());
+      shoppingList.getChildren().add(element.getPane());
     }
+    scrollPane.setContent(shoppingList);
+    shoppingListBox.getChildren().add(scrollPane);
+
     AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
     addShoppingListElement.addObserver(controller);
-    vBox.getChildren().add(addShoppingListElement);
-    getBorderPane().setCenter(vBox);
+    addShoppingListElement.setMaxWidth(600);
+    addShoppingListElement.setAlignment(Pos.BOTTOM_CENTER);
+    shoppingListBox.getChildren().add(addShoppingListElement);
+    VBox.setVgrow(addShoppingListElement, javafx.scene.layout.Priority.ALWAYS);
+
+    shoppingListBox.setAlignment(Pos.CENTER);
+
+    getBorderPane().setCenter(shoppingListBox);
   }
 }
