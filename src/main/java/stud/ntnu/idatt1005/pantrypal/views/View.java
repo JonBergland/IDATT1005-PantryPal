@@ -71,8 +71,10 @@ public class View extends Scene {
     }
   }
 
-  public void setScrollPane(ScrollPane scrollPane) {
-    root.setCenter(scrollPane);
+  public void setScrollPane() {
+    ScrollPane scrollPane = new ScrollPane();
+    scrollPane.setContent(root);
+    setRoot(scrollPane);
   }
 
   public BorderPane getBorderPane() {
