@@ -66,22 +66,22 @@ public abstract class GroceryListElement implements Observable {
     Text groceryCategory = createText(category);
     Text groceryAmount = createText(amount);
 
+    groceryName.setWrappingWidth(100);
+    groceryCategory.setWrappingWidth(100);
+    groceryAmount.setWrappingWidth(100);
+
     StackPane stackGroceryName = new StackPane(groceryName);
     stackGroceryName.setPadding(new Insets(0, 0, 0, 10));
-    stackGroceryName.setMinWidth(20);
 
     StackPane stackGroceryCategory = new StackPane(groceryCategory);
     stackGroceryCategory.setPadding(new Insets(0, 0, 0, 20));
-    stackGroceryName.setMinWidth(20);
 
     StackPane stackGroceryAmount = new StackPane(groceryAmount);
     stackGroceryAmount.setPadding(new Insets(0, 10, 0, 10));
-    stackGroceryName.setMinWidth(20);
 
     // Add the text to a HBox
     HBox textBox = new HBox(stackGroceryName, stackGroceryCategory, stackGroceryAmount);
-    textBox.setSpacing(25);
-    textBox.setAlignment(Pos.CENTER);
+    textBox.setAlignment(Pos.CENTER_RIGHT);
     return textBox;
   }
 
