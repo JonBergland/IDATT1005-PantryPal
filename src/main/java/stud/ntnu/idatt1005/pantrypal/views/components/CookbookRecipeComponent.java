@@ -39,33 +39,28 @@ public class CookbookRecipeComponent {
    * @param image      The image representing the recipe.
    * @param recipeName The name of the recipe.
    */
-/*  public CookbookRecipeComponent(Recipe recipe, Controller controller) {
+  public CookbookRecipeComponent(Recipe recipe, CookBookController controller) {
     BackgroundSize backgroundSize = new BackgroundSize(320, 200,
         true, true, false, true);
-    BackgroundImage backgroundImage = new BackgroundImage(recipe.getImagePath(),
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundRepeat.NO_REPEAT,
-        BackgroundPosition.CENTER,
-        backgroundSize);
-    setUpBorderPane(controller);
-    borderPane.setBackground(new Background(backgroundImage));
-    setLabel(recipe.getKey());
-  }*/
-
-  /**
-   * Constructs a CookbookRecipeComponent with only a recipe name.
-   * This constructor sets up the visual representation of the recipe
-   * with a default background color and the provided name.
-   *
-   * @param recipeName The name of the recipe.
-   */
-  public CookbookRecipeComponent(Recipe recipe, CookBookController controller) {
-    BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
-        new CornerRadii(10), null);
-    setUpBorderPane(controller, recipe);
-    borderPane.setBackground(new Background(backgroundFill));
-    setLabel(recipe.getKey());
+    if (recipe.getImagePath() == null || recipe.getImagePath().isEmpty()) {
+      BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
+              new CornerRadii(10), null);
+      setUpBorderPane(controller, recipe);
+      borderPane.setBackground(new Background(backgroundFill));
+      setLabel(recipe.getKey());
+    } else {
+      Image image = new Image(recipe.getImagePath());
+      BackgroundImage backgroundImage = new BackgroundImage(image,
+              BackgroundRepeat.NO_REPEAT,
+              BackgroundRepeat.NO_REPEAT,
+              BackgroundPosition.CENTER,
+              backgroundSize);
+      setUpBorderPane(controller, recipe);
+      borderPane.setBackground(new Background(backgroundImage));
+      setLabel(recipe.getKey());
+    }
   }
+
 
   /**
    * Sets up the BorderPane for the recipe component.
