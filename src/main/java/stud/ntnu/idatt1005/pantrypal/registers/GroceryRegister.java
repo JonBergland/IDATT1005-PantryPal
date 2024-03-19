@@ -26,6 +26,10 @@ public class GroceryRegister extends Register<Grocery> {
         super(register);
     }
 
+    protected String getErrorMessage() {
+        return "Grocery does not exist in register";
+    }
+
     public LinkedHashMap<String, Grocery> getGroceryRegister() {
         return super.getRegister();
     }

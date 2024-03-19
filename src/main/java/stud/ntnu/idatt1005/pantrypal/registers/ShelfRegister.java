@@ -10,6 +10,10 @@ public class ShelfRegister extends Register<Shelf> {
         super();
     }
 
+    protected String getErrorMessage() {
+        return "Shelf does not exist in register";
+    }
+
     public LinkedHashMap<String, Shelf> getShelfRegister() {
         return this.getRegister();
     }
