@@ -30,7 +30,8 @@ public class ShoppingListView extends View {
   /**
    * Constructor for ShoppingListView.
    *
-   * @param controller The controller for the view.
+   * @param controller The controller for the view. This controller is responsible for handling
+   *                   the logic and actions associated with the shopping list functionality.
    */
   public ShoppingListView(ShoppingListController controller) {
     super(controller, Route.SHOPPING_LIST, "/styles/shopping-list.css");
@@ -39,7 +40,9 @@ public class ShoppingListView extends View {
   }
 
   /**
-   * Renders the shopping list view.
+   * Renders the shopping list view. This method creates the overarching VBox, scroll pane, and
+   * VBox to hold the shopping list elements. It then adds the shopping list elements to the VBox,
+   * and finally adds the add shopping list element to the VBox.
    */
   public void render() {
     // Create the overarching VBox
