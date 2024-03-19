@@ -43,8 +43,8 @@ public class ShoppingListController extends Controller implements Observer {
     this.viewManager.addView(Route.SHOPPING_LIST, view);
   }
 
-  public LinkedHashMap<String, Grocery> getRegister() {
-    return register.getRegister();
+  public GroceryRegister getRegister() {
+    return this.register;
   }
 
   /**
@@ -74,5 +74,9 @@ public class ShoppingListController extends Controller implements Observer {
         System.out.println("Button not supported by class");
         break;
     }
+  }
+
+  public void rerender(){
+    view.render();
   }
 }
