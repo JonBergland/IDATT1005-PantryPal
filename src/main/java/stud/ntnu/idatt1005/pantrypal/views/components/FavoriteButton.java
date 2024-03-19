@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
-import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 
 public class FavoriteButton extends Button {
 
@@ -39,15 +39,17 @@ public class FavoriteButton extends Button {
     setGraphic(star);
 
     Rectangle starBackground = new Rectangle(45, 45);
-    starBackground.setFill(ColorPalette.PRIMARY);
+    NodeUtils.addClasses(starBackground, "favorite-button");
+/*    starBackground.setFill(ColorPalette.PRIMARY);
     starBackground.setArcWidth(15);
-    starBackground.setArcHeight(15);
+    starBackground.setArcHeight(15);*/
+
 
     stackPane = new StackPane();
     stackPane.getChildren().addAll(starBackground, star);
 
     // Initialize the isFavorite property
-    isFavorite = new SimpleBooleanProperty(this, "isFavorite", false);
+    isFavorite = new SimpleBooleanProperty(stackPane, "isFavorite", false);
 
     // Add a listener to the isFavorite property
     isFavorite.addListener((obs, wasFavorite, isNowFavorite) -> {
@@ -61,7 +63,7 @@ public class FavoriteButton extends Button {
     });
 
     // Set the action to toggle the isFavorite property when the button is clicked
-    setOnAction(event -> isFavorite.set(!isFavorite.get()));
+    stackPane.setOnMouseClicked(event -> isFavorite.set(!isFavorite.get()));
   }
 
   public StackPane getFavoriteButton() {

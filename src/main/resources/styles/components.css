@@ -65,6 +65,16 @@
     -fx-text-fill: #FFF;
 }
 
+.favorite-button {
+    -fx-fill: #8BC34A;
+    -fx-arc-width: 15px;
+    -fx-arc-height: 15px;
+}
+
+.favorite-button:hover {
+    -fx-fill: #7EB83D;
+}
+
 /*
     Text Area
 */
