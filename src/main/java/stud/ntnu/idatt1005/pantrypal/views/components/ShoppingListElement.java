@@ -11,24 +11,30 @@ import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import java.util.Objects;
 
 /**
- * Class representing a shopping list element
+ * Class representing a shopping list element. This class extends the GroceryListElement class
+ * and provides a visual representation of a grocery item in the shopping list.
+ * It includes a checkbox, text information about the grocery item, and a delete button.
  */
 public class ShoppingListElement extends GroceryListElement {
+
   /**
-   * The {@link BorderPane} with the shopping list element
+   * The {@link BorderPane} containing the visual elements of the shopping list item.
+   * This includes a checkbox, text information about the grocery item, and a delete button.
    */
   private final BorderPane groceryInfo;
 
   /**
-   * Constructor for the shopping list element
-   * @param grocery The grocery to be displayed
+   * Constructor for the shopping list element. It initializes the visual elements
+   * and sets up the necessary event handlers.
+   *
+   * @param grocery The grocery item to be displayed in the shopping list element.
    */
   public ShoppingListElement(Grocery grocery) {
     super(grocery);
     Objects.requireNonNull(this.getClass().getResource("/styles/components.css")).toExternalForm();
 
     // Make the checkbox
-    StackPane checkBox = new StackPane(new StyledCheckBox("", false));
+    StackPane checkBox = new StackPane();
     StyledCheckBox centerCheckBox = new StyledCheckBox("", false);
     centerCheckBox.setAlignment(Pos.CENTER);
     checkBox.getChildren().add(centerCheckBox);
@@ -48,8 +54,9 @@ public class ShoppingListElement extends GroceryListElement {
   }
 
   /**
-   * Retrieves the shopping list element
-   * @return the shopping list element
+   * Retrieves the visual representation of the shopping list element.
+   *
+   * @return the {@link Pane} containing the visual elements of the shopping list item.
    */
   public Pane getPane() {
     return groceryInfo;
