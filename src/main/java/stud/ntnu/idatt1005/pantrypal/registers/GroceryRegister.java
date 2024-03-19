@@ -1,13 +1,13 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
 
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.models.Model;
+
+import java.util.LinkedHashMap;
 
 /**
- * Represents a register of groceries.
- * The register is a map of grocery names and grocery objects.
+ * Represents a register of groceries. The register is a map of grocery names and grocery objects.
  */
-public class GroceryRegister extends Register{
+public class GroceryRegister extends Register<Grocery> {
 
   /**
    * Constructor for the GroceryRegister class
@@ -18,10 +18,15 @@ public class GroceryRegister extends Register{
 
   /**
    * Deep-copy constructor for the GroceryRegister class
+   *
    * @param register the register to be used
    */
   public GroceryRegister(GroceryRegister register) {
     super(register);
+  }
+
+  protected String getErrorMessage() {
+    return "Grocery does not exist in register";
   }
 
   /**
@@ -31,25 +36,20 @@ public class GroceryRegister extends Register{
    * @return the grocery with the specified name
    */
   public Grocery getGrocery(String name) throws IllegalArgumentException {
-    if (!getRegisterMap().containsKey(name)) {
-      throw new IllegalArgumentException("Grocery does not exist in register");
-    }
-    return (Grocery) getItem(name);
+    return super.getModel(name);
   }
 
   /**
    * Add a grocery to the register
    *
-   * @param model the model to be added
+   * @param grocery the grocery to be added
    * @throws IllegalArgumentException if the grocery already exists in the register
    */
-  @Override
-  public void addItem(Model model) throws IllegalArgumentException {
-    Grocery grocery = (Grocery) model;
-    if (getRegisterMap().containsKey(grocery.getKey())) {
-      throw new IllegalArgumentException("Grocery already exists in register");
-    }
+  public void addGrocery(Grocery grocery) {
+    super.addModel(grocery);
+  }
 
-    getRegisterMap().put(grocery.getKey(), new Grocery(grocery));
+  public void removeGrocery(Grocery grocery) {
+    super.removeModel(grocery);
   }
 }

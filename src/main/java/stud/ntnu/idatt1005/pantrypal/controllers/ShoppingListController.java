@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
+import java.util.LinkedHashMap;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -30,20 +31,20 @@ public class ShoppingListController extends Controller implements Observer {
   public ShoppingListController(ViewManager viewManager) {
     super(viewManager);
     this.register = new GroceryRegister();
-    this.register.addItem(new Grocery("Milk", 1, "Dairy", null));
-    this.register.addItem(new Grocery("Bread", 1, "Bread", null));
-    this.register.addItem(new Grocery("Butter", 1, "Dairy", null));
-    this.register.addItem(new Grocery("Cheese", 1, "Dairy", null));
-    this.register.addItem(new Grocery("Egg", 1, "Dairy", null));
-    this.register.addItem(new Grocery("Apple", 1, "Fruit", null));
-    this.register.addItem(new Grocery("Banana", 1, "Fruit", null));
+    this.register.addGrocery(new Grocery("Milk", 1, "Dairy", null));
+    this.register.addGrocery(new Grocery("Bread", 1, "Bread", null));
+    this.register.addGrocery(new Grocery("Butter", 1, "Dairy", null));
+    this.register.addGrocery(new Grocery("Cheese", 1, "Dairy", null));
+    this.register.addGrocery(new Grocery("Egg", 1, "Dairy", null));
+    this.register.addGrocery(new Grocery("Apple", 1, "Fruit", null));
+    this.register.addGrocery(new Grocery("Banana", 1, "Fruit", null));
 
     this.view = new ShoppingListView(this);
     this.viewManager.addView(Route.SHOPPING_LIST, view);
   }
 
-  public Register getRegister() {
-    return register;
+  public LinkedHashMap<String, Grocery> getRegister() {
+    return register.getRegister();
   }
 
   /**
@@ -54,19 +55,19 @@ public class ShoppingListController extends Controller implements Observer {
    */
   @Override
   public void update(ButtonEnum buttonEnum, Object object) {
-    Model model;
-    if (object instanceof Model) {
-      model = (Model) object;
+    Grocery grocery;
+    if (object instanceof Grocery) {
+      grocery = (Grocery) object;
     } else {
       throw new IllegalArgumentException("Object is not of type Model");
     }
     switch (buttonEnum) {
       case ADD:
-        register.addItem(model);
+        register.addGrocery(grocery);
         view.render();
         break;
       case REMOVE:
-        register.removeItem(model);
+        register.removeGrocery(grocery);
         view.render();
         break;
       default:

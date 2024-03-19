@@ -9,78 +9,58 @@ import stud.ntnu.idatt1005.pantrypal.models.Recipe;
  * It contains a register of recipes structured in a hashmap.
  * Goal: act as a register for recipes.
  */
-public class RecipeRegister extends Register {
-  /**
-   * Constructor for the RecipeRegister class.
-   * Initializes the recipe register.
-   */
-  public RecipeRegister() {
-    super();
-  }
-
-  /**
-   * Deep-copy constructor for the RecipeRegister class.
-   * @param register the register to be used.
-   */
-  public RecipeRegister(RecipeRegister register) {
-    super(register);
-  }
-
-  /**
-   * Add a recipe to the recipe register.
-   *
-   * @param model the recipe to be added to the recipe register.
-   */
-  @Override
-  public void addItem(Model model) throws IllegalArgumentException {
-    Recipe recipe = (Recipe) model;
-    if (super.registerMap.containsKey(recipe.getKey())) {
-      throw new IllegalArgumentException("Recipe already exists in register");
+public class RecipeRegister extends Register<Recipe> {
+    /**
+     * Constructor for the RecipeRegister class.
+     * Initializes the recipe register.
+     */
+    public RecipeRegister() {
+        super();
     }
-    super.registerMap.put(recipe.getKey(), recipe);
-  }
 
-  /**
-   * Add a recipe to the recipe register.
-   *
-   * @param name the name of the recipe.
-   * @param groceries the groceries needed for the recipe.
-   * @param steps the steps needed to make the recipe.
-   */
-  public void addRecipe(String name, GroceryRegister groceries, StepRegister steps, String imagePath)
-      throws IllegalArgumentException {
-    if (super.registerMap.containsKey(name)) {
-      throw new IllegalArgumentException("Recipe already exists in register");
+    /**
+     * Deep-copy constructor for the RecipeRegister class.
+     *
+     * @param register the register to be used.
+     */
+    public RecipeRegister(RecipeRegister register) {
+        super(register);
     }
-    super.registerMap.put(name, new Recipe(name, groceries, steps, imagePath));
-  }
 
-  /**
-   * Update a recipe in the recipe register.
-   *
-   * @param recipe the recipe to be updated in the recipe register.
-   */
-  public void updateRecipe(Recipe recipe)
-      throws IllegalArgumentException {
-    if (!super.registerMap.containsKey(recipe.getKey())) {
-      throw new IllegalArgumentException("Recipe does not exist in register");
+    /**
+     * Returns an error message when a recipe does not exist in the register.
+     * @return a string error message.
+     */
+    protected String getErrorMessage() {
+        return "Recipe does not exist in register";
     }
-    super.registerMap.replace(recipe.getKey(), recipe);
-  }
 
-  /**
-   * Update a recipe in the recipe register.
-   *
-   * @param name the name of the recipe.
-   * @param groceries the groceries needed for the recipe.
-   * @param steps the steps needed to make the recipe.
-   */
-  public void updateRecipe(String name, GroceryRegister groceries, StepRegister steps, String imagePath)
-      throws IllegalArgumentException{
-    if (!super.registerMap.containsKey(name)) {
-      throw new IllegalArgumentException("Recipe does not exist in register");
+    /**
+     * Retrieves a recipe from the register by its name.
+     *
+     * @param name the name of the recipe to be retrieved.
+     * @return the recipe with the specified name.
+     * @throws IllegalArgumentException if the recipe does not exist in the register.
+     */
+    public Recipe getRecipe(String name) throws IllegalArgumentException {
+        return super.getModel(name);
     }
-    super.registerMap.replace(name, new Recipe(name, groceries, steps, imagePath));
-  }
+
+    /**
+     * Add a recipe to the recipe register.
+     *
+     * @param recipe the recipe to be added to the recipe register.
+     */
+    public void addRecipe(Recipe recipe) {
+        super.addModel(recipe);
+    }
+
+    /**
+     * Removes a recipe from the register.
+     *
+     * @param recipe the recipe to be removed from the register.
+     */
+    public void removeRecipe(Recipe recipe) {
+        super.removeModel(recipe);
+    }
 }
-

@@ -6,7 +6,7 @@ public enum Route {
   @Override
   public String toString() {
     // Capitalize the first letter of the enum name
-    String s = this.name().toLowerCase();
+    String s = this.name().toLowerCase().replace("_", " ");
     return s.substring(0, 1).toUpperCase() + s.substring(1);
   }
 }

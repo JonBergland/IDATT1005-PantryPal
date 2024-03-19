@@ -66,13 +66,13 @@ public class Grocery extends Model{
     return expirationDate;
   }
 
+  public String getName() {
+    return getKey();
+  }
+
   @Override
   public String toString() {
     return "Name: " + getKey() + ", Quantity: " + quantity + ", Category: " + category
         + ", Expiration date: " + expirationDate;
-  }
-
-  public Object getName() {
-    return getKey();
   }
 }

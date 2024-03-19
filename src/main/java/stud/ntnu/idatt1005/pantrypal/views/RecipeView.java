@@ -176,8 +176,7 @@ public class RecipeView extends View {
 
     groceriesHeader.getStyleClass().add("groceries-header");
 
-    for (Model model : recipe.getRecipeGroceries().getRegisterMap().values()) {
-      Grocery grocery = (Grocery) model;
+    for (Grocery grocery : recipe.getRecipeGroceries().getRegister().values()) {
       groceriesContainer.getChildren().add(createGroceryTextWithSeparator(grocery));
     }
     groceriesContainer.setAlignment(Pos.TOP_LEFT);

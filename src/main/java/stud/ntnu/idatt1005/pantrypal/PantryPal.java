@@ -10,7 +10,12 @@ import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
+import stud.ntnu.idatt1005.pantrypal.models.Grocery;
+import stud.ntnu.idatt1005.pantrypal.models.Shelf;
+import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
+
+import java.util.Date;
 
 /**
  * The main class for the PantryPal application.
@@ -19,6 +24,7 @@ import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
  */
 public class PantryPal extends Application {
 
+  private ShelfRegister shelfRegister;
   // View manager for the application.
   private ViewManager viewManager;
   // Controller for homeView.
@@ -46,11 +52,17 @@ public class PantryPal extends Application {
   public void start(Stage primaryStage) {
     this.viewManager = new ViewManager(primaryStage);
 
+    this.shelfRegister = new ShelfRegister();
+    Shelf fridge = new Shelf("Fridge");
+    System.out.println(fridge.getKey());
+    fridge.addGrocery(new Grocery("Milk", 1, "L", new Date(2024, 12, 24)));
+    shelfRegister.addShelf(fridge);
+
     // Init controllers
     homeController = new HomeController(viewManager);
     cookBookController = new CookBookController(viewManager);
     addRecipeController = new AddRecipeController(viewManager);
-    pantryController = new PantryController(viewManager);
+    pantryController = new PantryController(viewManager, shelfRegister);
     shoppingListController = new ShoppingListController(viewManager);
     logInController = new LogInController(viewManager);
 
