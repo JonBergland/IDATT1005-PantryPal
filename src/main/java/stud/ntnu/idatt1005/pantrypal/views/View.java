@@ -21,7 +21,7 @@ import java.util.Objects;
  * provides a base structure for other views. It has two types of views: HOME and DEFAULT. The HOME
  * view includes a title and a navigation bar. The DEFAULT view only includes a navigation bar.
  */
-class View extends Scene {
+public class View extends Scene {
 
   private final Route route;
 
@@ -29,7 +29,7 @@ class View extends Scene {
   /**
    * Root pane of the view.
    */
-  private final ScrollPane root;
+  private final BorderPane root;
 
   /**
    * Constructor for the View class. Initializes the view based on the viewType.
@@ -37,26 +37,23 @@ class View extends Scene {
    * @param route The route of the view.
    */
   public View(Controller controller, Route route, String stylePath) {
-    super(new ScrollPane(), getPrimary().getVisualBounds().getWidth(),
+    super(new BorderPane(), getPrimary().getVisualBounds().getWidth(),
             getPrimary().getVisualBounds().getHeight());
     this.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/components.css")).toExternalForm());
     this.getStylesheets().add(Objects.requireNonNull(getClass().getResource(stylePath)).toExternalForm());
     this.route = route;
     this.controller = controller;
     this.widthProperty().lessThanOrEqualTo(getPrimary().getVisualBounds().getWidth()-100);
-    root = (ScrollPane) getRoot();
+    root = (BorderPane) getRoot();
     BorderPane borderPane = new BorderPane();
     borderPane.setPadding(new Insets(0));
     borderPane.maxWidthProperty().bind(root.widthProperty());
-    root.setContent(borderPane);
-    root.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     BackgroundFill backgroundColor = new BackgroundFill(ColorPalette.PRIMARY_LIGHT, CornerRadii.EMPTY,
-            Insets.EMPTY);
+        Insets.EMPTY);
     root.setBackground(new Background(backgroundColor));
     this.setFill(ColorPalette.PRIMARY_LIGHT);
-    this.view(borderPane);
+    this.view(root);
   }
-
 
   public void view(BorderPane borderPane) {
     if (route == Route.HOME) {
@@ -74,7 +71,13 @@ class View extends Scene {
     }
   }
 
+  public void setScrollPane() {
+    ScrollPane scrollPane = new ScrollPane();
+    scrollPane.setContent(root);
+    setRoot(scrollPane);
+  }
+
   public BorderPane getBorderPane() {
-    return (BorderPane) root.getContent();
+    return root;
   }
 }

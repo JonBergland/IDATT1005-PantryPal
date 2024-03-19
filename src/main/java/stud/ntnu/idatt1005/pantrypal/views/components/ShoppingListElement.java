@@ -8,6 +8,8 @@ import javafx.scene.layout.StackPane;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 
+import java.util.Objects;
+
 /**
  * Class representing a shopping list element
  */
@@ -23,6 +25,7 @@ public class ShoppingListElement extends GroceryListElement {
    */
   public ShoppingListElement(Grocery grocery) {
     super(grocery);
+    Objects.requireNonNull(this.getClass().getResource("/styles/components.css")).toExternalForm();
 
     // Make the checkbox
     StackPane checkBox = new StackPane(new StyledCheckBox("", false));
@@ -40,6 +43,8 @@ public class ShoppingListElement extends GroceryListElement {
     this.groceryInfo.setLeft(checkBox);
     this.groceryInfo.setCenter(textBox);
     this.groceryInfo.setRight(deleteButton);
+    this.groceryInfo.getStyleClass().add("shopping-list-element");
+
   }
 
   /**

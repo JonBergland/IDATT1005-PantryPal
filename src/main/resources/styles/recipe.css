@@ -1,0 +1,19 @@
+.overview-buttons {
+    -fx-text-fill: black;
+}
+
+.steps-container {;
+    -fx-padding: 10px;
+    -fx-max-height: 100%;
+}
+
+.groceries-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-alignment: left;
+}
+
+.sub-groceries-text {
+    -fx-font-size: 18px;
+}
+

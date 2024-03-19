@@ -1,17 +1,16 @@
 package stud.ntnu.idatt1005.pantrypal.utils;
 
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 
 import java.util.Collection;
 
 public class NodeUtils {
-    public static void add(Node node, String styleClass) {
+    public static void addClasses(Node node, String styleClass) {
         node.getStyleClass().add(styleClass);
     }
 
-    public static void add(Node node, Collection<String> styleClasses) {
+    public static void addClasses(Node node, Collection<String> styleClasses) {
         node.getStyleClass().addAll(styleClasses);
     }
 

@@ -14,12 +14,12 @@ import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Shelf;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.add;
+import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.addClasses;
 import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.addChildren;
 
 
@@ -56,7 +56,7 @@ public class PantryView extends View {
         int col = 0;
 
         for (Shelf shelf : shelves) {
-            var shelfBox = this.shelf(shelf);
+            VBox shelfBox = this.shelf(shelf);
             shelfGrid.add(shelfBox, col, row);
             col++;
             if (col == 3) {
@@ -76,7 +76,7 @@ public class PantryView extends View {
 
     private Button addShelfButton() {
         Button addShelfButton = new Button("Add new shelf");
-        add(addShelfButton, "add-shelf-button");
+        NodeUtils.addClasses(addShelfButton, "add-shelf-button");
 
         return addShelfButton;
     }
@@ -84,13 +84,13 @@ public class PantryView extends View {
     private VBox shelf(Shelf shelf) {
         VBox container = new VBox();
         container.setAlignment(Pos.TOP_CENTER);
-        add(container, "shelf");
+        NodeUtils.addClasses(container, "shelf");
 
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER);
 
         TextField title = new TextField(shelf.getName());
-        add(title, "shelf-title-textfield");
+        NodeUtils.addClasses(title, "shelf-title-textfield");
         title.setEditable(false);
         StyledButton edit = new StyledButton("Edit");
         edit.setStyle("-fx-min-width: 80px;");
@@ -125,9 +125,9 @@ public class PantryView extends View {
         VBox container = new VBox();
 
         ScrollPane scrollContainer = new ScrollPane();
-        add(scrollContainer, "grocery-list-scroll-container");
+        NodeUtils.addClasses(scrollContainer, "grocery-list-scroll-container");
         VBox groceryList = new VBox();
-        add(groceryList, "grocery-list");
+        NodeUtils.addClasses(groceryList, "grocery-list");
         scrollContainer.setContent(groceryList);
         scrollContainer.setFitToWidth(true);
 
@@ -147,30 +147,30 @@ public class PantryView extends View {
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
         HBox.setHgrow(container, Priority.ALWAYS);
-        add(container, "grocery-item");
+        NodeUtils.addClasses(container, "grocery-item");
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
         String expirationDate = formatter.format(grocery.getExpirationDate());
 
         HBox nameContainer = new HBox();
         HBox.setHgrow(nameContainer, Priority.ALWAYS);
-        add(nameContainer, "grocery-item-text-container");
+        NodeUtils.addClasses(nameContainer, "grocery-item-text-container");
         Text name = new Text(grocery.getName());
-        add(name, "grocery-item-text");
+        NodeUtils.addClasses(name, "grocery-item-text");
         addChildren(nameContainer, name);
 
         HBox quantityContainer = new HBox();
         HBox.setHgrow(quantityContainer, Priority.ALWAYS);
-        add(quantityContainer, "grocery-item-text-container");
+        NodeUtils.addClasses(quantityContainer, "grocery-item-text-container");
         Text quantity = new Text(Integer.toString(grocery.getQuantity()));
-        add(quantity, "grocery-item-text");
+        NodeUtils.addClasses(quantity, "grocery-item-text");
         addChildren(quantityContainer, quantity);
 
         HBox expirationContainer = new HBox();
         HBox.setHgrow(expirationContainer, Priority.ALWAYS);
-        add(expirationContainer, "grocery-item-text-container");
+        NodeUtils.addClasses(expirationContainer, "grocery-item-text-container");
         Text expiration = new Text(expirationDate);
-        add(expiration, "grocery-item-text");
+        NodeUtils.addClasses(expiration, "grocery-item-text");
         addChildren(expirationContainer, expiration);
 
         addChildren(container, nameContainer, quantityContainer, expirationContainer);
@@ -181,27 +181,27 @@ public class PantryView extends View {
     private HBox addGroceryButton(Shelf shelf){
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
-        add(container, "add-grocery-container");
+        NodeUtils.addClasses(container, "add-grocery-container");
 
         TextField groceryName = new TextField();
         groceryName.setPromptText("Name");
         groceryName.setMinWidth(60);
-        add(groceryName, "add-grocery-textfield");
+        NodeUtils.addClasses(groceryName, "add-grocery-textfield");
         TextField groceryQuantity = new TextField();
         groceryQuantity.setPromptText("Quantity");
         groceryQuantity.setMinWidth(60);
-        add(groceryQuantity, "add-grocery-textfield");
+        NodeUtils.addClasses(groceryQuantity, "add-grocery-textfield");
         TextField groceryExpirationDate = new TextField();
         groceryExpirationDate.setPromptText("Expiration date (dd.mm.yy)");
         groceryExpirationDate.setMinWidth(120);
-        add(groceryExpirationDate, "add-grocery-textfield");
+        NodeUtils.addClasses(groceryExpirationDate, "add-grocery-textfield");
 
         StyledButton addGroceryButton = new StyledButton("Add");
         addGroceryButton.setStyle("-fx-min-width: 60; -fx-padding: 10; -fx-background-insets: 0; -fx-border-insets: 0");
         addGroceryButton.setOnAction(e -> {
             try {
                 this.controller.addGrocery(shelf, groceryName.getText(), Integer.parseInt(groceryQuantity.getText()), groceryExpirationDate.getText());
-            } catch (ParseException ex) {
+            } catch (Exception ex) {
                 System.err.println(ex.getMessage());
             }
         });

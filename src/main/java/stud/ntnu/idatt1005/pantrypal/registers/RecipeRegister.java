@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
 
+import stud.ntnu.idatt1005.pantrypal.models.Model;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 
 

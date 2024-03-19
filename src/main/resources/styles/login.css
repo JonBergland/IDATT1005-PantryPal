@@ -1,0 +1,25 @@
+
+/* JavaFX inline style for login container */
+.login-container{
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-radius: 5;
+    -fx-padding: 5 5 5 5;
+    -fx-background-color: #FFFFFF;
+}
+
+/* JavaFX inline style for header text */
+.login-title {
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+    -fx-fill: black;
+    -fx-text-alignment: center;
+}
+
+/* JavaFX inline style for subheader text */
+.login-button {
+    -fx-background-color:#8BC34A;
+    -fx-text-fill: black;
+    -fx-font-family: "Arial";
+}

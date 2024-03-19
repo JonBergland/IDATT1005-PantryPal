@@ -19,6 +19,7 @@ public class NavLink extends Hyperlink {
   public NavLink(String text) {
     super(text);
     defaultStyle();
+    this.setFocusTraversable(false);
   }
 
   /**

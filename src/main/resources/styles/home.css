@@ -1,0 +1,44 @@
+/* JavaFX inline style for pantry background */
+.pantry-background {
+    -fx-background-color: #7EB83D;
+    -fx-border-width: 0 2 0 0;
+    -fx-border-color: black;
+}
+
+/* JavaFX inline style for cookbook background */
+.cookbook-background {
+    -fx-background-color: #DDEEDF;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: black;
+}
+
+/* JavaFX inline style for shopping list background */
+.shopping-list-background {
+    -fx-background-color: #FFF;
+}
+
+
+/* JavaFX inline style for header text */
+.header-text {
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: bold;
+    -fx-font-size: 40px;
+    -fx-fill: black;
+    -fx-text-alignment: left;
+}
+
+/* JavaFX inline style for subheader text */
+.subheader-text {
+    -fx-font-family: "Times New Roman";
+    -fx-font-weight: normal;
+    -fx-font-size: 25px;
+    -fx-fill: black;
+    -fx-text-alignment: left;
+}
+
+/* JavaFX inline style for buttons */
+.styled-button {
+    -fx-background-color: black;
+    -fx-text-fill: white;
+    -fx-pref-width: 200px;
+}
