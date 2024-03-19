@@ -106,6 +106,7 @@ public class RecipeView extends View {
     StyledButton addNeededGroceriesButton = new StyledButton("Add groceries",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addNeededGroceriesButton.getStyleClass().add("overview-buttons");
+    addNeededGroceriesButton.setOnAction(e -> this.controller.addGroceriesToShoppingList(recipe));
 
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,

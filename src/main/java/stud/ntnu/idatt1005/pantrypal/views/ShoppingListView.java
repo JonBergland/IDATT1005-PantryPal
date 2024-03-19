@@ -62,7 +62,7 @@ public class ShoppingListView extends View {
     shoppingList.setBackground(Background.fill(Color.WHITE));
 
     // render the scene
-    for (Grocery grocery : controller.getRegister().values()) {
+    for (Grocery grocery : controller.getRegister().getRegister().values()) {
       ShoppingListElement element = new ShoppingListElement(grocery);
       element.addObserver(controller);
       shoppingList.getChildren().add(element.getPane());
