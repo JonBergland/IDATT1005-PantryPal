@@ -30,8 +30,12 @@ public class AddShoppingListElement extends HBox implements Observable {
         category.setMaxWidth(200);
         quantity.setMaxWidth(100);
 
+        // Set the action for the add button
         add.setOnAction(e -> {
-            if (!name.getText().isEmpty() && !category.getText().isEmpty() && !quantity.getText().isEmpty()) {
+            if (!name.getText().isEmpty() && !category.getText().isEmpty()) {
+                if (quantity.getText().isEmpty()) {
+                    quantity.setText("1");
+                }
                 notifyObservers(ButtonEnum.ADD, name.getText(), Integer.parseInt(quantity.getText()), category.getText(), new Date());
                 name.clear();
                 category.clear();

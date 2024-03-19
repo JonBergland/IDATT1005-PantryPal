@@ -1,36 +1,39 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
+
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.models.Model;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
-import stud.ntnu.idatt1005.pantrypal.registers.Register;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.ShoppingListView;
 
 /**
- * Controller class for the ShoppingListView. This class is responsible for handling the logic for
- * the ShoppingListView.
+ * Controller class for the ShoppingListView.
+ * Handles the logic for the ShoppingListView, including managing the grocery register and updating the view.
  */
 public class ShoppingListController extends Controller implements Observer {
 
   /**
-   * The view for the ShoppingListController.
+   * The view associated with this controller.
    */
   private final ShoppingListView view;
 
+  /**
+   * The register holding the groceries.
+   */
   private final GroceryRegister register;
 
   /**
-   * Constructor for the ShoppingListController.
+   * Constructs a new ShoppingListController with a given view manager.
    *
    * @param viewManager The view manager for the application.
    */
   public ShoppingListController(ViewManager viewManager) {
     super(viewManager);
     this.register = new GroceryRegister();
+    // Add some groceries to the register
     this.register.addGrocery(new Grocery("Milk", 1, "Dairy", null));
     this.register.addGrocery(new Grocery("Bread", 1, "Bread", null));
     this.register.addGrocery(new Grocery("Butter", 1, "Dairy", null));
@@ -43,23 +46,28 @@ public class ShoppingListController extends Controller implements Observer {
     this.viewManager.addView(Route.SHOPPING_LIST, view);
   }
 
-  public LinkedHashMap<String, Grocery> getRegister() {
+  /**
+   * Returns the grocery register.
+   *
+   * @return the grocery register
+   */
+  public Map<String, Grocery> getRegister() {
     return register.getRegister();
   }
 
   /**
-   * Updates the observer
+   * Updates the observer based on the button pressed and the grocery item associated with the action.
+   * If the button pressed is ADD, the grocery item is added to the register and the view is re-rendered.
+   * If the button pressed is REMOVE, the grocery item is removed from the register and the view is re-rendered.
    *
    * @param buttonEnum the button that was pressed
-   * @param object     the object that was pressed
+   * @param object     the grocery item associated with the action
+   * @throws IllegalArgumentException if the object is not of type Grocery
    */
   @Override
   public void update(ButtonEnum buttonEnum, Object object) {
-    Grocery grocery;
-    if (object instanceof Grocery) {
-      grocery = (Grocery) object;
-    } else {
-      throw new IllegalArgumentException("Object is not of type Model");
+    if (!(object instanceof Grocery grocery)) {
+      throw new IllegalArgumentException("Object is not of type Grocery");
     }
     switch (buttonEnum) {
       case ADD:
