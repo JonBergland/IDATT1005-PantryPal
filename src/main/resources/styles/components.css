@@ -66,13 +66,14 @@
 }
 
 .favorite-button {
-    -fx-fill: #8BC34A;
-    -fx-arc-width: 15px;
-    -fx-arc-height: 15px;
+    -fx-background-color: #8BC34A;
+    -fx-background-radius: 10px;
+    -fx-max-height: 45px;
+    -fx-max-width: 45px;
 }
 
 .favorite-button:hover {
-    -fx-fill: #7EB83D;
+    -fx-background-color: #7EB83D;
 }
 
 /*

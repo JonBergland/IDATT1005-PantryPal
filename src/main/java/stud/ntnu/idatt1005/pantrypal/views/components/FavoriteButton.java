@@ -60,11 +60,13 @@ public class FavoriteButton extends Button {
 
     // Create a rectangle to serve as the background of the star
     Rectangle starBackground = new Rectangle(45, 45);
-    NodeUtils.addClasses(starBackground, "favorite-button");
+    starBackground.setFill(Color.TRANSPARENT);
+    //NodeUtils.addClasses(starBackground, "favorite-button");
 
     // Create a stack pane to hold the star and the rectangle
     stackPane = new StackPane();
     stackPane.getChildren().addAll(starBackground, star);
+    NodeUtils.addClasses(stackPane, "favorite-button");
 
     // Initialize the isFavorite property
     isFavorite = new SimpleBooleanProperty(stackPane, "isFavorite", false);
