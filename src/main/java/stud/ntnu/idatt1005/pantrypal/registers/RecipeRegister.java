@@ -27,10 +27,21 @@ public class RecipeRegister extends Register<Recipe> {
         super(register);
     }
 
+    /**
+     * Returns an error message when a recipe does not exist in the register.
+     * @return a string error message.
+     */
     protected String getErrorMessage() {
         return "Recipe does not exist in register";
     }
 
+    /**
+     * Retrieves a recipe from the register by its name.
+     *
+     * @param name the name of the recipe to be retrieved.
+     * @return the recipe with the specified name.
+     * @throws IllegalArgumentException if the recipe does not exist in the register.
+     */
     public Recipe getRecipe(String name) throws IllegalArgumentException {
         return super.getModel(name);
     }
@@ -44,6 +55,11 @@ public class RecipeRegister extends Register<Recipe> {
         super.addModel(recipe);
     }
 
+    /**
+     * Removes a recipe from the register.
+     *
+     * @param recipe the recipe to be removed from the register.
+     */
     public void removeRecipe(Recipe recipe) {
         super.removeModel(recipe);
     }

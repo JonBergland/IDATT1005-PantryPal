@@ -4,21 +4,43 @@ import stud.ntnu.idatt1005.pantrypal.models.Model;
 
 import java.util.*;
 
+/**
+ * This is an abstract class representing a register. It contains a LinkedHashMap where the key is a
+ * string and the value is a model. The class provides methods to get the register map, get a model
+ * from the register, add a model to the register, and remove a model from the register.
+ *
+ * @param <T> the type of model that the register will contain
+ */
 public abstract class Register<T extends Model> {
+
   LinkedHashMap<String, T> register;
 
+  /**
+   * Constructor for Register class. Initializes the register as a new LinkedHashMap.
+   */
   protected Register() {
     this.register = new LinkedHashMap<>();
   }
 
+  /**
+   * Deep-copy constructor for Register class.
+   *
+   * @param register the register to be copied
+   */
   protected Register(Register<T> register) {
     this.register = new LinkedHashMap<>(register.getRegister());
   }
 
+  /**
+   * Abstract method to get the error message.
+   *
+   * @return the error message
+   */
   protected abstract String getErrorMessage();
 
   /**
    * Get the register map
+   *
    * @return the register map
    */
   public LinkedHashMap<String, T> getRegister() {
@@ -29,11 +51,11 @@ public abstract class Register<T extends Model> {
    * Get a model from the register
    *
    * @param key the key of the model to be retrieved
-   * @throws IllegalArgumentException if the item does not exist in the register
    * @return the model with the specified name
+   * @throws IllegalArgumentException if the item does not exist in the register
    */
   protected T getModel(String key) throws IllegalArgumentException {
-    if(!register.containsKey(key)){
+    if (!register.containsKey(key)) {
       throw new IllegalArgumentException(getErrorMessage());
     }
     return register.get(key);
@@ -42,11 +64,13 @@ public abstract class Register<T extends Model> {
   /**
    * Add an item to the register
    *
-   * @param  model item to be added
+   * @param model item to be added
    */
-  protected void addModel(T model){
+  protected void addModel(T model) {
     register.put(model.getKey(), model);
-  };
+  }
+
+  ;
 
   /**
    * Remove an item from the register

@@ -8,6 +8,10 @@ import java.util.UUID;
 public abstract class Model {
   private String key;
 
+  /**
+   * Default constructor for Model class.
+   * Generates a random UUID as the key for the model.
+   */
   protected Model() {
     this.key = UUID.randomUUID().toString();
   }
@@ -28,6 +32,10 @@ public abstract class Model {
     this.key = model.getKey();
   }
 
+  /**
+   * Sets the key of the model.
+   * @param key the new key
+   */
   public void setKey(String key) {
     this.key = key;
   }
