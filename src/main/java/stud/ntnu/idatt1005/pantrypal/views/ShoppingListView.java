@@ -10,7 +10,6 @@ import javafx.scene.paint.Color;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.models.Model;
 import stud.ntnu.idatt1005.pantrypal.views.components.AddShoppingListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.ShoppingListElement;
 
@@ -39,7 +38,11 @@ public class ShoppingListView extends View {
     render();
   }
 
+  /**
+   * Renders the shopping list view.
+   */
   public void render() {
+    // Create the overarching VBox
     VBox shoppingListBox = new VBox();
     shoppingListBox.setMaxWidth(610);
     shoppingListBox.setMaxHeight(500);
@@ -47,6 +50,7 @@ public class ShoppingListView extends View {
     shoppingListBox.setBackground(Background.fill(Color.WHITE));
     shoppingListBox.getStyleClass().add("shopping-list-box");
 
+    // Create the scroll pane to hold the shopping list
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(true);
@@ -56,12 +60,12 @@ public class ShoppingListView extends View {
     scrollPane.setPadding(new Insets(10, 0, 0, 0));
     scrollPane.setBackground(Background.fill(Color.WHITE));
 
-
+    // Create the VBox to hold the shopping list elements
     VBox shoppingList = new VBox();
     scrollPane.setContent(shoppingList);
     shoppingList.setBackground(Background.fill(Color.WHITE));
 
-    // render the scene
+    // Add the shopping list elements to the VBox
     for (Grocery grocery : controller.getRegister().values()) {
       ShoppingListElement element = new ShoppingListElement(grocery);
       element.addObserver(controller);
@@ -70,6 +74,7 @@ public class ShoppingListView extends View {
     scrollPane.setContent(shoppingList);
     shoppingListBox.getChildren().add(scrollPane);
 
+    // Add the add shopping list element to the VBox
     AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
     addShoppingListElement.addObserver(controller);
     addShoppingListElement.setMaxWidth(600);
