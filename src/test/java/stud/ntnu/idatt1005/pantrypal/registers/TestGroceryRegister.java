@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,8 +25,8 @@ class TestGroceryRegister {
     grocery1 = new Grocery("Milk", 1, "Dairy", null);
     grocery2 = new Grocery("Bread", 2, "Bakery", null);
 
-    groceryRegister.addItem(grocery1);
-    groceryRegister.addItem(grocery2);
+    groceryRegister.addGrocery(grocery1);
+    groceryRegister.addGrocery(grocery2);
   }
 
   @Nested
@@ -37,7 +38,7 @@ class TestGroceryRegister {
 
       String groceryName = "Eggs";
       Grocery grocery3 = new Grocery(groceryName, 12, "Dairy", null);
-      newGroceryRegister.addItem(new Grocery(grocery3));
+      newGroceryRegister.addGrocery(new Grocery(grocery3));
 
       assertAll(
           () -> assertEquals(grocery3.toString(), newGroceryRegister.getGrocery(groceryName).toString(), "Grocery not added to register"),
@@ -69,7 +70,7 @@ class TestGroceryRegister {
     @Test
     @DisplayName("Test of get register")
     void getRegister() {
-      Map<String, Model> actual = groceryRegister.getRegisterMap();
+      LinkedHashMap<String, Grocery> actual = groceryRegister.getRegister();
 
       assertAll("Get register",
           () -> assertEquals(grocery1.toString(), actual.get(grocery1.getKey()).toString(), "Incorrect grocery retrieved"),
@@ -84,7 +85,7 @@ class TestGroceryRegister {
     @DisplayName("Test of add grocery with new grocery")
     void addGrocery() {
       Grocery grocery3 = new Grocery("Eggs", 12, "Dairy", null);
-      groceryRegister.addItem(grocery3);
+      groceryRegister.addGrocery(grocery3);
 
       assertEquals(grocery3.toString(), groceryRegister.getGrocery(grocery3.getKey()).toString(), "Grocery not added");
     }
@@ -93,16 +94,7 @@ class TestGroceryRegister {
     @DisplayName("Test of add grocery with grocery that already exists")
     void addGroceryAlreadyExists() {
       Grocery grocery3 = new Grocery("Milk", 1, "Dairy", null);
-      assertThrows(IllegalArgumentException.class, () -> groceryRegister.addItem(grocery3), "Grocery does not exist in register");
-    }
-
-    @Test
-    @DisplayName("Test of add grocery with deep copy of grocery")
-    void addGroceryDeepCopyOfGrocery() {
-      Grocery grocery3 = new Grocery("Eggs", 12, "Dairy", null);
-      groceryRegister.addItem(grocery3);
-
-      assertNotEquals(grocery3, groceryRegister.getGrocery(grocery3.getKey()), "Grocery is not a deep copy");
+      assertEquals(grocery3.toString(), groceryRegister.getGrocery(grocery3.getKey()).toString());
     }
   }
 
@@ -112,7 +104,7 @@ class TestGroceryRegister {
     @DisplayName("Test of remove grocery")
     void removeGrocery() {
       String gKey = grocery1.getKey();
-      groceryRegister.removeItem(grocery1);
+      groceryRegister.removeGrocery(grocery1);
 
       assertThrows(IllegalArgumentException.class, () -> groceryRegister.getGrocery(gKey), "Grocery exists in register");
     }
@@ -121,28 +113,8 @@ class TestGroceryRegister {
     @DisplayName("Test of remove grocery with grocery that does not exist")
     void removeGroceryDoesNotExist() {
       Grocery fakeGrocery = new Grocery("Eggs", 12, "Dairy", null);
-      assertThrows(IllegalArgumentException.class, () -> groceryRegister.removeItem(fakeGrocery)
+      assertThrows(IllegalArgumentException.class, () -> groceryRegister.removeGrocery(fakeGrocery)
           , "Grocery exists in register");
-    }
-
-    @Test
-    @DisplayName("Test of sort groceries in ascending order")
-    void sortGroceriesAscending(){
-      List<Model> sortedGroceries = groceryRegister.sortItemsAscending();
-
-      assertAll("Sort groceries in ascending order",
-          () -> assertEquals(grocery2.toString(), sortedGroceries.getFirst().toString(), "Grocery not sorted in ascending order"),
-          () -> assertEquals(grocery1.toString(), sortedGroceries.get(1).toString(), "Grocery not sorted in ascending order"));
-    }
-
-    @Test
-    @DisplayName("Test of sort groceries in descending order")
-    void sortGroceriesDescending(){
-      List<Model> sortedGroceries = groceryRegister.sortItemsDescending();
-
-      assertAll("Sort groceries in descending order",
-          () -> assertEquals(grocery1.toString(), sortedGroceries.getFirst().toString(), "Grocery not sorted in descending order"),
-          () -> assertEquals(grocery2.toString(), sortedGroceries.get(1).toString(), "Grocery not sorted in descending order"));
     }
   }
 }
