@@ -45,6 +45,7 @@ public class PantryView extends View {
     public PantryView(PantryController controller) {
         super(controller, Route.PANTRY, "/styles/pantry.css");
         this.controller = controller;
+        this.setScrollPane();
     }
 
     public void render() {
@@ -70,7 +71,7 @@ public class PantryView extends View {
             controller.addShelf();
         });
         shelfGrid.add(addShelfButton, col, row);
-
+        shelfGrid.setAlignment(Pos.TOP_CENTER);
         this.getBorderPane().setCenter(shelfGrid);
     }
 
