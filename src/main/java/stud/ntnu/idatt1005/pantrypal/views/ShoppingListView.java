@@ -54,12 +54,12 @@ public class ShoppingListView extends View {
     // Create the overarching VBox
     VBox shoppingListBox = new VBox();
     shoppingListBox.setMaxWidth(getPrimary().getVisualBounds().getWidth() * 0.5);
-    shoppingListBox.setMaxHeight(getPrimary().getVisualBounds().getHeight() * 0.8);
+    shoppingListBox.setMaxHeight(getPrimary().getVisualBounds().getHeight() * 0.70);
     shoppingListBox.setAlignment(Pos.CENTER);
     shoppingListBox.setBackground(Background.fill(Color.WHITE));
     shoppingListBox.getStyleClass().add("shopping-list-box");
 
-    // Create a title for the shopping list and a button for adding to the pantry
+    // Create a title for the shopping list
     HBox titleBox = new HBox();
     titleBox.setAlignment(Pos.CENTER);
     titleBox.getStyleClass().add("shopping-list-title");
@@ -67,16 +67,13 @@ public class ShoppingListView extends View {
     Text shoppingListTitle = new Text("Shopping List");
     shoppingListTitle.setFont(FontPalette.SHOPPING_LIST);
 
-    StyledButton addToPantry = new StyledButton("Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
-
     Pane spacerLeft = new Pane();
     Pane spacerRight = new Pane();
-    Pane spacerLeftCenter = new Pane();
-    HBox.setHgrow(spacerLeft, Priority.ALWAYS);
-    HBox.setHgrow(spacerRight, Priority.ALWAYS);
-    HBox.setHgrow(spacerLeftCenter, Priority.ALWAYS);
 
-    titleBox.getChildren().addAll(spacerLeft, spacerLeftCenter, shoppingListTitle, spacerRight, addToPantry);
+    spacerLeft.setMinWidth(10);
+    HBox.setHgrow(spacerRight, Priority.ALWAYS);
+
+    titleBox.getChildren().addAll(spacerLeft, shoppingListTitle, spacerRight);
 
     shoppingListBox.getChildren().add(titleBox);
 
@@ -84,7 +81,7 @@ public class ShoppingListView extends View {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(true);
-    scrollPane.setMinHeight(getPrimary().getVisualBounds().getHeight() * 0.7);
+    scrollPane.setMinHeight(getPrimary().getVisualBounds().getHeight() * 0.60);
     scrollPane.setPadding(new Insets(10, 0, 0, 0));
     scrollPane.setBackground(Background.fill(Color.WHITE));
 
@@ -101,6 +98,14 @@ public class ShoppingListView extends View {
     }
     scrollPane.setContent(shoppingList);
     shoppingListBox.getChildren().add(scrollPane);
+
+    // Add a button to add to pantry
+
+    StyledButton addToPantry = new StyledButton("Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
+
+    addToPantry.setMinWidth(getPrimary().getVisualBounds().getWidth()* 0.5);
+    shoppingListBox.getChildren().add(addToPantry);
+
 
     // Add the add shopping list element to the VBox
     AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
