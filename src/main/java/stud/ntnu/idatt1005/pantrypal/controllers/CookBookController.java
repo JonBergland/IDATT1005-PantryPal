@@ -12,10 +12,6 @@ import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
 import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 /**
  * The controller for the CookBookView and RecipeView
  * Handles the logic for the CookBookView and RecipeView, in addition to updating the view.
