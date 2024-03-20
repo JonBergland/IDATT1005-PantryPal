@@ -1,0 +1,178 @@
+package stud.ntnu.idatt1005.pantrypal.controllers;
+
+import java.util.Map;
+
+import stud.ntnu.idatt1005.pantrypal.enums.Route;
+import stud.ntnu.idatt1005.pantrypal.models.Grocery;
+import stud.ntnu.idatt1005.pantrypal.models.Recipe;
+import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
+import stud.ntnu.idatt1005.pantrypal.registers.RecipeRegister;
+import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
+import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
+import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
+import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
+import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
+
+/**
+ * The controller for the CookBookView and RecipeView
+ * Handles the logic for the CookBookView and RecipeView, in addition to updating the view.
+ */
+public class CookBookController extends Controller {
+
+  /**
+   * The view for the CookBookController
+   */
+  private final CookbookView view;
+  private final RecipeRegister recipeRegister;
+  private final ShelfRegister shelfRegister;
+  private final GroceryRegister shoppingListRegister;
+  private final ShoppingListController shoppingListController;
+
+  /**
+   * Constructor that takes in a ViewManager and sets the view for the controller
+   * and also creates basic test data for the recipe register.
+   *
+   * @param viewManager the ViewManager for the application
+   */
+  public CookBookController(ViewManager viewManager, ShoppingListController shoppingListController,
+      PantryController pantryController) {
+    super(viewManager);
+    this.recipeRegister = new RecipeRegister();
+    this.shelfRegister = pantryController.getRegister();
+    this.shoppingListRegister = shoppingListController.getRegister();
+    this.shoppingListController = shoppingListController;
+
+    addPlaceholderRecipes();
+
+//    for (int i = 1; i <= 10; i++) {
+//      GroceryRegister groceries = new GroceryRegister();
+//      groceries.addGrocery(new Grocery("Grocery " + 1, 1, "category", false));
+//      groceries.addGrocery(new Grocery("Grocery " + 2, 1, "category", false));
+//      groceries.addGrocery(new Grocery("Grocery " + 3, 1, "category", false));
+//      StepRegister steps = new StepRegister();
+//      steps.addStep("Step 1");
+//      steps.addStep("Step 2");
+//      steps.addStep("Step 3");
+//      Recipe recipe = new Recipe("Recipe " + i, groceries, steps, null);
+//      recipeRegister.addRecipe(recipe);
+//    }
+    this.view = new CookbookView(this);
+    this.viewManager.addView(Route.COOKBOOK, this.view);
+  }
+
+  /**
+   * Returns the LinkedHashMap in the recipeRegister.
+   *
+   * @return the LinkedHashMap in the recipeRegister.
+   */
+  public Map<String, Recipe> getRecipes() {
+    return this.recipeRegister.getRegister();
+  }
+
+  /**
+   * Adds a recipe to the recipeRegister.
+   *
+   * @param recipe the recipe to be added to the recipeRegister.
+   */
+  public void addRecipe(Recipe recipe) {
+    this.recipeRegister.addRecipe(recipe);
+  }
+
+  /**
+   * Opens a recipe in the RecipeView, and sets the view to RecipeView.
+   *
+   * @param recipe the recipe to be opened in the RecipeView.
+   */
+  public void openRecipe(Recipe recipe) {
+    this.viewManager.addView(Route.RECIPE, new RecipeView(this, recipe));
+    this.viewManager.setView(Route.RECIPE);
+  }
+
+  public void addGroceriesToShoppingList(Recipe recipe) {
+    for (Map.Entry<String, Grocery> entry : recipe.getRecipeGroceries().getRegister().entrySet()) {
+      String groceryName = entry.getKey();
+      String groceryShelf = entry.getValue().getShelf();
+      int quantityNeeded = entry.getValue().getQuantity();
+
+      Grocery[] shelfGroceries = shelfRegister.getAllGroceries();
+      int quantityInShelf = 0;
+
+      for (Grocery grocery : shelfGroceries) {
+        if (grocery.getKey().equals(groceryName)) {
+          quantityInShelf += grocery.getQuantity();
+        }
+      }
+
+      Grocery shoppingListGrocery = null;
+      int quantityInShoppingList;
+      try {
+        shoppingListGrocery = shoppingListRegister.getGrocery(groceryName);
+        quantityInShoppingList = shoppingListGrocery.getQuantity();
+      } catch(Exception e){
+        quantityInShoppingList = 0;
+      }
+
+
+      int totalQuantityAvailable = quantityInShelf + quantityInShoppingList;
+
+      if (quantityNeeded > totalQuantityAvailable) {
+        int quantityToAdd = quantityNeeded - totalQuantityAvailable;
+        if (shoppingListGrocery != null) {
+          shoppingListGrocery.setQuantity(shoppingListGrocery.getQuantity() + quantityToAdd);
+        } else {
+          shoppingListRegister.addGrocery(
+              new Grocery(groceryName, quantityToAdd, groceryShelf, false));
+        }
+      }
+    }
+
+    shoppingListController.rerender();
+  }
+
+  public void addPlaceholderRecipes() {
+    // Recipe 1
+    GroceryRegister groceries1 = new GroceryRegister();
+    groceries1.addGrocery(new Grocery("Tomato", 1, "Cupboard", false));
+    groceries1.addGrocery(new Grocery("Onion", 1, "Cupboard", false));
+    groceries1.addGrocery(new Grocery("Garlic", 1, "Cupboard", false));
+
+    StepRegister steps1 = new StepRegister();
+    steps1.addStep("Cut groceries");
+    steps1.addStep("Cook groceries");
+    steps1.addStep("Eat groceries");
+
+    Recipe recipe1 = new Recipe("Tomato soup", groceries1, steps1, null);
+    recipeRegister.addRecipe(recipe1);
+
+    // Recipe 2
+
+    GroceryRegister groceries2 = new GroceryRegister();
+    groceries2.addGrocery(new Grocery("Milk", 1, "Fridge", false));
+    groceries2.addGrocery(new Grocery("Porridge rice", 1, "Cupboard", false));
+    groceries2.addGrocery(new Grocery("Sugar", 1, "Cupboard", false));
+    groceries2.addGrocery(new Grocery("Cinnamon", 1, "Cupboard", false));
+
+    StepRegister steps2 = new StepRegister();
+    steps2.addStep("Boil milk");
+    steps2.addStep("Add porridge rice");
+    steps2.addStep("Add sugar and cinnamon");
+
+    Recipe recipe2 = new Recipe("Rice porridge", groceries2, steps2, null);
+    recipeRegister.addRecipe(recipe2);
+
+    // Recipe 3
+
+    GroceryRegister groceries3 = new GroceryRegister();
+    groceries3.addGrocery(new Grocery("Pasta", 1, "Cupboard", false));
+    groceries3.addGrocery(new Grocery("Tomato sauce", 1, "Cupboard", false));
+    groceries3.addGrocery(new Grocery("Cheese", 1, "Fridge", false));
+
+    StepRegister steps3 = new StepRegister();
+    steps3.addStep("Boil pasta");
+    steps3.addStep("Add tomato sauce");
+    steps3.addStep("Add cheese");
+
+    Recipe recipe3 = new Recipe("Pasta", groceries3, steps3, null);
+    recipeRegister.addRecipe(recipe3);
+  }
+}

@@ -1,0 +1,178 @@
+/*
+    Theme:
+    Primary: #8BC34A
+    Primary light: #DDEEDF
+    Primary dark: #388E3C
+    Accent: #D9D9D9
+    Background: #FFF
+    Text: #000
+    Danger: #EF4444
+*/
+
+/*
+    Button
+*/
+.button {
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.button-medium {
+    -fx-padding: 15px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-font-size: 16px;
+}
+
+.button-large {
+    -fx-padding: 20px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-font-size: 20px;
+}
+
+.button-solid {
+    -fx-background-color: #8BC34A;
+    -fx-text-fill: #FFF;
+}
+
+.button-solid:hover {
+    -fx-background-color: #7EB83D;
+}
+
+.button-outline {
+    -fx-background-color: #DDEEDF;
+    -fx-border-color: #388E3C;
+    -fx-border-width: 2px;
+    -fx-text-fill: #388E3C;
+}
+
+.button-danger {
+    -fx-background-color: #EF4444;
+    -fx-text-fill: #FFF;
+}
+
+.button-danger:hover {
+    -fx-background-color: #E11414;
+}
+
+.button-black {
+    -fx-background-color: #000;
+    -fx-text-fill: #FFF;
+}
+
+.favorite-button {
+    -fx-background-color: #8BC34A;
+    -fx-background-radius: 10px;
+    -fx-max-height: 45px;
+    -fx-max-width: 45px;
+}
+
+.favorite-button:hover {
+    -fx-background-color: #7EB83D;
+}
+
+/*
+    Text Area
+*/
+.text-area {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-padding: 10px;
+    -fx-background-color: #FFF;
+    -fx-border-color: "D9D9D9";
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-font-size: 16px;
+}
+
+.text-area .content {
+    -fx-background-color: #fff;
+    -fx-padding: 0px;
+}
+
+
+/*
+    Text Field
+*/
+
+.text-field {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-padding: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: #D9D9D9;
+    -fx-border-width: 1px;
+    -fx-background-color: #FFF;
+    -fx-font-size: 16px;
+}
+
+/*
+    Add Shopping List Element
+*/
+
+.add-shopping-list-element {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-padding: 5px;
+    -fx-border-color: #388E3C;
+    -fx-border-width: 2px;
+    -fx-border-style: dashed;
+    -fx-background-color: #DDEEDF;
+
+}
+
+.shopping-list-element {
+    -fx-border-color: black;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+}
+
+.shopping-list-title {
+    -fx-border-color: black;
+    -fx-border-width: 0 0 3 0;
+    -fx-border-style: solid;
+}
+
+.shopping-list-box {
+    -fx-background-color: white;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+    -fx-padding: 10px;
+}
+
+*.scroll-bar:vertical, *.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-border-radius: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}

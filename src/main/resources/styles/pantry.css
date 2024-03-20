@@ -1,0 +1,108 @@
+.add-shelf-button {
+    -fx-padding: 5px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-color: #DDEEDF;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-color: #388E3C;
+    -fx-border-width: 2px;
+    -fx-border-style: dashed;
+    -fx-min-width: 400px;
+    -fx-min-height: 500px;
+    -fx-font-size: 50px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: #388E3C;
+    -fx-cursor: hand;
+}
+
+.shelf {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-color: #FFF;
+    -fx-border-color: #000;
+    -fx-border-width: 1px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-pref-width: 400px;
+}
+
+.shelf-title-textfield {
+    -fx-font-size: 50px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: #000;
+    -fx-pref-width: 300px;
+    -fx-border-width: 0px;
+}
+
+.shelf-separator {
+    -fx-padding: 0px;
+    -fx-border-insets: 0px;
+    -fx-border-width: 0 0 1px 0;
+    -fx-border-color: black;
+}
+.shelf-separator .line {
+    -fx-border-width: 0px;
+    -fx-border-insets: 0px;
+}
+
+.grocery-list-scroll-container {
+    -fx-min-width: 100%;
+    -fx-min-height: 350px;
+    -fx-max-height: 350px;
+}
+
+.grocery-list {
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-min-width: 100%;
+    -fx-min-height: 100%;
+}
+
+.grocery-item {
+    -fx-background-insets: 0 0 0 0;
+    -fx-border-insets: 0 0 0 0;
+    -fx-min-width: 100%;
+    -fx-border-color: #000;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.grocery-item-text-container {
+    -fx-padding: 5px;
+    -fx-background-insets: 0 10px;
+    -fx-border-insets: 0 10px;
+}
+
+.grocery-item-text {
+    -fx-font-size: 16px;
+    -fx-font-weight: bolder;
+    -fx-text-fill: black;
+    -fx-border-width: 0px;
+}
+
+.add-grocery-container {
+    -fx-padding: 5px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-background-color: #DDEEDF;
+    -fx-border-color: #388E3C;
+    -fx-border-width: 2px;
+    -fx-border-style: dashed;
+    -fx-min-width: 100%;
+}
+
+.add-grocery-textfield {
+    -fx-padding: 0;
+    -fx-font-size: 16px;
+    -fx-font-weight: bolder;
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+    -fx-pref-width: 300px;
+    -fx-border-width: 0px;
+    -fx-prompt-text-fill: #388E3C;
+}
