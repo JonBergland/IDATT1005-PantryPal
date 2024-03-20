@@ -55,6 +55,11 @@ public class Recipe extends Model {
     return steps.getSteps();
   }
 
+  /**
+   * Get the image path of the recipe.
+   *
+   * @return the image path of the recipe.
+   */
   public String getImagePath() {
     return imagePath;
   }
