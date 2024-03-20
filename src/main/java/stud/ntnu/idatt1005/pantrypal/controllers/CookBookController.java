@@ -44,9 +44,9 @@ public class CookBookController extends Controller {
 
     for (int i = 1; i <= 18; i++) {
       GroceryRegister groceries = new GroceryRegister();
-      groceries.addGrocery(new Grocery("Grocery " + 1, 1, "category", null));
-      groceries.addGrocery(new Grocery("Grocery " + 2, 1, "category", null));
-      groceries.addGrocery(new Grocery("Grocery " + 3, 1, "category", null));
+      groceries.addGrocery(new Grocery("Grocery " + 1, 1, "category", false));
+      groceries.addGrocery(new Grocery("Grocery " + 2, 1, "category", false));
+      groceries.addGrocery(new Grocery("Grocery " + 3, 1, "category", false));
       StepRegister steps = new StepRegister();
       steps.addStep("Step 1");
       steps.addStep("Step 2");
@@ -89,7 +89,7 @@ public class CookBookController extends Controller {
   public void addGroceriesToShoppingList(Recipe recipe) {
     for (Map.Entry<String, Grocery> entry : recipe.getRecipeGroceries().getRegister().entrySet()) {
       String groceryName = entry.getKey();
-      String groceryCategory = entry.getValue().getCategory();
+      String groceryShelf = entry.getValue().getShelf();
       int quantityNeeded = entry.getValue().getQuantity();
 
       Grocery[] shelfGroceries = shelfRegister.getAllGroceries();
@@ -119,7 +119,7 @@ public class CookBookController extends Controller {
           shoppingListGrocery.setQuantity(shoppingListGrocery.getQuantity() + quantityToAdd);
         } else {
           shoppingListRegister.addGrocery(
-              new Grocery(groceryName, quantityToAdd, groceryCategory, null));
+              new Grocery(groceryName, quantityToAdd, groceryShelf, false));
         }
       }
     }

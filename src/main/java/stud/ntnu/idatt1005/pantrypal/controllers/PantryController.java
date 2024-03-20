@@ -74,7 +74,7 @@ public class PantryController extends Controller {
     return shelf.getGroceries().values().toArray(new Grocery[0]);
   }
 
-  public void addGrocery(Shelf shelf, String name, int amount, String expirationDate)
+  public void addGrocery(Shelf shelf, String name, int amount)
       throws ParseException {
     if(shelf.getGroceries().containsKey(name)) {
       GroceryRegister groceryRegister = shelf.getGroceryRegister();
@@ -82,9 +82,7 @@ public class PantryController extends Controller {
       int oldAmount = groceryRegister.getGrocery(name).getQuantity();
       shelf.getGroceryRegister().getGrocery(name).setQuantity(oldAmount + amount);
     } else {
-      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
-      Date expirationDateParsed = formatter.parse(expirationDate);
-      Grocery grocery = new Grocery(name, amount, null, expirationDateParsed);
+      Grocery grocery = new Grocery(name, amount, shelf.getName(), false);
       shelf.addGrocery(grocery);
     }
     view.render();

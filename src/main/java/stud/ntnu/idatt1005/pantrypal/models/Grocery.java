@@ -9,22 +9,20 @@ import java.util.Date;
 public class Grocery extends Model{
 
   private int quantity;
-  private final String category;
-  private final Date expirationDate;
-
+  private final String shelf;
+  private boolean isChecked = false;
   /**
    * Constructor for the Grocery class
    *
    * @param name           the name of the grocery
    * @param quantity       the quantity of the grocery
-   * @param category       the category of the grocery
-   * @param expirationDate the expiration date of the grocery
+   * @param shelf       the category of the grocery
    */
-  public Grocery(String name, int quantity, String category, Date expirationDate) {
+  public Grocery(String name, int quantity, String shelf, boolean isChecked) {
     super(name);
     this.quantity = quantity;
-    this.category = category;
-    this.expirationDate = expirationDate;
+    this.shelf = shelf;
+    this.isChecked = isChecked;
   }
 
   /**
@@ -35,8 +33,8 @@ public class Grocery extends Model{
   public Grocery(Grocery grocery) {
     super(grocery.getKey());
     this.quantity = grocery.getQuantity();
-    this.category = grocery.getCategory();
-    this.expirationDate = grocery.getExpirationDate();
+    this.shelf = grocery.getShelf();
+    this.isChecked = grocery.getChecked();
   }
 
   public void setQuantity(int quantity) {
@@ -57,26 +55,39 @@ public class Grocery extends Model{
    *
    * @return the category of the grocery
    */
-  public String getCategory() {
-    return category;
+  public String getShelf() {
+    return shelf;
   }
 
   /**
-   * Get the expiration date of the grocery
+   * Get the name of the grocery
    *
-   * @return the expiration date of the grocery
+   * @return the name of the grocery
    */
-  public Date getExpirationDate() {
-    return expirationDate;
-  }
-
   public String getName() {
     return getKey();
   }
 
+  /**
+   * Get the checked status of the grocery
+   *
+   * @return the checked status of the grocery
+   */
+  public boolean getChecked() {
+    return isChecked;
+  }
+
+  /**
+   * Set the checked status of the grocery
+   *
+   * @param checked the checked status of the grocery
+   */
+  public void setChecked(boolean checked) {
+    this.isChecked = checked;
+  }
+
   @Override
   public String toString() {
-    return "Name: " + getKey() + ", Quantity: " + quantity + ", Category: " + category
-        + ", Expiration date: " + expirationDate;
+    return "Name: " + getKey() + ", Quantity: " + quantity + ", Shelf: " + shelf;
   }
 }

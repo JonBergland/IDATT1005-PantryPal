@@ -39,7 +39,7 @@ public class ShoppingListElement extends GroceryListElement {
     centerCheckBox.setAlignment(Pos.CENTER);
     checkBox.getChildren().add(centerCheckBox);
 
-    HBox textBox = createTextBox(grocery.getKey(), grocery.getCategory(), grocery.getQuantity() + "stk");
+    HBox textBox = createTextBox(grocery.getKey(), grocery.getShelf(), grocery.getQuantity() + "stk");
 
     // Make the delete button
     StyledButton deleteButton = createButton("Delete", StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
