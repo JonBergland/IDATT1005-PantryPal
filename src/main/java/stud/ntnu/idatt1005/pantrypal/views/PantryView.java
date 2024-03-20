@@ -45,6 +45,7 @@ public class PantryView extends View {
     public PantryView(PantryController controller) {
         super(controller, Route.PANTRY, "/styles/pantry.css");
         this.controller = controller;
+        this.setScrollPane();
     }
 
     public void render() {
@@ -70,7 +71,7 @@ public class PantryView extends View {
             controller.addShelf();
         });
         shelfGrid.add(addShelfButton, col, row);
-
+        shelfGrid.setAlignment(Pos.TOP_CENTER);
         this.getBorderPane().setCenter(shelfGrid);
     }
 
@@ -150,9 +151,6 @@ public class PantryView extends View {
         HBox.setHgrow(container, Priority.ALWAYS);
         NodeUtils.addClasses(container, "grocery-item");
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
-        String expirationDate = formatter.format(grocery.getExpirationDate());
-
         HBox nameContainer = new HBox();
         nameContainer.setAlignment(Pos.CENTER);
         HBox.setHgrow(nameContainer, Priority.ALWAYS);
@@ -169,21 +167,13 @@ public class PantryView extends View {
         NodeUtils.addClasses(quantity, "grocery-item-text");
         addChildren(quantityContainer, quantity);
 
-        HBox expirationContainer = new HBox();
-        expirationContainer.setAlignment(Pos.CENTER);
-        HBox.setHgrow(expirationContainer, Priority.ALWAYS);
-        NodeUtils.addClasses(expirationContainer, "grocery-item-text-container");
-        Text expiration = new Text(expirationDate);
-        NodeUtils.addClasses(expiration, "grocery-item-text");
-        addChildren(expirationContainer, expiration);
-
         StyledButton deleteButton = new StyledButton("Delete", StyledButton.Variant.DANGER);
         deleteButton.setAlignment(Pos.CENTER);
         deleteButton.setOnAction(e -> {
             this.controller.deleteGrocery(shelf, grocery);
         });
 
-        addChildren(container, nameContainer, quantityContainer, expirationContainer, deleteButton);
+        addChildren(container, nameContainer, quantityContainer, deleteButton);
 
         return container;
     }
@@ -196,27 +186,23 @@ public class PantryView extends View {
         TextField groceryName = new TextField();
         groceryName.setPromptText("Name");
         groceryName.setMinWidth(60);
-        NodeUtils.addClasses(groceryName, "add-grocery-textfield");
+        addClasses(groceryName, "add-grocery-textfield");
         TextField groceryQuantity = new TextField();
         groceryQuantity.setPromptText("Quantity");
         groceryQuantity.setMinWidth(60);
-        NodeUtils.addClasses(groceryQuantity, "add-grocery-textfield");
-        TextField groceryExpirationDate = new TextField();
-        groceryExpirationDate.setPromptText("Expiration date (dd.mm.yy)");
-        groceryExpirationDate.setMinWidth(120);
-        NodeUtils.addClasses(groceryExpirationDate, "add-grocery-textfield");
+        addClasses(groceryQuantity, "add-grocery-textfield");
 
         StyledButton addGroceryButton = new StyledButton("Add");
         addGroceryButton.setStyle("-fx-min-width: 60; -fx-padding: 10; -fx-background-insets: 0; -fx-border-insets: 0");
         addGroceryButton.setOnAction(e -> {
             try {
-                this.controller.addGrocery(shelf, groceryName.getText(), Integer.parseInt(groceryQuantity.getText()), groceryExpirationDate.getText());
+                this.controller.addGrocery(shelf, groceryName.getText(), Integer.parseInt(groceryQuantity.getText()));
             } catch (Exception ex) {
                 System.err.println(ex.getMessage());
             }
         });
 
-        addChildren(container, groceryName, groceryQuantity, groceryExpirationDate, addGroceryButton);
+        addChildren(container, groceryName, groceryQuantity, addGroceryButton);
 
         return container;
     }

@@ -7,28 +7,28 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestGrocery {
   @Test
-  void testGetCategory() {
+  void testGetShelf() {
     // Create a Grocery object
-    Grocery grocery = new Grocery("Apple", 5, "Fruit", new Date());
+    Grocery grocery = new Grocery("Apple", 5, "Fridge", false);
 
     // Test the getCategory() method
-    assertEquals("Fruit", grocery.getCategory());
+    assertEquals("Fridge", grocery.getShelf());
   }
 
   @Test
-  void testGetExpirationDate() {
+  void testGetChecked() {
     // Create a Grocery object
-    Date expirationDate = new Date();
-    Grocery grocery = new Grocery("Apple", 5, "Fruit", expirationDate);
+    boolean checked = true;
+    Grocery grocery = new Grocery("Apple", 5, "Fridge", checked);
 
     // Test the getExpirationDate() method
-    assertEquals(expirationDate, grocery.getExpirationDate());
+    assertEquals(checked, grocery.getChecked());
   }
 
   @Test
   void testGetName() {
     // Create a Grocery object
-    Grocery grocery = new Grocery("Apple", 5, "Fruit", new Date());
+    Grocery grocery = new Grocery("Apple", 5, "Fridge", false);
 
     // Test the getName() method
     assertEquals("Apple", grocery.getKey());
@@ -37,7 +37,7 @@ class TestGrocery {
   @Test
   void testGetQuantity() {
     // Create a Grocery object
-    Grocery grocery = new Grocery("Apple", 5, "Fruit", new Date());
+    Grocery grocery = new Grocery("Apple", 5, "Fridge", false);
 
     // Test the getQuantity() method
     assertEquals(5, grocery.getQuantity());

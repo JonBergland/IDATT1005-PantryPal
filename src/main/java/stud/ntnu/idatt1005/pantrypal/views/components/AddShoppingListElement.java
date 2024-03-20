@@ -22,28 +22,28 @@ public class AddShoppingListElement extends HBox implements Observable {
         this.setAlignment(Pos.CENTER);
 
         StyledTextField name = new StyledTextField("Name");
-        StyledTextField category = new StyledTextField("Category");
+        StyledTextField shelf = new StyledTextField("Shelf");
         StyledTextField quantity = new StyledTextField("Quantity");
         StyledButton add = new StyledButton("Add", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
 
         name.setMaxWidth(200);
-        category.setMaxWidth(200);
+        shelf.setMaxWidth(200);
         quantity.setMaxWidth(100);
 
         // Set the action for the add button
         add.setOnAction(e -> {
-            if (!name.getText().isEmpty() && !category.getText().isEmpty()) {
+            if (!name.getText().isEmpty() && !shelf.getText().isEmpty()) {
                 if (quantity.getText().isEmpty()) {
                     quantity.setText("1");
                 }
-                notifyObservers(ButtonEnum.ADD, name.getText(), Integer.parseInt(quantity.getText()), category.getText(), new Date());
+                notifyObservers(ButtonEnum.ADD, name.getText(), Integer.parseInt(quantity.getText()), shelf.getText(), false);
                 name.clear();
-                category.clear();
+                shelf.clear();
                 quantity.clear();
             }
         });
 
-        this.getChildren().addAll(name, category, quantity, add);
+        this.getChildren().addAll(name, shelf, quantity, add);
     }
 
     /**
@@ -71,8 +71,8 @@ public class AddShoppingListElement extends HBox implements Observable {
      *
      * @param buttonEnum the buttonEnum to be sent to the observers
      */
-    public void notifyObservers(ButtonEnum buttonEnum, String name, int quantity, String category, Date expirationDate) {
-        Grocery grocery = new Grocery(name, quantity, category, expirationDate);
+    public void notifyObservers(ButtonEnum buttonEnum, String name, int quantity, String shelf, boolean checked) {
+        Grocery grocery = new Grocery(name, quantity, shelf, checked);
         for (Observer observer : observers) {
             observer.update(buttonEnum, grocery);
         }
