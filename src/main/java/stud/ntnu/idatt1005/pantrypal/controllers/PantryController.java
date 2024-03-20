@@ -3,6 +3,7 @@ package stud.ntnu.idatt1005.pantrypal.controllers;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Shelf;
+import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.PantryView;
@@ -75,10 +76,22 @@ public class PantryController extends Controller {
 
   public void addGrocery(Shelf shelf, String name, int amount, String expirationDate)
       throws ParseException {
-    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
-    Date expirationDateParsed = formatter.parse(expirationDate);
-    Grocery grocery = new Grocery(name, amount, null, expirationDateParsed);
-    shelf.addGrocery(grocery);
+    if(shelf.getGroceries().containsKey(name)) {
+      GroceryRegister groceryRegister = shelf.getGroceryRegister();
+
+      int oldAmount = groceryRegister.getGrocery(name).getQuantity();
+      shelf.getGroceryRegister().getGrocery(name).setQuantity(oldAmount + amount);
+    } else {
+      SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
+      Date expirationDateParsed = formatter.parse(expirationDate);
+      Grocery grocery = new Grocery(name, amount, null, expirationDateParsed);
+      shelf.addGrocery(grocery);
+    }
+    view.render();
+  }
+
+  public void deleteGrocery(Shelf shelf, Grocery grocery) {
+    shelf.removeGrocery(grocery);
     view.render();
   }
 }

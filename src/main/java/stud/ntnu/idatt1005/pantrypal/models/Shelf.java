@@ -55,6 +55,14 @@ public class Shelf extends Model {
 
     /**
      * Gets the register of groceries on the shelf
+     * @return the register of groceries on the shelf
+     */
+    public GroceryRegister getGroceryRegister() {
+        return groceryRegister;
+    }
+
+    /**
+     * Gets the map of groceries in the register of the shelf
      * @return a HashMap of groceries on the shelf
      */
     public HashMap<String, Grocery> getGroceries() {
