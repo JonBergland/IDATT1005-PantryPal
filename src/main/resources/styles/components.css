@@ -65,6 +65,17 @@
     -fx-text-fill: #FFF;
 }
 
+.favorite-button {
+    -fx-background-color: #8BC34A;
+    -fx-background-radius: 10px;
+    -fx-max-height: 45px;
+    -fx-max-width: 45px;
+}
+
+.favorite-button:hover {
+    -fx-background-color: #7EB83D;
+}
+
 /*
     Text Area
 */
