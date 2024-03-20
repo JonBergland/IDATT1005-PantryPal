@@ -1,6 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -63,7 +63,7 @@ public class CookBookController extends Controller {
    *
    * @return the LinkedHashMap in the recipeRegister.
    */
-  public LinkedHashMap<String, Recipe> getRecipes() {
+  public Map<String, Recipe> getRecipes() {
     return this.recipeRegister.getRegister();
   }
 
