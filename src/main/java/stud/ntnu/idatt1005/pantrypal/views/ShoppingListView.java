@@ -62,6 +62,7 @@ public class ShoppingListView extends View {
     // Create a title for the shopping list and a button for adding to the pantry
     HBox titleBox = new HBox();
     titleBox.setAlignment(Pos.CENTER);
+    titleBox.getStyleClass().add("shopping-list-title");
 
     Text shoppingListTitle = new Text("Shopping List");
     shoppingListTitle.setFont(FontPalette.SHOPPING_LIST);
