@@ -19,7 +19,7 @@ test:
     paths:
       - target/surefire-reports/
     reports:
-      junit: target/surefire-reports/TEST-no.ntnu.idatt1002.demo.repo.MyEntityRepoTest.xml
+      junit: target/surefire-reports/TEST-*.xml
       coverage_report:
         coverage_format: cobertura
         path: target/jacoco/coverage-reports/jacoco.xml
@@ -30,7 +30,7 @@ package:
     - mvn clean package
   artifacts:
     paths:
-      - target/idatt2002demo-1.0-SNAPSHOT-jar-with-dependencies.jar
+      - target/idatt1005-0.1-SNAPSHOT-jar-with-dependencies.jar
 
 generatepdf:
   image: ubuntu:20.04 #20.04  # vi kjører dette i en docker container, som kjører Ubuntu Linux
@@ -44,7 +44,7 @@ generatepdf:
     - dpkg -i wkhtmltox_0.12.6-1.focal_amd64.deb  # Installerer pakken vi lastet ned i forrige steg
     - apt-get -y install nodejs  # installerer nodejs
     - apt-get -y install npm  # installerer npm, som er en pakkehåndterer (litt likt apt-get) for (hovedsaklig) javascript-biblioteker
-    - npm install -g github-wikito-converter  # installerer wiki-til-html-konverterer via npm 
+    - npm install -g github-wikito-converter  # installerer wiki-til-html-konverterer via npm
     - apt-get -y install git  # installerer git
     - export my_url="${CI_PROJECT_URL:8}" # Fjerner https:// fra URLen
     - export final_url="https://gitlab-ci-token:$CI_JOB_TOKEN@$my_url"  # Bruker CI-token for å omgå krav til brukernavn/passord
@@ -53,8 +53,8 @@ generatepdf:
     - wkhtmltopdf documentation.html wiki.pdf  # Dette konverterer fra HTML til PDF
   artifacts:
     paths:
-     - wiki.pdf  # Vi gjør fila tilgjengelig som en nedlastbar artefakt (CI/CD -> Pipelines, deretter ikon helt til høyre for bygget). Fila kalles wiki.pdf.
-  only: 
+      - wiki.pdf  # Vi gjør fila tilgjengelig som en nedlastbar artefakt (CI/CD -> Pipelines, deretter ikon helt til høyre for bygget). Fila kalles wiki.pdf.
+  only:
     - web  # Only web gjør at vi kun kjører denne delen av pipeline når en trykker på knappen "Run pipeline"
 
 
@@ -79,3 +79,4 @@ pages:
   artifacts:
     paths:
       - public
+
