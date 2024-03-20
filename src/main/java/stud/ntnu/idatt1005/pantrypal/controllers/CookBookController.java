@@ -6,6 +6,7 @@ import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.RecipeRegister;
+import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
@@ -26,15 +27,22 @@ public class CookBookController extends Controller {
    */
   private final CookbookView view;
   private final RecipeRegister recipeRegister;
+  private final ShelfRegister shelfRegister;
+  private final GroceryRegister shoppingListRegister;
+  private final ShoppingListController shoppingListController;
 
   /**
    * Constructor that takes in a ViewManager and sets the view for the controller
    *
    * @param viewManager the ViewManager for the application
    */
-  public CookBookController(ViewManager viewManager) {
+  public CookBookController(ViewManager viewManager, ShoppingListController shoppingListController,
+      PantryController pantryController) {
     super(viewManager);
     this.recipeRegister = new RecipeRegister();
+    this.shelfRegister = pantryController.getRegister();
+    this.shoppingListRegister = shoppingListController.getRegister();
+    this.shoppingListController = shoppingListController;
 
     for (int i = 1; i <= 18; i++) {
       GroceryRegister groceries = new GroceryRegister();
@@ -65,4 +73,44 @@ public class CookBookController extends Controller {
     this.viewManager.setView(Route.RECIPE);
   }
 
+  public void addGroceriesToShoppingList(Recipe recipe) {
+    for (Map.Entry<String, Grocery> entry : recipe.getRecipeGroceries().getRegister().entrySet()) {
+      String groceryName = entry.getKey();
+      String groceryCategory = entry.getValue().getCategory();
+      int quantityNeeded = entry.getValue().getQuantity();
+
+      Grocery[] shelfGroceries = shelfRegister.getAllGroceries();
+      int quantityInShelf = 0;
+
+      for (Grocery grocery : shelfGroceries) {
+        if (grocery.getKey().equals(groceryName)) {
+          quantityInShelf += grocery.getQuantity();
+        }
+      }
+
+      Grocery shoppingListGrocery = null;
+      int quantityInShoppingList;
+      try {
+        shoppingListGrocery = shoppingListRegister.getGrocery(groceryName);
+        quantityInShoppingList = shoppingListGrocery.getQuantity();
+      } catch(Exception e){
+        quantityInShoppingList = 0;
+      }
+
+
+      int totalQuantityAvailable = quantityInShelf + quantityInShoppingList;
+
+      if (quantityNeeded > totalQuantityAvailable) {
+        int quantityToAdd = quantityNeeded - totalQuantityAvailable;
+        if (shoppingListGrocery != null) {
+          shoppingListGrocery.setQuantity(shoppingListGrocery.getQuantity() + quantityToAdd);
+        } else {
+          shoppingListRegister.addGrocery(
+              new Grocery(groceryName, quantityToAdd, groceryCategory, null));
+        }
+      }
+    }
+
+    shoppingListController.rerender();
+  }
 }

@@ -8,9 +8,9 @@ import java.util.Date;
  */
 public class Grocery extends Model{
 
-  final int quantity;
-  final String category;
-  final Date expirationDate;
+  private int quantity;
+  private final String category;
+  private final Date expirationDate;
 
   /**
    * Constructor for the Grocery class
@@ -37,6 +37,10 @@ public class Grocery extends Model{
     this.quantity = grocery.getQuantity();
     this.category = grocery.getCategory();
     this.expirationDate = grocery.getExpirationDate();
+  }
+
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
   }
 
   /**

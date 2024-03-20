@@ -32,48 +32,53 @@ public class PantryController extends Controller {
    *
    * @param viewManager The view manager for the application.
    */
-  public PantryController(ViewManager viewManager, ShelfRegister register) {
+  public PantryController(ViewManager viewManager) {
     super(viewManager);
     this.view = new PantryView(this);
     this.viewManager.addView(Route.PANTRY, this.view);
-    this.register = register;
+    this.register = new ShelfRegister();
 
     this.view.render();
   }
 
-    public Shelf[] getShelves() {
-      Collection<Shelf> shelves = register.getRegister().values();
+  public ShelfRegister getRegister() {
+    return register;
+  }
 
-      return shelves.toArray(new Shelf[0]);
-    }
+  public Shelf[] getShelves() {
+    Collection<Shelf> shelves = register.getRegister().values();
 
-    public void addShelf(){
-        shelfCount++;
-        Shelf shelf = new Shelf("New Shelf " + shelfCount);
-        register.addShelf(shelf);
-        view.render();
-    }
+    return shelves.toArray(new Shelf[0]);
+  }
 
-    public void deleteShelf(Shelf shelf){
-        register.removeShelf(shelf);
-        view.render();
-    }
+  public void addShelf() {
+    shelfCount++;
+    Shelf shelf = new Shelf("New Shelf " + shelfCount);
+    register.addShelf(shelf);
+    view.render();
+  }
 
-    public void editShelfName(Shelf shelf, String name){
-        shelf.setName(name);
-        view.render();
+  public void deleteShelf(Shelf shelf) {
+    register.removeShelf(shelf);
+    view.render();
+  }
 
-    }
+  public void editShelfName(Shelf shelf, String name) {
+    shelf.setName(name);
+    view.render();
 
-    public Grocery[] getGroceries(Shelf shelf){
-        return shelf.getGroceries().values().toArray(new Grocery[0]);
-    }
+  }
 
-    public void addGrocery(Shelf shelf, String name, int amount, String expirationDate) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
-        Date expirationDateParsed = formatter.parse(expirationDate);
-        Grocery grocery = new Grocery(name, amount, null, expirationDateParsed);
-        shelf.addGrocery(grocery);
-        view.render();
-    }
+  public Grocery[] getGroceries(Shelf shelf) {
+    return shelf.getGroceries().values().toArray(new Grocery[0]);
+  }
+
+  public void addGrocery(Shelf shelf, String name, int amount, String expirationDate)
+      throws ParseException {
+    SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
+    Date expirationDateParsed = formatter.parse(expirationDate);
+    Grocery grocery = new Grocery(name, amount, null, expirationDateParsed);
+    shelf.addGrocery(grocery);
+    view.render();
+  }
 }

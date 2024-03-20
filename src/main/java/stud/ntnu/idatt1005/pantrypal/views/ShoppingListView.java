@@ -68,8 +68,8 @@ public class ShoppingListView extends View {
     scrollPane.setContent(shoppingList);
     shoppingList.setBackground(Background.fill(Color.WHITE));
 
-    // Add the shopping list elements to the VBox
-    for (Grocery grocery : controller.getRegister().values()) {
+    // render the scene
+    for (Grocery grocery : controller.getRegister().getRegister().values()) {
       ShoppingListElement element = new ShoppingListElement(grocery);
       element.addObserver(controller);
       shoppingList.getChildren().add(element.getPane());
