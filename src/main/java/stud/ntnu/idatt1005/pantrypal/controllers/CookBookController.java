@@ -42,18 +42,20 @@ public class CookBookController extends Controller {
     this.shoppingListRegister = shoppingListController.getRegister();
     this.shoppingListController = shoppingListController;
 
-    for (int i = 1; i <= 18; i++) {
-      GroceryRegister groceries = new GroceryRegister();
-      groceries.addGrocery(new Grocery("Grocery " + 1, 1, "category", false));
-      groceries.addGrocery(new Grocery("Grocery " + 2, 1, "category", false));
-      groceries.addGrocery(new Grocery("Grocery " + 3, 1, "category", false));
-      StepRegister steps = new StepRegister();
-      steps.addStep("Step 1");
-      steps.addStep("Step 2");
-      steps.addStep("Step 3");
-      Recipe recipe = new Recipe("Recipe " + i, groceries, steps, null);
-      recipeRegister.addRecipe(recipe);
-    }
+    addPlaceholderRecipes();
+
+//    for (int i = 1; i <= 10; i++) {
+//      GroceryRegister groceries = new GroceryRegister();
+//      groceries.addGrocery(new Grocery("Grocery " + 1, 1, "category", false));
+//      groceries.addGrocery(new Grocery("Grocery " + 2, 1, "category", false));
+//      groceries.addGrocery(new Grocery("Grocery " + 3, 1, "category", false));
+//      StepRegister steps = new StepRegister();
+//      steps.addStep("Step 1");
+//      steps.addStep("Step 2");
+//      steps.addStep("Step 3");
+//      Recipe recipe = new Recipe("Recipe " + i, groceries, steps, null);
+//      recipeRegister.addRecipe(recipe);
+//    }
     this.view = new CookbookView(this);
     this.viewManager.addView(Route.COOKBOOK, this.view);
   }
@@ -125,5 +127,52 @@ public class CookBookController extends Controller {
     }
 
     shoppingListController.rerender();
+  }
+
+  public void addPlaceholderRecipes() {
+    // Recipe 1
+    GroceryRegister groceries1 = new GroceryRegister();
+    groceries1.addGrocery(new Grocery("Tomato", 1, "Cupboard", false));
+    groceries1.addGrocery(new Grocery("Onion", 1, "Cupboard", false));
+    groceries1.addGrocery(new Grocery("Garlic", 1, "Cupboard", false));
+
+    StepRegister steps1 = new StepRegister();
+    steps1.addStep("Cut groceries");
+    steps1.addStep("Cook groceries");
+    steps1.addStep("Eat groceries");
+
+    Recipe recipe1 = new Recipe("Tomato soup", groceries1, steps1, null);
+    recipeRegister.addRecipe(recipe1);
+
+    // Recipe 2
+
+    GroceryRegister groceries2 = new GroceryRegister();
+    groceries2.addGrocery(new Grocery("Milk", 1, "Fridge", false));
+    groceries2.addGrocery(new Grocery("Porridge rice", 1, "Cupboard", false));
+    groceries2.addGrocery(new Grocery("Sugar", 1, "Cupboard", false));
+    groceries2.addGrocery(new Grocery("Cinnamon", 1, "Cupboard", false));
+
+    StepRegister steps2 = new StepRegister();
+    steps2.addStep("Boil milk");
+    steps2.addStep("Add porridge rice");
+    steps2.addStep("Add sugar and cinnamon");
+
+    Recipe recipe2 = new Recipe("Rice porridge", groceries2, steps2, null);
+    recipeRegister.addRecipe(recipe2);
+
+    // Recipe 3
+
+    GroceryRegister groceries3 = new GroceryRegister();
+    groceries3.addGrocery(new Grocery("Pasta", 1, "Cupboard", false));
+    groceries3.addGrocery(new Grocery("Tomato sauce", 1, "Cupboard", false));
+    groceries3.addGrocery(new Grocery("Cheese", 1, "Fridge", false));
+
+    StepRegister steps3 = new StepRegister();
+    steps3.addStep("Boil pasta");
+    steps3.addStep("Add tomato sauce");
+    steps3.addStep("Add cheese");
+
+    Recipe recipe3 = new Recipe("Pasta", groceries3, steps3, null);
+    recipeRegister.addRecipe(recipe3);
   }
 }
