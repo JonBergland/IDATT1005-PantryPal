@@ -137,6 +137,12 @@
     -fx-border-style: solid;
 }
 
+.shopping-list-title {
+    -fx-border-color: black;
+    -fx-border-width: 0 0 3 0;
+    -fx-border-style: solid;
+}
+
 .shopping-list-box {
     -fx-background-color: white;
     -fx-background-radius: 10px;
