@@ -31,7 +31,6 @@ public class ShoppingListElement extends GroceryListElement {
    */
   public ShoppingListElement(Grocery grocery) {
     super(grocery);
-    Objects.requireNonNull(this.getClass().getResource("/styles/components.css")).toExternalForm();
 
     // Make the checkbox
     StackPane checkBox = new StackPane();
@@ -40,6 +39,7 @@ public class ShoppingListElement extends GroceryListElement {
     checkBox.getChildren().add(centerCheckBox);
 
     HBox textBox = createTextBox(grocery.getKey(), grocery.getCategory(), grocery.getQuantity() + "stk");
+    textBox.setAlignment(Pos.CENTER);
 
     // Make the delete button
     StyledButton deleteButton = createButton("Delete", StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
