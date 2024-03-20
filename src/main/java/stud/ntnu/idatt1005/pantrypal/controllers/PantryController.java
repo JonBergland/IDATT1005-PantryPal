@@ -39,6 +39,12 @@ public class PantryController extends Controller {
     this.viewManager.addView(Route.PANTRY, this.view);
     this.register = new ShelfRegister();
 
+    // Add some shelves dummy-data to the register
+    Shelf fridge = new Shelf("Fridge");
+    Shelf cupboard = new Shelf("Cupboard");
+    this.register.addShelf(fridge);
+    this.register.addShelf(cupboard);
+
     this.view.render();
   }
 
