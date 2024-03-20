@@ -84,7 +84,7 @@ public class ShoppingListView extends View {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(true);
-    scrollPane.setMinHeight(getPrimary().getVisualBounds().getHeight() * 0.7);
+    scrollPane.setMinHeight(getPrimary().getVisualBounds().getHeight() * 0.65);
     scrollPane.setPadding(new Insets(10, 0, 0, 0));
     scrollPane.setBackground(Background.fill(Color.WHITE));
 
