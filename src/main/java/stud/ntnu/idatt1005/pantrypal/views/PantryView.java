@@ -113,6 +113,7 @@ public class PantryView extends View {
         addChildren(header, title, edit, delete);
 
         Separator separator = new Separator();
+        addClasses(separator, "shelf-separator");
 
         VBox groceryList = this.GroceryList(shelf, controller.getGroceries(shelf));
 
@@ -132,7 +133,7 @@ public class PantryView extends View {
         scrollContainer.setFitToWidth(true);
 
         for(Grocery grocery : groceries){
-            HBox groceryItem = this.groceryItem(grocery);
+            HBox groceryItem = this.groceryItem(shelf, grocery);
             addChildren(groceryList, groceryItem);
         }
 
@@ -143,7 +144,7 @@ public class PantryView extends View {
         return container;
     }
 
-    private HBox groceryItem(Grocery grocery){
+    private HBox groceryItem(Shelf shelf, Grocery grocery){
         HBox container = new HBox();
         container.setAlignment(Pos.CENTER);
         HBox.setHgrow(container, Priority.ALWAYS);
@@ -153,6 +154,7 @@ public class PantryView extends View {
         String expirationDate = formatter.format(grocery.getExpirationDate());
 
         HBox nameContainer = new HBox();
+        nameContainer.setAlignment(Pos.CENTER);
         HBox.setHgrow(nameContainer, Priority.ALWAYS);
         NodeUtils.addClasses(nameContainer, "grocery-item-text-container");
         Text name = new Text(grocery.getName());
@@ -160,6 +162,7 @@ public class PantryView extends View {
         addChildren(nameContainer, name);
 
         HBox quantityContainer = new HBox();
+        quantityContainer.setAlignment(Pos.CENTER);
         HBox.setHgrow(quantityContainer, Priority.ALWAYS);
         NodeUtils.addClasses(quantityContainer, "grocery-item-text-container");
         Text quantity = new Text(Integer.toString(grocery.getQuantity()));
@@ -167,13 +170,20 @@ public class PantryView extends View {
         addChildren(quantityContainer, quantity);
 
         HBox expirationContainer = new HBox();
+        expirationContainer.setAlignment(Pos.CENTER);
         HBox.setHgrow(expirationContainer, Priority.ALWAYS);
         NodeUtils.addClasses(expirationContainer, "grocery-item-text-container");
         Text expiration = new Text(expirationDate);
         NodeUtils.addClasses(expiration, "grocery-item-text");
         addChildren(expirationContainer, expiration);
 
-        addChildren(container, nameContainer, quantityContainer, expirationContainer);
+        StyledButton deleteButton = new StyledButton("Delete", StyledButton.Variant.DANGER);
+        deleteButton.setAlignment(Pos.CENTER);
+        deleteButton.setOnAction(e -> {
+            this.controller.deleteGrocery(shelf, grocery);
+        });
+
+        addChildren(container, nameContainer, quantityContainer, expirationContainer, deleteButton);
 
         return container;
     }
