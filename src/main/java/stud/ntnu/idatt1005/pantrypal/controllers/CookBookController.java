@@ -1,6 +1,7 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
 import java.util.LinkedHashMap;
+
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
@@ -12,13 +13,9 @@ import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
 import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 /**
- * Controller class for the CookBookView. This class is responsible for handling the logic for the
- * CookBookView.
+ * The controller for the CookBookView and RecipeView
+ * Handles the logic for the CookBookView and RecipeView, in addition to updating the view.
  */
 public class CookBookController extends Controller {
 
@@ -33,6 +30,7 @@ public class CookBookController extends Controller {
 
   /**
    * Constructor that takes in a ViewManager and sets the view for the controller
+   * and also creates basic test data for the recipe register.
    *
    * @param viewManager the ViewManager for the application
    */
@@ -60,14 +58,29 @@ public class CookBookController extends Controller {
     this.viewManager.addView(Route.COOKBOOK, this.view);
   }
 
+  /**
+   * Returns the LinkedHashMap in the recipeRegister.
+   *
+   * @return the LinkedHashMap in the recipeRegister.
+   */
   public LinkedHashMap<String, Recipe> getRecipes() {
     return this.recipeRegister.getRegister();
   }
 
+  /**
+   * Adds a recipe to the recipeRegister.
+   *
+   * @param recipe the recipe to be added to the recipeRegister.
+   */
   public void addRecipe(Recipe recipe) {
     this.recipeRegister.addRecipe(recipe);
   }
 
+  /**
+   * Opens a recipe in the RecipeView, and sets the view to RecipeView.
+   *
+   * @param recipe the recipe to be opened in the RecipeView.
+   */
   public void openRecipe(Recipe recipe) {
     this.viewManager.addView(Route.RECIPE, new RecipeView(this, recipe));
     this.viewManager.setView(Route.RECIPE);
