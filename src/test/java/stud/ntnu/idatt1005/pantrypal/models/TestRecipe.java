@@ -20,8 +20,8 @@ class TestRecipe {
 
   @BeforeAll
   static void setUp() {
-    Grocery apple = new Grocery("apple", 1, "fruit", null);
-    Grocery banana = new Grocery("banana", 2, "fruit", null);
+    Grocery apple = new Grocery("apple", 1, "Fridge", false);
+    Grocery banana = new Grocery("banana", 2, "Fridge", false);
     groceries = new GroceryRegister();
     groceries.addGrocery(apple);
     groceries.addGrocery(banana);
