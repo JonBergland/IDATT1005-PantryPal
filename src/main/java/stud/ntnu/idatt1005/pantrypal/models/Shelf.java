@@ -2,7 +2,7 @@ package stud.ntnu.idatt1005.pantrypal.models;
 
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * This class represents a Shelf in the PantryPal application.
@@ -17,6 +17,7 @@ public class Shelf extends Model {
      * @param name the name of the shelf
      */
     public Shelf(String name){
+        super(name); // Calls the constructor of the parent class (Model)
         this.name = name;
         this.groceryRegister = new GroceryRegister();
     }
@@ -63,9 +64,10 @@ public class Shelf extends Model {
 
     /**
      * Gets the map of groceries in the register of the shelf
+     *
      * @return a HashMap of groceries on the shelf
      */
-    public HashMap<String, Grocery> getGroceries() {
+    public LinkedHashMap<String, Grocery> getGroceries() {
         return groceryRegister.getRegister();
     }
 }
