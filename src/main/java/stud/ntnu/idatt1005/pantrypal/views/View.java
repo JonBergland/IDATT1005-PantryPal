@@ -12,11 +12,15 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.controllers.Controller;
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.components.NavBar;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -25,10 +29,15 @@ import java.util.Objects;
  * provides a base structure for other views. It has two types of views: HOME and DEFAULT. The HOME
  * view includes a title and a navigation bar. The DEFAULT view only includes a navigation bar.
  */
-public class View extends Scene {
+public class View extends Scene implements Observable {
   private final Route route;
   private final Controller controller;
   private final BorderPane root;
+
+  /**
+   * The list of observers that are observing this view
+   */
+  protected final List<Observer> observers = new ArrayList<>();
 
   /**
    * Constructor for the View class. Initializes the view based on the viewType.
@@ -97,5 +106,36 @@ public class View extends Scene {
    */
   public BorderPane getBorderPane() {
     return root;
+  }
+
+  /**
+   * Adds an observer to the observable
+   *
+   * @param observer the observer to be added
+   */
+  @Override
+  public void addObserver(Observer observer) {
+    observers.add(observer);
+  }
+
+  /**
+   * Removes an observer from the observable
+   *
+   * @param observer the observer to be removed
+   */
+  @Override
+  public void removeObserver(Observer observer) {
+    observers.remove(observer);
+  }
+
+  /**
+   * Notifies the observers with the given enum and grocery.
+   *
+   * @param buttonEnum the enum to be notified.
+   */
+  protected void notifyObservers(ButtonEnum buttonEnum) {
+    for (Observer observer : observers) {
+      observer.update(buttonEnum);
+    }
   }
 }
