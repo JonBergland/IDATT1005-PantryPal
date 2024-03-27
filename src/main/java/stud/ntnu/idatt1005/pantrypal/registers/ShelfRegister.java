@@ -3,8 +3,6 @@ package stud.ntnu.idatt1005.pantrypal.registers;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Shelf;
 
-import java.util.LinkedHashMap;
-
 /**
  * This class represents a register of shelves in the PantryPal application. It extends the Register
  * class with type parameter Shelf. It contains methods for adding and removing shelves, and getting
@@ -26,6 +24,15 @@ public class ShelfRegister extends Register<Shelf> {
    */
   protected String getErrorMessage() {
     return "Shelf does not exist in register";
+  }
+
+  /**
+   * Returns a shelf from the register.
+   * @param key the key of the shelf to be retrieved.
+   * @return the Shelf object with the specified key.
+   */
+  public Shelf getShelf(String key) {
+    return this.getModel(key);
   }
 
   /**
