@@ -54,8 +54,8 @@ public class PantryPal extends Application {
 
     // Init controllers
     homeController = new HomeController(viewManager);
-    shoppingListController = new ShoppingListController(viewManager);
     pantryController = new PantryController(viewManager);
+    shoppingListController = new ShoppingListController(viewManager, pantryController);
     cookBookController = new CookBookController(viewManager, shoppingListController, pantryController);
     addRecipeController = new AddRecipeController(viewManager);
     logInController = new LogInController(viewManager);
