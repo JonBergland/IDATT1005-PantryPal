@@ -7,5 +7,6 @@ public enum ButtonEnum {
   ADD,
   REMOVE,
   EDIT,
-  SWITCH_PAGE
+  SWITCH_PAGE,
+  ADD_TO_PANTRY
 }
