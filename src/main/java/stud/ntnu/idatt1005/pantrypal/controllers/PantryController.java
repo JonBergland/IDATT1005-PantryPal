@@ -94,6 +94,36 @@ public class PantryController extends Controller {
     view.render();
   }
 
+  /**
+   * Adds a grocery item to the shelf.
+   * If the shelf does not exist in the register, a new shelf is created
+   * and the grocery item is added to the shelf.
+   * @param shelfName the name of the shelf
+   * @param name the name of the grocery item
+   * @param amount the amount of the grocery item
+   */
+  public void addGrocery(String shelfName, String name, int amount) {
+    Shelf shelf = null;
+    try {
+      shelf = register.getShelf(shelfName);
+    } catch (IllegalArgumentException e) {
+      shelf = new Shelf(shelfName);
+    } finally {
+      //TODO Make name of models (ie. Shelf, Grocery, etc.) lowercase when used as keys in registers
+      if (shelf == null) {
+        shelf = new Shelf(shelfName);
+      }
+      register.addShelf(shelf);
+      addGrocery(shelf, name, amount);
+    }
+  }
+
+  /**
+   * Removes the grocery item from the shelf.
+   * If the shelf does not exist in the register, an IllegalArgumentException is thrown.
+   * @param shelf the shelf from the grocery is to be removed
+   * @param grocery the grocery item to be removed
+   */
   public void deleteGrocery(Shelf shelf, Grocery grocery) {
     shelf.removeGrocery(grocery);
     view.render();
