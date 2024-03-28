@@ -81,13 +81,16 @@ public class ShoppingListController extends Controller implements Observer {
     if (grocery == null) {
       throw new IllegalArgumentException("Grocery cannot be null");
     }
-    if (register.getGrocery(grocery.getName()) != null) {
-      int oldAmount = register.getGrocery(grocery.getName()).getQuantity();
-      register.getGrocery(grocery.getName()).setQuantity(oldAmount + grocery.getQuantity());
+    try {
+      if (register.getGrocery(grocery.getName()) != null) {
+        int oldAmount = register.getGrocery(grocery.getName()).getQuantity();
+        register.getGrocery(grocery.getName()).setQuantity(oldAmount + grocery.getQuantity());
 
-    } else {
+      }
+    } catch (IllegalArgumentException e) {
       register.addGrocery(grocery);
     }
+
   }
 
   public void rerender(){
