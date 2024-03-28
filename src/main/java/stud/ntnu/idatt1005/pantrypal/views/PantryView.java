@@ -17,8 +17,6 @@ import stud.ntnu.idatt1005.pantrypal.models.Shelf;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
-import java.text.SimpleDateFormat;
-
 import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.addClasses;
 import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.addChildren;
 
@@ -105,7 +103,7 @@ public class PantryView extends View {
                 this.controller.editShelfName(shelf, title.getText());
             }
         });
-        StyledButton delete = new StyledButton("Delete", StyledButton.Variant.DANGER);
+        StyledButton delete = new StyledButton("X", StyledButton.Variant.DELETE, StyledButton.Size.LARGE);
         delete.setStyle("-fx-min-width: 80px;");
         delete.setOnAction(e -> {
             this.controller.deleteShelf(shelf);
@@ -167,7 +165,7 @@ public class PantryView extends View {
         NodeUtils.addClasses(quantity, "grocery-item-text");
         addChildren(quantityContainer, quantity);
 
-        StyledButton deleteButton = new StyledButton("Delete", StyledButton.Variant.DANGER);
+        StyledButton deleteButton = new StyledButton("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM);
         deleteButton.setAlignment(Pos.CENTER);
         deleteButton.setOnAction(e -> {
             this.controller.deleteGrocery(shelf, grocery);
