@@ -64,6 +64,9 @@ public class StyledButton extends Button {
     if (variant == Variant.BLACK) {
       this.addStyleClass("button-black");
     }
+    if (variant == Variant.DElETE){
+      this.addStyleClass("button-delete");
+    }
   }
 
   /**
