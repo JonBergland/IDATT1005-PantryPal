@@ -40,7 +40,7 @@ public class ShoppingListElement extends GroceryListElement {
     textBox.setAlignment(Pos.CENTER);
 
     // Make the delete button
-    StyledButton deleteButton = createButton("X", StyledButton.Variant.DElETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
+    StyledButton deleteButton = createButton("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
 
     // Add the checkbox, text and delete button to a BorderPane
     this.groceryInfo = new BorderPane();
