@@ -12,7 +12,7 @@ public class StyledButton extends Button {
    * Enum for the different variants of the button.
    */
   public enum Variant {
-    SOLID, OUTLINE, DANGER, BLACK, DElETE
+    SOLID, OUTLINE, DANGER, BLACK, DELETE
   }
 
   /**
@@ -64,7 +64,7 @@ public class StyledButton extends Button {
     if (variant == Variant.BLACK) {
       this.addStyleClass("button-black");
     }
-    if (variant == Variant.DElETE){
+    if (variant == Variant.DELETE){
       this.addStyleClass("button-delete");
     }
   }
@@ -119,7 +119,7 @@ public class StyledButton extends Button {
     if (variant == Variant.BLACK) {
       this.addStyleClass("button-black");
     }
-    if (variant == Variant.DElETE){
+    if (variant == Variant.DELETE){
       this.addStyleClass("button-delete");
     }
   }
