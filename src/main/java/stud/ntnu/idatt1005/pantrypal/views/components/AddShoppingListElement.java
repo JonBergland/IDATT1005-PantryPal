@@ -8,7 +8,6 @@ import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class AddShoppingListElement extends HBox implements Observable {
     ArrayList<Observer> observers = new ArrayList<>();
@@ -36,7 +35,7 @@ public class AddShoppingListElement extends HBox implements Observable {
                 if (quantity.getText().isEmpty()) {
                     quantity.setText("1");
                 }
-                notifyObservers(ButtonEnum.ADD, name.getText(), Integer.parseInt(quantity.getText()), shelf.getText(), false);
+                notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST, name.getText(), Integer.parseInt(quantity.getText()), shelf.getText(), false);
                 name.clear();
                 shelf.clear();
                 quantity.clear();
