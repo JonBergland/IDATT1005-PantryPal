@@ -133,7 +133,7 @@ public class PantryController extends Controller {
   public void addGrocery(String shelfName, String name, int amount) {
     Shelf shelf = null;
     try {
-      shelf = register.getShelf(shelfName);
+      shelf = register.getShelfByName(shelfName);
     } catch (IllegalArgumentException e) {
       shelf = new Shelf(shelfName);
     } finally {
