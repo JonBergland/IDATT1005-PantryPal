@@ -2,13 +2,17 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Objects;
+
+import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.addClasses;
 
 public class AddShoppingListElement extends HBox implements Observable {
     ArrayList<Observer> observers = new ArrayList<>();
@@ -18,17 +22,33 @@ public class AddShoppingListElement extends HBox implements Observable {
      */
     public AddShoppingListElement() {
         super();
-        this.getStyleClass().add("add-shopping-list-element");
+        this.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/pantry.css")).toExternalForm());
         this.setAlignment(Pos.CENTER);
+        NodeUtils.addClasses(this, "add-grocery-container");
 
         StyledTextField name = new StyledTextField("Name");
         StyledTextField shelf = new StyledTextField("Shelf");
         StyledTextField quantity = new StyledTextField("Quantity");
-        StyledButton add = new StyledButton("Add", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
+        StyledButton add = getStyledButton(name, shelf, quantity);
 
-        name.setMaxWidth(200);
-        shelf.setMaxWidth(200);
-        quantity.setMaxWidth(100);
+        this.getChildren().addAll(
+            styleText(name, 200),
+            styleText(shelf, 200),
+            styleText(quantity, 100),
+            add);
+    }
+
+    /**
+     * Creates a styled button with the given text fields and returns it.
+     * The button is styled with the add-grocery-button class.
+     *
+     * @param name the name text field
+     * @param shelf the shelf text field
+     * @param quantity the quantity text field
+     * @return a styled button
+     */
+    private StyledButton getStyledButton(StyledTextField name, StyledTextField shelf, StyledTextField quantity) {
+        StyledButton add = new StyledButton("Add", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
 
         // Set the action for the add button
         add.setOnAction(e -> {
@@ -42,8 +62,27 @@ public class AddShoppingListElement extends HBox implements Observable {
                 quantity.clear();
             }
         });
+        return add;
+    }
 
-        this.getChildren().addAll(name, shelf, quantity, add);
+    /**
+     * Styles the text field given as parameter and returns
+     * a StackPane with the text field.
+     * The text field is styled with the add-grocery-textfield class
+     * and has a max width of the given width.
+     *
+     * @param textField the text field to be styled
+     * @param width the width of the text field
+     * @return A Stackpane with the styled text field
+     */
+    private StackPane styleText(StyledTextField textField, int width) {
+        addClasses(textField, "add-grocery-textfield");
+        textField.setMaxWidth(width);
+
+        StackPane stackPane = new StackPane(textField);
+        stackPane.setAlignment(Pos.CENTER);
+
+        return stackPane;
     }
 
     /**
