@@ -78,7 +78,7 @@ public class ShoppingListController extends Controller implements Observer {
       throw new IllegalArgumentException("Object is not of type Grocery");
     }
     switch (buttonEnum) {
-      case ADD:
+      case ADD_TO_SHOPPING_LIST:
         register.addGrocery(grocery);
         rerender();
         break;
