@@ -8,8 +8,6 @@ import javafx.scene.layout.StackPane;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 
-import java.util.Objects;
-
 /**
  * Class representing a shopping list element. This class extends the GroceryListElement class
  * and provides a visual representation of a grocery item in the shopping list.
@@ -42,7 +40,7 @@ public class ShoppingListElement extends GroceryListElement {
     textBox.setAlignment(Pos.CENTER);
 
     // Make the delete button
-    StyledButton deleteButton = createButton("Delete", StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
+    StyledButton deleteButton = createButton("X", StyledButton.Variant.DElETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
 
     // Add the checkbox, text and delete button to a BorderPane
     this.groceryInfo = new BorderPane();
