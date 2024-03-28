@@ -65,6 +65,12 @@
     -fx-text-fill: #FFF;
 }
 
+.button-delete {
+    -fx-background-color: #FFF;
+    -fx-text-fill: #000;
+
+}
+
 .favorite-button {
     -fx-background-color: #8BC34A;
     -fx-background-radius: 10px;
