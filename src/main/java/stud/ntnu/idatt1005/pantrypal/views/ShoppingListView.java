@@ -93,19 +93,14 @@ public class ShoppingListView extends View {
     scrollPane.setContent(shoppingList);
     shoppingList.setBackground(Background.fill(Color.WHITE));
 
-    // Create the add shopping list element
-    AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
-
     // render the scene
-    Observer shoppingListObserver = getShoppingListObserver();
-    if (shoppingListObserver != null) {
       for (Grocery grocery : register.getRegister().values()) {
         ShoppingListElement element = new ShoppingListElement(grocery);
-        element.addObserver(shoppingListObserver);
+        for (Observer observer : observers) {
+          element.addObserver(observer);
+        }
         shoppingList.getChildren().add(element.getPane());
       }
-      addShoppingListElement.addObserver(shoppingListObserver);
-    }
 
     scrollPane.setContent(shoppingList);
     shoppingListBox.getChildren().add(scrollPane);
@@ -117,7 +112,13 @@ public class ShoppingListView extends View {
     addToPantry.setMinWidth(getPrimary().getVisualBounds().getWidth()* 0.5);
     shoppingListBox.getChildren().add(addToPantry);
 
-    // Add the add shopping list element to the VBox
+    // Create the add shopping list element
+    AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
+    for (Observer observer : observers) {
+      addShoppingListElement.addObserver(observer);
+    }
+
+    // Add the add shopping list element to the ShoppingListBox
     addShoppingListElement.setMaxHeight(50);
     addShoppingListElement.setAlignment(Pos.BOTTOM_CENTER);
     shoppingListBox.getChildren().add(addShoppingListElement);
@@ -126,14 +127,5 @@ public class ShoppingListView extends View {
     shoppingListBox.setAlignment(Pos.CENTER);
 
     getBorderPane().setCenter(shoppingListBox);
-  }
-
-  private Observer getShoppingListObserver() {
-    for (Observer observer : observers) {
-      if (observer instanceof ShoppingListController) {
-        return observer;
-      }
-    }
-    return null;
   }
 }
