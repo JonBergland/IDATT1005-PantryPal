@@ -1,7 +1,5 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
-import java.util.Map;
-
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -66,7 +64,7 @@ public class ShoppingListController extends Controller implements Observer {
     }
     switch (buttonEnum) {
       case ADD:
-        register.addGrocery(grocery);
+        addGrocery(grocery);
         view.render();
         break;
       case REMOVE:
@@ -76,6 +74,19 @@ public class ShoppingListController extends Controller implements Observer {
       default:
         System.out.println("Button not supported by class");
         break;
+    }
+  }
+
+  private void addGrocery(Grocery grocery){
+    if (grocery == null) {
+      throw new IllegalArgumentException("Grocery cannot be null");
+    }
+    if (register.getGrocery(grocery.getName()) != null) {
+      int oldAmount = register.getGrocery(grocery.getName()).getQuantity();
+      register.getGrocery(grocery.getName()).setQuantity(oldAmount + grocery.getQuantity());
+
+    } else {
+      register.addGrocery(grocery);
     }
   }
 
