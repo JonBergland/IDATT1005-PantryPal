@@ -27,12 +27,17 @@ public class ShelfRegister extends Register<Shelf> {
   }
 
   /**
-   * Returns a shelf from the register.
-   * @param key the key of the shelf to be retrieved.
-   * @return the Shelf object with the specified key.
+   * Returns the shelf from the register that corresponds with name given.
+   * @param nameOfShelf the name of the shelf to be retrieved.
+   * @return the Shelf object.
    */
-  public Shelf getShelf(String key) {
-    return this.getModel(key);
+  public Shelf getShelfByName(String nameOfShelf) {
+    for (Shelf shelf : this.getRegister().values()) {
+      if (shelf.getName().equals(nameOfShelf)) {
+        return shelf;
+      }
+    }
+    return null;
   }
 
   /**
