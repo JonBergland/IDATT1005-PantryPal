@@ -1,12 +1,12 @@
 /* JavaFX inline style for pantry background */
-.pantry-background {
+.cookbook-background {
     -fx-background-color: #7EB83D;
     -fx-border-width: 0 2 0 0;
     -fx-border-color: black;
 }
 
 /* JavaFX inline style for cookbook background */
-.cookbook-background {
+.pantry-background {
     -fx-background-color: #DDEEDF;
     -fx-border-width: 0 0 2 0;
     -fx-border-color: black;

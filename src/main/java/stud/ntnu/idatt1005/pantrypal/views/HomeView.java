@@ -89,39 +89,19 @@ public class HomeView extends View {
    * Initializes the HomeView by setting up the layout and styling.
    */
   private void initializeHomeView() {
-    setPantryBox();
     setCookBookBox();
+    setPantryBox();
     setShoppingListBox();
     setLayout();
     applyHeaderText();
     applySubHeaderText();
     applyButtons();
   }
-
-  /**
-   * Sets the "Pantry" section box.
-   * The box contains the pantryText, pantryUndertext and pantryButton.
-   * The box is styled and added to the left side of the view.
-   * The box is set to take up 50% of the width and 100% of the height of the view.
-   */
-  private void setPantryBox() {
-    VBox pantryBox = new VBox(pantryText, pantryUndertext, pantryButton);
-    pantryBox.setAlignment(Pos.TOP_LEFT);
-    pantryBox.setPadding(new Insets(0, 0, 0, 60));
-    pantryBox.setSpacing(5);
-    pantryUndertext.setWrappingWidth(300);
-    homeViewPantryBackground.getChildren().add(pantryBox);
-    homeViewPantryBackground.setAlignment(Pos.CENTER_LEFT);
-    homeViewPantryBackground.getStyleClass().add("pantry-background");
-    setBoxSize(homeViewPantryBackground, 0.5, 1.0);
-    getBorderPane().setLeft(homeViewPantryBackground);
-  }
-
   /**
    * Sets the "Cook Book" section box.
    * The box contains the cookBookText, cookBookUndertext and cookBookButton.
    * The box is styled and added to the right side of the view.
-   * The box is set to take up 50% of the width and 50% of the height of the view.
+   * The box is set to take up 50% of the width and 100% of the height of the view.
    */
   private void setCookBookBox() {
     VBox recipeBox = new VBox(cookBookText, cookBookUndertext, cookBookButton);
@@ -132,7 +112,26 @@ public class HomeView extends View {
     homeViewCookBookBackground.getChildren().add(recipeBox);
     homeViewCookBookBackground.setAlignment(Pos.CENTER_LEFT);
     homeViewCookBookBackground.getStyleClass().add("cookbook-background");
-    setBoxSize(homeViewCookBookBackground, 0.5, 0.5);
+    setBoxSize(homeViewCookBookBackground, 0.5, 1.0);
+    getBorderPane().setLeft(homeViewCookBookBackground);
+  }
+
+  /**
+   * Sets the "Pantry" section box.
+   * The box contains the pantryText, pantryUndertext and pantryButton.
+   * The box is styled and added to the left side of the view.
+   * The box is set to take up 50% of the width and 50% of the height of the view.
+   */
+  private void setPantryBox() {
+    VBox pantryBox = new VBox(pantryText, pantryUndertext, pantryButton);
+    pantryBox.setAlignment(Pos.TOP_LEFT);
+    pantryBox.setPadding(new Insets(0, 0, 0, 60));
+    pantryBox.setSpacing(5);
+    pantryUndertext.setWrappingWidth(300);
+    homeViewPantryBackground.getChildren().add(pantryBox);
+    homeViewPantryBackground.setAlignment(Pos.CENTER_LEFT);
+    homeViewPantryBackground.getStyleClass().add("pantry-background");
+    setBoxSize(homeViewPantryBackground, 0.5, 0.5);
   }
 
   /**
@@ -220,7 +219,7 @@ public class HomeView extends View {
    * The layout contains the "Pantry", "Cook Book" and "Shopping List" sections.
    */
   private void setLayout() {
-    VBox rightSide = new VBox(homeViewCookBookBackground, homeViewShoppingListBackground);
+    VBox rightSide = new VBox(homeViewPantryBackground, homeViewShoppingListBackground);
     getBorderPane().setRight(rightSide);
   }
 }
