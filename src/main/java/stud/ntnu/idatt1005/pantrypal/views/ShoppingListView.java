@@ -8,9 +8,12 @@ import javafx.scene.text.Text;
 
 
 import javafx.scene.paint.Color;
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
+import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.components.AddShoppingListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.ShoppingListElement;
@@ -42,7 +45,7 @@ public class ShoppingListView extends View {
   public ShoppingListView(ShoppingListController controller) {
     super(controller, Route.SHOPPING_LIST, "/styles/shopping-list.css");
     this.controller = controller;
-    render();
+    //render();
   }
 
   /**
@@ -50,7 +53,7 @@ public class ShoppingListView extends View {
    * VBox to hold the shopping list elements. It then adds the shopping list elements to the VBox,
    * and finally adds the add shopping list element to the VBox.
    */
-  public void render() {
+  public void render(GroceryRegister register) {
     // Create the overarching VBox
     VBox shoppingListBox = new VBox();
     shoppingListBox.setMaxWidth(getPrimary().getVisualBounds().getWidth() * 0.5);
@@ -91,25 +94,31 @@ public class ShoppingListView extends View {
     shoppingList.setBackground(Background.fill(Color.WHITE));
 
     // render the scene
-    for (Grocery grocery : controller.getRegister().getRegister().values()) {
-      ShoppingListElement element = new ShoppingListElement(grocery);
-      element.addObserver(controller);
-      shoppingList.getChildren().add(element.getPane());
-    }
+      for (Grocery grocery : register.getRegister().values()) {
+        ShoppingListElement element = new ShoppingListElement(grocery);
+        for (Observer observer : observers) {
+          element.addObserver(observer);
+        }
+        shoppingList.getChildren().add(element.getPane());
+      }
+
     scrollPane.setContent(shoppingList);
     shoppingListBox.getChildren().add(scrollPane);
 
     // Add a button to add to pantry
-
     StyledButton addToPantry = new StyledButton("Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
+    addToPantry.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_PANTRY));
 
     addToPantry.setMinWidth(getPrimary().getVisualBounds().getWidth()* 0.5);
     shoppingListBox.getChildren().add(addToPantry);
 
-
-    // Add the add shopping list element to the VBox
+    // Create the add shopping list element
     AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
-    addShoppingListElement.addObserver(controller);
+    for (Observer observer : observers) {
+      addShoppingListElement.addObserver(observer);
+    }
+
+    // Add the add shopping list element to the ShoppingListBox
     addShoppingListElement.setMaxHeight(50);
     addShoppingListElement.setAlignment(Pos.BOTTOM_CENTER);
     shoppingListBox.getChildren().add(addShoppingListElement);

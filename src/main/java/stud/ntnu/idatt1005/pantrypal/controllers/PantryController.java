@@ -8,10 +8,7 @@ import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.PantryView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
 
 /**
  * Controller for the PantryView. This class is responsible for handling the logic for the
@@ -48,16 +45,27 @@ public class PantryController extends Controller {
     this.view.render();
   }
 
+  /**
+   * Returns the register in the controller. In this case, the register is a ShelfRegister.
+   * @return the register in the controller
+   */
   public ShelfRegister getRegister() {
     return register;
   }
 
+  /**
+   * Returns all shelves in the register.
+   * @return an array of Shelf objects
+   */
   public Shelf[] getShelves() {
     Collection<Shelf> shelves = register.getRegister().values();
 
     return shelves.toArray(new Shelf[0]);
   }
 
+  /**
+   * Adds a shelf to the register.
+   */
   public void addShelf() {
     shelfCount++;
     Shelf shelf = new Shelf("New Shelf " + shelfCount);
@@ -65,23 +73,43 @@ public class PantryController extends Controller {
     view.render();
   }
 
+  /**
+   * Deletes the specified shelf.
+   * @param shelf the shelf to delete
+   */
   public void deleteShelf(Shelf shelf) {
     register.removeShelf(shelf);
     view.render();
   }
 
+  /**
+   * Edits the name of the specified shelf.
+   * @param shelf the shelf to edit
+   * @param name the new name of the shelf
+   */
   public void editShelfName(Shelf shelf, String name) {
     shelf.setName(name);
     view.render();
 
   }
 
+  /**
+   * Returns all groceries from the specified shelf.
+   * @param shelf the shelf to get the groceries from
+   * @return an array of Grocery objects
+   */
   public Grocery[] getGroceries(Shelf shelf) {
     return shelf.getGroceries().values().toArray(new Grocery[0]);
   }
 
-  public void addGrocery(Shelf shelf, String name, int amount)
-      throws ParseException {
+  /**
+   * Adds a grocery item to the shelf.
+   * If the grocery item already exists in the shelf, the quantity of the grocery item is updated.
+   * @param shelf the shelf to add the grocery item to
+   * @param name the name of the grocery item
+   * @param amount the amount of the grocery item
+   */
+  public void addGrocery(Shelf shelf, String name, int amount) {
     if(shelf.getGroceries().containsKey(name)) {
       GroceryRegister groceryRegister = shelf.getGroceryRegister();
 
@@ -94,6 +122,36 @@ public class PantryController extends Controller {
     view.render();
   }
 
+  /**
+   * Adds a grocery item to the shelf.
+   * If the shelf does not exist in the register, a new shelf is created
+   * and the grocery item is added to the shelf.
+   * @param shelfName the name of the shelf
+   * @param name the name of the grocery item
+   * @param amount the amount of the grocery item
+   */
+  public void addGrocery(String shelfName, String name, int amount) {
+    Shelf shelf = null;
+    try {
+      shelf = register.getShelfByName(shelfName);
+    } catch (IllegalArgumentException e) {
+      shelf = new Shelf(shelfName);
+    } finally {
+      //TODO Make name of models (ie. Shelf, Grocery, etc.) lowercase when used as keys in registers
+      if (shelf == null) {
+        shelf = new Shelf(shelfName);
+      }
+      register.addShelf(shelf);
+      addGrocery(shelf, name, amount);
+    }
+  }
+
+  /**
+   * Removes the grocery item from the shelf.
+   * If the shelf does not exist in the register, an IllegalArgumentException is thrown.
+   * @param shelf the shelf from the grocery is to be removed
+   * @param grocery the grocery item to be removed
+   */
   public void deleteGrocery(Shelf shelf, Grocery grocery) {
     shelf.removeGrocery(grocery);
     view.render();

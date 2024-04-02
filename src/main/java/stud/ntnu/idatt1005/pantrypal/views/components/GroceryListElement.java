@@ -146,7 +146,7 @@ public abstract class GroceryListElement implements Observable {
    *
    * @param buttonEnum the enum to be notified.
    */
-  public void notifyObservers(ButtonEnum buttonEnum) {
+  protected void notifyObservers(ButtonEnum buttonEnum) {
     for (Observer observer : observers) {
       observer.update(buttonEnum, this.grocery);
     }

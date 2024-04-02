@@ -32,7 +32,11 @@ public class ShoppingListElement extends GroceryListElement {
 
     // Make the checkbox
     StackPane checkBox = new StackPane();
-    StyledCheckBox centerCheckBox = new StyledCheckBox("", false);
+    StyledCheckBox centerCheckBox = new StyledCheckBox("", grocery.getChecked());
+    centerCheckBox.setOnAction(event ->
+      grocery.setChecked(centerCheckBox.isSelected())
+    );
+
     centerCheckBox.setAlignment(Pos.CENTER);
     checkBox.getChildren().add(centerCheckBox);
 
