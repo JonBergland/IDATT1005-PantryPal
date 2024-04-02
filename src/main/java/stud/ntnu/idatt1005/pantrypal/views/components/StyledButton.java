@@ -1,17 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
-import javafx.geometry.Insets;
 import javafx.scene.control.Button;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 
 /**
  * A class that extends Button and creates a styled button.
@@ -23,7 +12,7 @@ public class StyledButton extends Button {
    * Enum for the different variants of the button.
    */
   public enum Variant {
-    SOLID, OUTLINE, DANGER, BLACK
+    SOLID, OUTLINE, DANGER, BLACK, DELETE
   }
 
   /**
@@ -74,6 +63,9 @@ public class StyledButton extends Button {
     }
     if (variant == Variant.BLACK) {
       this.addStyleClass("button-black");
+    }
+    if (variant == Variant.DELETE){
+      this.addStyleClass("button-delete");
     }
   }
 
@@ -126,6 +118,9 @@ public class StyledButton extends Button {
     }
     if (variant == Variant.BLACK) {
       this.addStyleClass("button-black");
+    }
+    if (variant == Variant.DELETE){
+      this.addStyleClass("button-delete");
     }
   }
 }
