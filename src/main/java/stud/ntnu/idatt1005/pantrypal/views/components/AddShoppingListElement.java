@@ -10,6 +10,7 @@ import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AddShoppingListElement extends HBox implements Observable {
     ArrayList<Observer> observers = new ArrayList<>();
@@ -70,10 +71,10 @@ public class AddShoppingListElement extends HBox implements Observable {
      *
      * @param textField the text field to be styled
      * @param width the width of the text field
-     * @return A Stackpane with the styled text field
+     * @return A Stack pane with the styled text field
      */
     private StackPane styleText(StyledTextField textField, int width) {
-        addClasses(textField, "add-grocery-textfield");
+        NodeUtils.addClasses(textField, "add-grocery-textfield");
         textField.setMaxWidth(width);
 
         StackPane stackPane = new StackPane(textField);
