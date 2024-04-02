@@ -5,6 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -161,9 +163,11 @@ public class PantryView extends View {
         quantityContainer.setAlignment(Pos.CENTER);
         HBox.setHgrow(quantityContainer, Priority.ALWAYS);
         NodeUtils.addClasses(quantityContainer, "grocery-item-text-container");
-        Text quantity = new Text(Integer.toString(grocery.getQuantity()));
-        NodeUtils.addClasses(quantity, "grocery-item-text");
-        addChildren(quantityContainer, quantity);
+        Spinner<Integer> spinner = createSpinner(grocery);
+        spinner.setMaxWidth(100);
+        spinner.setMaxHeight(50);
+        NodeUtils.addClasses(spinner, "grocery-item-text");
+        addChildren(quantityContainer, spinner);
 
         StyledButton deleteButton = new StyledButton("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM);
         deleteButton.setAlignment(Pos.CENTER);
@@ -203,5 +207,21 @@ public class PantryView extends View {
         addChildren(container, groceryName, groceryQuantity, addGroceryButton);
 
         return container;
+    }
+
+    protected Spinner<Integer> createSpinner(Grocery grocery) {
+        Spinner<Integer> spinner = new Spinner<>();
+
+        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, grocery.getQuantity());
+
+        valueFactory.setAmountToStepBy(1);
+
+        valueFactory.valueProperty().addListener((observable, oldValue, newValue) ->
+            grocery.setQuantity(newValue)
+        );
+
+        spinner.setValueFactory(valueFactory);
+        return spinner;
     }
 }

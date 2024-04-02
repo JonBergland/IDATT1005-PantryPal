@@ -2,6 +2,8 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -46,6 +48,10 @@ public abstract class GroceryListElement implements Observable {
    */
   public abstract Pane getPane();
 
+  public Grocery getGrocery() {
+    return grocery;
+  }
+
   /**
    * Creates a text element with the specified text.
    *
@@ -59,21 +65,19 @@ public abstract class GroceryListElement implements Observable {
   }
 
   /**
-   * Creates a HBox-pane with the grocery name, category and amount.
+   * Creates a HBox-pane with the grocery name, category and a spinner
+   * representing the amount of the grocery.
    *
    * @param name      the name of the grocery.
    * @param category  the category of the grocery.
-   * @param amount    the amount of the grocery.
    * @return the HBox containing the grocery name, category and amount.
    */
-  protected HBox createTextBox(String name, String category, String amount) {
+  protected HBox createTextBox(String name, String category) {
     Text groceryName = createText(name);
     Text groceryCategory = createText(category);
-    Text groceryAmount = createText(amount);
 
     groceryName.setWrappingWidth(100);
     groceryCategory.setWrappingWidth(100);
-    groceryAmount.setWrappingWidth(100);
 
     StackPane stackGroceryName = new StackPane(groceryName);
     stackGroceryName.setPadding(new Insets(0, 0, 0, 10));
@@ -81,11 +85,12 @@ public abstract class GroceryListElement implements Observable {
     StackPane stackGroceryCategory = new StackPane(groceryCategory);
     stackGroceryCategory.setPadding(new Insets(0, 0, 0, 20));
 
-    StackPane stackGroceryAmount = new StackPane(groceryAmount);
-    stackGroceryAmount.setPadding(new Insets(0, 10, 0, 10));
+    Spinner<Integer> spinner = createSpinner();
+    spinner.setMaxWidth(100);
+    spinner.setMaxHeight(50);
 
     // Add the text to a HBox
-    HBox textBox = new HBox(stackGroceryName, stackGroceryCategory, stackGroceryAmount);
+    HBox textBox = new HBox(stackGroceryName, stackGroceryCategory, spinner);
     textBox.setAlignment(Pos.CENTER_RIGHT);
     return textBox;
   }
@@ -106,6 +111,24 @@ public abstract class GroceryListElement implements Observable {
     StyledButton newButton = new StyledButton(text, variant, size);
     newButton.setOnAction(e -> notifyObservers(buttonEnum));
     return newButton;
+  }
+
+  protected Spinner<Integer> createSpinner() {
+    Spinner<Integer> spinner = new Spinner<>();
+
+    final Grocery finalGrocery = this.grocery;
+
+    SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
+        new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, finalGrocery.getQuantity());
+
+    valueFactory.setAmountToStepBy(1);
+
+    valueFactory.valueProperty().addListener((observable, oldValue, newValue) ->
+      finalGrocery.setQuantity(newValue)
+    );
+
+    spinner.setValueFactory(valueFactory);
+    return spinner;
   }
 
   @Override
