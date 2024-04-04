@@ -86,10 +86,10 @@ public class Recipe extends Model {
   }
 
   /**
-   * Alter the isFavorite boolean to the opposite. If isFavorite is true, it will be set to false,
+   * Toggle the isFavorite boolean to the opposite. If isFavorite is true, it will be set to false,
    * and if isFavorite is false, it will be set to true.
    */
-  public void alterIsFavorite() {
+  public void toggleIsFavorite() {
     isFavorite = !isFavorite;
   }
 }

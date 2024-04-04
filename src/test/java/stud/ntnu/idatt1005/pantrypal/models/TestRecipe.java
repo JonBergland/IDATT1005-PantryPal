@@ -68,8 +68,8 @@ class TestRecipe {
 
   @Test
   @DisplayName("Test alterIsFavorite()")
-  void testAlterIsFavorite() {
-    recipe.alterIsFavorite();
+  void testToggleIsFavorite() {
+    recipe.toggleIsFavorite();
     assertTrue(recipe.getIsFavorite());
   }
 }
