@@ -1,6 +1,7 @@
 package stud.ntnu.idatt1005.pantrypal.models;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
@@ -9,7 +10,7 @@ import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestRecipe {
 
@@ -18,8 +19,8 @@ class TestRecipe {
   static StepRegister steps;
 
 
-  @BeforeAll
-  static void setUp() {
+  @BeforeEach
+  void setUp() {
     Grocery apple = new Grocery("apple", 1, "Fridge", false);
     Grocery banana = new Grocery("banana", 2, "Fridge", false);
     groceries = new GroceryRegister();
@@ -30,7 +31,7 @@ class TestRecipe {
     steps.addStep("Step 1");
     steps.addStep("Step 2");
 
-    recipe = new Recipe("Apple Banana Smoothie", groceries, steps, null);
+    recipe = new Recipe("Apple Banana Smoothie", groceries, steps, null, false);
 
   }
 
@@ -45,9 +46,9 @@ class TestRecipe {
   void testGetRecipeGroceries() {
     assertEquals(2, recipe.getRecipeGroceries().getRegister().size());
     assertEquals(groceries.getGrocery("apple"),
-        recipe.getRecipeGroceries().getRegister().get("apple"));
+            recipe.getRecipeGroceries().getRegister().get("apple"));
     assertEquals(groceries.getGrocery("banana"),
-        recipe.getRecipeGroceries().getRegister().get("banana"));
+            recipe.getRecipeGroceries().getRegister().get("banana"));
   }
 
   @Test
@@ -57,5 +58,18 @@ class TestRecipe {
     expected.add("Step 1");
     expected.add("Step 2");
     assertEquals(expected, recipe.getRecipeSteps());
+  }
+
+  @Test
+  @DisplayName("Test getIsFavorite()")
+  void testGetIsFavorite() {
+    assertFalse(recipe.getIsFavorite());
+  }
+
+  @Test
+  @DisplayName("Test alterIsFavorite()")
+  void testAlterIsFavorite() {
+    recipe.alterIsFavorite();
+    assertTrue(recipe.getIsFavorite());
   }
 }
