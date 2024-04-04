@@ -37,7 +37,6 @@
 
 .button-solid {
     -fx-background-color: #8BC34A;
-    -fx-text-fill: #FFF;
 }
 
 .button-solid:hover {
