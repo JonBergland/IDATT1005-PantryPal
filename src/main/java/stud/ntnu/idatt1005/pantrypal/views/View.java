@@ -37,7 +37,7 @@ public class View extends Scene implements Observable {
   /**
    * The list of observers that are observing this view
    */
-  protected final List<Observer> observers = new ArrayList<>();
+  protected static List<Observer> observers = new ArrayList<>();
 
   /**
    * Constructor for the View class. Initializes the view based on the viewType.
@@ -114,8 +114,12 @@ public class View extends Scene implements Observable {
    * @param observer the observer to be added
    */
   @Override
-  public void addObserver(Observer observer) {
-    observers.add(observer);
+  public void addObserver(Observer observer) throws IllegalArgumentException {
+    if (observer != null) {
+      observers.add(observer);
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
   }
 
   /**
@@ -124,8 +128,12 @@ public class View extends Scene implements Observable {
    * @param observer the observer to be removed
    */
   @Override
-  public void removeObserver(Observer observer) {
-    observers.remove(observer);
+  public void removeObserver(Observer observer) throws IllegalArgumentException {
+    if (observer != null) {
+      observers.remove(observer);
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
   }
 
   /**
