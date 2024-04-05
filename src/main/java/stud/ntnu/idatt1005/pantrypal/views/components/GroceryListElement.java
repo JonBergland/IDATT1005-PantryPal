@@ -54,12 +54,20 @@ public class GroceryListElement implements Observable {
 
   @Override
   public void addObserver(Observer observer) {
-    observers.add(observer);
+    if (observer != null) {
+      observers.add(observer);
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
   }
 
   @Override
   public void removeObserver(Observer observer) {
-    observers.remove(observer);
+    if (observer != null) {
+      observers.remove(observer);
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
   }
 
   /**
