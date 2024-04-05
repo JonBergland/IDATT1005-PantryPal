@@ -16,7 +16,7 @@ import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.components.AddShoppingListElement;
-import stud.ntnu.idatt1005.pantrypal.views.components.ShoppingListElement;
+import stud.ntnu.idatt1005.pantrypal.views.components.GroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
 
@@ -95,7 +95,13 @@ public class ShoppingListView extends View {
 
     // render the scene
       for (Grocery grocery : register.getRegister().values()) {
-        ShoppingListElement element = new ShoppingListElement(grocery);
+        GroceryListElement element = new GroceryListElement.GroceryListElementBuilder(grocery)
+            .checkBox()
+            .text(grocery.getName())
+            .text(grocery.getShelf())
+            .quantity()
+            .button("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE)
+            .build();
         for (Observer observer : observers) {
           element.addObserver(observer);
         }
