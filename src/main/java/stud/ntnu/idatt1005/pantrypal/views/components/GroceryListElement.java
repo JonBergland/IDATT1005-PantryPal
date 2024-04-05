@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class GroceryListElement implements Observable {
 
-  private static List<Observer> observers = new ArrayList<>();
+  private static final List<Observer> observers = new ArrayList<>();
 
   /**
    * The {@link BorderPane} containing the visual elements of the shopping list item.

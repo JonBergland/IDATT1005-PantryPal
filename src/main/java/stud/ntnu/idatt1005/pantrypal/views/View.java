@@ -37,7 +37,7 @@ public class View extends Scene implements Observable {
   /**
    * List of observers observing this view.
    */
-  protected static List<Observer> observers = new ArrayList<>();
+  protected static final List<Observer> observers = new ArrayList<>();
 
   /**
    * Constructs a View object with a specified controller, route, and style path.
