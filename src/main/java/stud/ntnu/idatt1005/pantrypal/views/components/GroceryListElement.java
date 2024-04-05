@@ -27,7 +27,7 @@ import java.util.List;
  */
 public class GroceryListElement implements Observable {
 
-  private final List<Observer> observers = new ArrayList<>();
+  private static List<Observer> observers = new ArrayList<>();
 
   /**
    * The {@link BorderPane} containing the visual elements of the shopping list item.
@@ -68,13 +68,12 @@ public class GroceryListElement implements Observable {
    * It includes a checkbox, text information about the grocery item, and a delete button.
    * This class also implements the Observable interface, allowing it to notify observers of changes.
    */
-  public static class GroceryListElementBuilder implements Observable {
+  public static class GroceryListElementBuilder {
     private final Grocery grocery;
     private final StackPane checkPane = new StackPane();
     private final HBox textBox = new HBox();
     private Button deleteButton = new Button();
     private final BorderPane pane = new BorderPane();
-    private final List<Observer> observerList = new ArrayList<>();
 
     public GroceryListElementBuilder(Grocery grocery) {
       if (grocery != null) {
@@ -165,27 +164,15 @@ public class GroceryListElement implements Observable {
       return newButton;
     }
 
-    @Override
-    public void addObserver(Observer observer) {
-      observerList.add(observer);
-    }
-
-    @Override
-    public void removeObserver(Observer observer) {
-      observerList.remove(observer);
-    }
-
     /**
      * Notifies the observers with the given enum and grocery.
      *
      * @param buttonEnum the enum to be notified.
      */
     protected void notifyObservers(ButtonEnum buttonEnum) {
-      for (Observer observer : observerList) {
+      for (Observer observer : observers) {
         observer.update(buttonEnum, this.grocery);
       }
     }
   }
-
-
 }
