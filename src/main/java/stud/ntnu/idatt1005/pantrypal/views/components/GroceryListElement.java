@@ -55,7 +55,9 @@ public class GroceryListElement implements Observable {
   @Override
   public void addObserver(Observer observer) {
     if (observer != null) {
-      observers.add(observer);
+      if (!observers.contains(observer)) {
+        observers.add(observer);
+      }
     } else {
       throw new IllegalArgumentException("Observer cannot be null");
     }
@@ -63,7 +65,7 @@ public class GroceryListElement implements Observable {
 
   @Override
   public void removeObserver(Observer observer) {
-    if (observer != null) {
+    if (observer != null && observers.contains(observer)) {
       observers.remove(observer);
     } else {
       throw new IllegalArgumentException("Observer cannot be null");
@@ -178,6 +180,7 @@ public class GroceryListElement implements Observable {
      * @param buttonEnum the enum to be notified.
      */
     protected void notifyObservers(ButtonEnum buttonEnum) {
+      List<Observer> observers = new ArrayList<>(GroceryListElement.observers);
       for (Observer observer : observers) {
         observer.update(buttonEnum, this.grocery);
       }
