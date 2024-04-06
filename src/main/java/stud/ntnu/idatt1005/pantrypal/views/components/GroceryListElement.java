@@ -27,20 +27,30 @@ import java.util.List;
  */
 public class GroceryListElement implements Observable {
 
-  private static final List<Observer> observers = new ArrayList<>();
+  private final List<Observer> observers = new ArrayList<>();
 
   /**
    * The {@link BorderPane} containing the visual elements of the shopping list item.
    * This includes a checkbox, text information about the grocery item, and a delete button.
    */
-  private final BorderPane pane;
+  private final BorderPane pane = new BorderPane();
+  private final Grocery grocery;
 
   /**
    * Constructor for the shopping list element. It initializes the visual elements
    * and sets up the necessary event handlers.
    */
   private GroceryListElement(GroceryListElementBuilder builder) {
-    this.pane = builder.pane;
+    grocery = builder.grocery;
+    StackPane checkPane = builder.checkPane;
+    HBox textBox = builder.textBox;
+    Button deleteButton = createButton();
+
+    pane.setLeft(checkPane);
+    textBox.setAlignment(Pos.CENTER);
+    pane.setCenter(textBox);
+    pane.setRight(deleteButton);
+    pane.getStyleClass().add("shopping-list-element");
   }
 
   /**
@@ -50,6 +60,19 @@ public class GroceryListElement implements Observable {
    */
   public Pane getPane() {
     return pane;
+  }
+
+  /**
+   * Creates a button element with the given text, variant, size and enum.
+   * When clicked the button will notify the observers with the given enum.
+   *
+   * @return the StyledButton with the specified properties.
+   */
+  private StyledButton createButton() {
+    StyledButton newButton = new StyledButton(
+        "X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM);
+    newButton.setOnAction(e -> notifyObservers(ButtonEnum.REMOVE));
+    return newButton;
   }
 
   @Override
@@ -66,11 +89,21 @@ public class GroceryListElement implements Observable {
   @Override
   public void removeObserver(Observer observer) {
     if (observer != null) {
-      if (observers.contains(observer)) {
-        observers.remove(observer);
-      }
+      observers.remove(observer);
     } else {
       throw new IllegalArgumentException("Observer cannot be null");
+    }
+  }
+
+  /**
+   * Notifies the observers with the given enum and grocery.
+   *
+   * @param buttonEnum the enum to be notified.
+   */
+  protected void notifyObservers(ButtonEnum buttonEnum) {
+    List<Observer> observersCopy = new ArrayList<>(this.observers);
+    for (Observer observer : observersCopy) {
+      observer.update(buttonEnum, this.grocery);
     }
   }
 
@@ -84,8 +117,6 @@ public class GroceryListElement implements Observable {
     private final Grocery grocery;
     private final StackPane checkPane = new StackPane();
     private final HBox textBox = new HBox();
-    private Button deleteButton = new Button();
-    private final BorderPane pane = new BorderPane();
 
     /**
      * Constructor for the GroceryListElementBuilder.
@@ -175,59 +206,12 @@ public class GroceryListElement implements Observable {
     }
 
     /**
-     * Adds a button element to the GroceryListElementBuilder.
-     * The button element is a button that allows the user to
-     * perform an action on the grocery item.
-     *
-     * @return a new GroceryListElementBuilder with the given button.
-     */
-    public GroceryListElementBuilder deleteButton() {
-      deleteButton = createButton("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
-      return this;
-    }
-
-    /**
-     * Creates a button element with the given text, variant, size and enum.
-     * When clicked the button will notify the observers with the given enum.
-     *
-     * @param text        the text to be displayed on the button.
-     * @param variant     the variant of the button.
-     * @param size        the size of the button.
-     * @param buttonEnum  the enum of the button.
-     * @return the StyledButton with the specified properties.
-     */
-    private StyledButton createButton(String text, StyledButton.Variant variant,
-                                      StyledButton.Size size, ButtonEnum buttonEnum) {
-      StyledButton newButton = new StyledButton(text, variant, size);
-      newButton.setOnAction(e -> notifyObservers(buttonEnum));
-      return newButton;
-    }
-
-    /**
      * Builds the GroceryListElement with the given properties.
      *
      * @return a new GroceryListElement with the given properties.
      */
     public GroceryListElement build() {
-      pane.setLeft(checkPane);
-      textBox.setAlignment(Pos.CENTER);
-      pane.setCenter(textBox);
-      pane.setRight(deleteButton);
-      pane.getStyleClass().add("shopping-list-element");
-
       return new GroceryListElement(this);
-    }
-
-    /**
-     * Notifies the observers with the given enum and grocery.
-     *
-     * @param buttonEnum the enum to be notified.
-     */
-    protected void notifyObservers(ButtonEnum buttonEnum) {
-      List<Observer> observersCopy = new ArrayList<>(GroceryListElement.observers);
-      for (Observer observer : observersCopy) {
-        observer.update(buttonEnum, this.grocery);
-      }
     }
   }
 }
