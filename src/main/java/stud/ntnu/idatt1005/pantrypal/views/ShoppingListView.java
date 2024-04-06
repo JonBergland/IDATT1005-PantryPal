@@ -116,8 +116,8 @@ public class ShoppingListView extends View {
           .text(grocery.getName())
           .text(grocery.getShelf())
           .quantity()
-          .deleteButton()
           .build();
+
       for (Observer observer : observers) {
         element.addObserver(observer);
       }
@@ -134,13 +134,7 @@ public class ShoppingListView extends View {
   }
 
   private AddGroceryListElement createAddGroceryListElement() {
-    AddGroceryListElement addGroceryListElement = new AddGroceryListElement.
-        AddGroceryListElementBuilder()
-        .name()
-        .shelfTextField()
-        .quantity()
-        .addButton()
-        .build();
+    AddGroceryListElement addGroceryListElement = new AddGroceryListElement("");
     for (Observer observer : observers) {
       addGroceryListElement.addObserver(observer);
     }
