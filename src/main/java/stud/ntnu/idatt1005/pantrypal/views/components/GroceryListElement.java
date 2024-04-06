@@ -65,8 +65,10 @@ public class GroceryListElement implements Observable {
 
   @Override
   public void removeObserver(Observer observer) {
-    if (observer != null && observers.contains(observer)) {
-      observers.remove(observer);
+    if (observer != null) {
+      if (observers.contains(observer)) {
+        observers.remove(observer);
+      }
     } else {
       throw new IllegalArgumentException("Observer cannot be null");
     }
@@ -85,6 +87,12 @@ public class GroceryListElement implements Observable {
     private Button deleteButton = new Button();
     private final BorderPane pane = new BorderPane();
 
+    /**
+     * Constructor for the GroceryListElementBuilder.
+     *
+     * @param grocery the grocery item to be represented by the shopping list element.
+     * @throws IllegalArgumentException if the grocery item is null.
+     */
     public GroceryListElementBuilder(Grocery grocery) {
       if (grocery != null) {
         this.grocery = grocery;
@@ -93,15 +101,26 @@ public class GroceryListElement implements Observable {
       }
     }
 
+    /**
+     * Creates a new CheckBox and ads it to the GroceryListElementBuilder.
+     *
+     * @return a new GroceryListElementBuilder with the given grocery item.
+     */
     public GroceryListElementBuilder checkBox() {
-      CheckBox checkBox1 = new CheckBox("");
-      checkBox1.setSelected(grocery.getChecked());
-      checkBox1.setOnAction(event -> grocery.setChecked(checkBox1.isSelected()));
+      CheckBox checkBox = new CheckBox("");
+      checkBox.setSelected(grocery.getChecked());
+      checkBox.setOnAction(event -> grocery.setChecked(checkBox.isSelected()));
 
-      checkPane.getChildren().add(checkBox1);
+      checkPane.getChildren().add(checkBox);
       return this;
     }
 
+    /**
+     * Adds a text element to the GroceryListElementBuilder.
+     *
+     * @param text the text to be displayed in the text element.
+     * @return a new GroceryListElementBuilder with the given text.
+     */
     public GroceryListElementBuilder text(String text) {
       Text newText = new Text(text);
       newText.setFont(FontPalette.TEXT);
@@ -115,6 +134,13 @@ public class GroceryListElement implements Observable {
       return this;
     }
 
+    /**
+     * Adds a quantity element to the GroceryListElementBuilder.
+     * The quantity element is a spinner that allows the user to
+     * change the quantity of the grocery item.
+     *
+     * @return a new GroceryListElementBuilder with the given quantity.
+     */
     public GroceryListElementBuilder quantity() {
       Spinner<Integer> spinner = createSpinner();
       spinner.setMaxWidth(100);
@@ -124,21 +150,13 @@ public class GroceryListElement implements Observable {
       return this;
     }
 
-    public GroceryListElementBuilder button(String text, StyledButton.Variant variant, StyledButton.Size size, ButtonEnum buttonEnum) {
-      deleteButton = createButton(text, variant, size, buttonEnum);
-      return this;
-    }
-
-    public GroceryListElement build() {
-      pane.setLeft(checkPane);
-      textBox.setAlignment(Pos.CENTER);
-      pane.setCenter(textBox);
-      pane.setRight(deleteButton);
-      pane.getStyleClass().add("shopping-list-element");
-
-      return new GroceryListElement(this);
-    }
-
+    /**
+     * Creates a spinner element with the given properties.
+     * The spinner element is a spinner that allows the user to
+     * change the quantity of the grocery item.
+     *
+     * @return a new Spinner element with the given properties.
+     */
     private Spinner<Integer> createSpinner() {
       Spinner<Integer> spinner = new Spinner<>();
 
@@ -146,7 +164,6 @@ public class GroceryListElement implements Observable {
 
       SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
           new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, finalGrocery.getQuantity());
-
       valueFactory.setAmountToStepBy(1);
 
       valueFactory.valueProperty().addListener((observable, oldValue, newValue) ->
@@ -155,6 +172,18 @@ public class GroceryListElement implements Observable {
 
       spinner.setValueFactory(valueFactory);
       return spinner;
+    }
+
+    /**
+     * Adds a button element to the GroceryListElementBuilder.
+     * The button element is a button that allows the user to
+     * perform an action on the grocery item.
+     *
+     * @return a new GroceryListElementBuilder with the given button.
+     */
+    public GroceryListElementBuilder deleteButton() {
+      deleteButton = createButton("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE);
+      return this;
     }
 
     /**
@@ -168,10 +197,25 @@ public class GroceryListElement implements Observable {
      * @return the StyledButton with the specified properties.
      */
     private StyledButton createButton(String text, StyledButton.Variant variant,
-                                        StyledButton.Size size, ButtonEnum buttonEnum) {
+                                      StyledButton.Size size, ButtonEnum buttonEnum) {
       StyledButton newButton = new StyledButton(text, variant, size);
       newButton.setOnAction(e -> notifyObservers(buttonEnum));
       return newButton;
+    }
+
+    /**
+     * Builds the GroceryListElement with the given properties.
+     *
+     * @return a new GroceryListElement with the given properties.
+     */
+    public GroceryListElement build() {
+      pane.setLeft(checkPane);
+      textBox.setAlignment(Pos.CENTER);
+      pane.setCenter(textBox);
+      pane.setRight(deleteButton);
+      pane.getStyleClass().add("shopping-list-element");
+
+      return new GroceryListElement(this);
     }
 
     /**
@@ -180,8 +224,8 @@ public class GroceryListElement implements Observable {
      * @param buttonEnum the enum to be notified.
      */
     protected void notifyObservers(ButtonEnum buttonEnum) {
-      List<Observer> observers = new ArrayList<>(GroceryListElement.observers);
-      for (Observer observer : observers) {
+      List<Observer> observersCopy = new ArrayList<>(GroceryListElement.observers);
+      for (Observer observer : observersCopy) {
         observer.update(buttonEnum, this.grocery);
       }
     }
