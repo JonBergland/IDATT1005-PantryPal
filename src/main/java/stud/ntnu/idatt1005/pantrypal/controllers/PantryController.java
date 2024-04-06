@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Shelf;
@@ -9,12 +10,13 @@ import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.PantryView;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Controller for the PantryView. This class is responsible for handling the logic for the
  * PantryView.
  */
-public class PantryController extends Controller {
+public class PantryController extends Controller implements Observer {
 
   /**
    * The view for the PantryController.
@@ -33,6 +35,7 @@ public class PantryController extends Controller {
   public PantryController(ViewManager viewManager) {
     super(viewManager);
     this.view = new PantryView(this);
+    this.view.addObserver(this);
     this.viewManager.addView(Route.PANTRY, this.view);
     this.register = new ShelfRegister();
 
@@ -42,7 +45,7 @@ public class PantryController extends Controller {
     this.register.addShelf(fridge);
     this.register.addShelf(cupboard);
 
-    this.view.render();
+    rerender();
   }
 
   /**
@@ -64,13 +67,64 @@ public class PantryController extends Controller {
   }
 
   /**
+   * Updates the observer based on the button pressed and the grocery item associated with the action.
+   * If the button pressed is ADD, the grocery item is added to the register and the view is re-rendered.
+   * If the button pressed is REMOVE, the grocery item is removed from the register and the view is re-rendered.
+   *
+   * @param buttonEnum the button that was pressed
+   * @param object     the grocery item associated with the action
+   * @throws IllegalArgumentException if the object is not of type Grocery
+   */
+  @Override
+  public void update(ButtonEnum buttonEnum, Object object) {
+    if (!(object instanceof Grocery grocery)) {
+      throw new IllegalArgumentException("Object is not of type Grocery");
+    }
+    switch (buttonEnum) {
+      case ADD:
+        try {
+          addGrocery(grocery.getShelf(), grocery.getName(), grocery.getQuantity());
+          rerender();
+          break;
+        } catch (IllegalArgumentException e) {
+          break;
+        }
+      case REMOVE:
+        try {
+          Shelf shelf = register.getShelfByName(grocery.getShelf());
+          deleteGrocery(shelf, grocery);
+          rerender();
+          break;
+        } catch (IllegalArgumentException e) {
+          break;
+        }
+      default:
+        break;
+    }
+  }
+
+  /**
+   * Updates the observer based on the button pressed.
+   *
+   * @param buttonEnum the button that was pressed
+   */
+  @Override
+  public void update(ButtonEnum buttonEnum){
+    if (Objects.requireNonNull(buttonEnum) == ButtonEnum.ADD_TO_PANTRY) {
+      rerender();
+    } else {
+      throw new IllegalArgumentException("Button not supported by class");
+    }
+  }
+
+  /**
    * Adds a shelf to the register.
    */
   public void addShelf() {
     shelfCount++;
     Shelf shelf = new Shelf("New Shelf " + shelfCount);
     register.addShelf(shelf);
-    view.render();
+    rerender();
   }
 
   /**
@@ -79,7 +133,7 @@ public class PantryController extends Controller {
    */
   public void deleteShelf(Shelf shelf) {
     register.removeShelf(shelf);
-    view.render();
+    rerender();
   }
 
   /**
@@ -89,7 +143,7 @@ public class PantryController extends Controller {
    */
   public void editShelfName(Shelf shelf, String name) {
     shelf.setName(name);
-    view.render();
+    rerender();
 
   }
 
@@ -119,7 +173,7 @@ public class PantryController extends Controller {
       Grocery grocery = new Grocery(name, amount, shelf.getName(), false);
       shelf.addGrocery(grocery);
     }
-    view.render();
+    rerender();
   }
 
   /**
@@ -154,6 +208,13 @@ public class PantryController extends Controller {
    */
   public void deleteGrocery(Shelf shelf, Grocery grocery) {
     shelf.removeGrocery(grocery);
-    view.render();
+    rerender();
+  }
+
+  /**
+   * Renders the view with the updated data.
+   */
+  public void rerender() {
+    view.render(getShelves());
   }
 }
