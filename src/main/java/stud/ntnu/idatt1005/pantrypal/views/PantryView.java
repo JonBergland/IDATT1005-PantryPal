@@ -8,8 +8,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
-import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
+
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Shelf;
@@ -47,10 +48,8 @@ public class PantryView extends View {
         this.setScrollPane();
     }
 
-    public void render() {
+    public void render(Shelf[] shelves) {
         GridPane shelfGrid = new GridPane();
-
-        Shelf[] shelves = controller.getShelves();
 
         int row = 0;
         int col = 0;
@@ -136,48 +135,19 @@ public class PantryView extends View {
             GroceryListElement element = new GroceryListElement.GroceryListElementBuilder(grocery)
                 .text(grocery.getName())
                 .quantity()
-                .button("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE)
                 .build();
+            for (Observer observer : observers) {
+                element.addObserver(observer);
+            }
             addChildren(groceryList, element.getPane());
         }
 
-        HBox addGroceryButton = new AddGroceryListElement.AddGroceryListElementBuilder()
-            .name()
-            .shelfName(shelf.getName())
-            .quantity()
-            .addButton()
-            .build();
+        AddGroceryListElement addGroceryButton = new AddGroceryListElement(shelf.getName());
+        for (Observer observer : observers) {
+            addGroceryButton.addObserver(observer);
+        }
 
         addChildren(container, scrollContainer, addGroceryButton);
-
-        return container;
-    }
-
-    private HBox addGroceryButton(Shelf shelf){
-        HBox container = new HBox();
-        container.setAlignment(Pos.CENTER);
-        NodeUtils.addClasses(container, "add-grocery-container");
-
-        TextField groceryName = new TextField();
-        groceryName.setPromptText("Name");
-        groceryName.setMinWidth(60);
-        addClasses(groceryName, "add-grocery-textfield");
-        TextField groceryQuantity = new TextField();
-        groceryQuantity.setPromptText("Quantity");
-        groceryQuantity.setMinWidth(60);
-        addClasses(groceryQuantity, "add-grocery-textfield");
-
-        StyledButton addGroceryButton = new StyledButton("Add");
-        addGroceryButton.setStyle("-fx-min-width: 60; -fx-padding: 10; -fx-background-insets: 0; -fx-border-insets: 0");
-        addGroceryButton.setOnAction(e -> {
-            try {
-                this.controller.addGrocery(shelf, groceryName.getText(), Integer.parseInt(groceryQuantity.getText()));
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
-            }
-        });
-
-        addChildren(container, groceryName, groceryQuantity, addGroceryButton);
 
         return container;
     }
