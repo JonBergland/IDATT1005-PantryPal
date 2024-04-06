@@ -78,14 +78,22 @@ public class ShoppingListController extends Controller implements Observer {
       throw new IllegalArgumentException("Object is not of type Grocery");
     }
     switch (buttonEnum) {
-      case ADD_TO_SHOPPING_LIST:
-        register.addGrocery(grocery);
-        rerender();
-        break;
+      case ADD:
+        try {
+          addGrocery(grocery);
+          rerender();
+          break;
+        } catch (IllegalArgumentException e) {
+          break;
+        }
       case REMOVE:
-        register.removeGrocery(grocery);
-        rerender();
-        break;
+        try {
+          register.removeGrocery(grocery);
+          rerender();
+          break;
+        } catch (IllegalArgumentException e) {
+          break;
+        }
       default:
         throw new IllegalArgumentException("Button not supported by class");
     }
@@ -108,6 +116,10 @@ public class ShoppingListController extends Controller implements Observer {
     }
   }
 
+  /**
+   * Adds groceries to the pantry.
+   * The groceries that are checked are added to the pantry and removed from the shopping list.
+   */
   public void addGroceriesToPantry(){
     List<Grocery> groceriesToRemove = new ArrayList<>();
     for(Grocery grocery : register.getRegister().values()){
