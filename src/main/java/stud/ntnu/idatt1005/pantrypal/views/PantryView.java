@@ -14,6 +14,7 @@ import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Shelf;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
+import stud.ntnu.idatt1005.pantrypal.views.components.AddGroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.GroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
@@ -140,7 +141,12 @@ public class PantryView extends View {
             addChildren(groceryList, element.getPane());
         }
 
-        HBox addGroceryButton = this.addGroceryButton(shelf);
+        HBox addGroceryButton = new AddGroceryListElement.AddGroceryListElementBuilder()
+            .name()
+            .shelfName(shelf.getName())
+            .quantity()
+            .addButton()
+            .build();
 
         addChildren(container, scrollContainer, addGroceryButton);
 
