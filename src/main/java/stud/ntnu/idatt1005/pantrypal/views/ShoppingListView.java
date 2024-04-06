@@ -15,7 +15,7 @@ import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
-import stud.ntnu.idatt1005.pantrypal.views.components.AddShoppingListElement;
+import stud.ntnu.idatt1005.pantrypal.views.components.AddGroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.GroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
@@ -31,12 +31,6 @@ import static javafx.stage.Screen.getPrimary;
 public class ShoppingListView extends View {
 
   /**
-   * The controller responsible for managing the logic and
-   * actions associated with the shopping list functionality.
-   */
-  private final ShoppingListController controller;
-
-  /**
    * Constructor for ShoppingListView.
    *
    * @param controller The controller for the view. This controller is responsible for handling
@@ -44,8 +38,6 @@ public class ShoppingListView extends View {
    */
   public ShoppingListView(ShoppingListController controller) {
     super(controller, Route.SHOPPING_LIST, "/styles/shopping-list.css");
-    this.controller = controller;
-    //render();
   }
 
   /**
@@ -55,14 +47,40 @@ public class ShoppingListView extends View {
    */
   public void render(GroceryRegister register) {
     // Create the overarching VBox
+    VBox shoppingListBox = createShoppingListBox();
+
+    // Create a title for the shopping list
+    HBox titleBox = createTitleBox();
+
+    // Create the scroll pane to hold the shopping list
+    ScrollPane scrollPane = createScrollPane();
+
+    // Create the VBox to hold the shopping list elements
+    VBox shoppingList = createShoppingList(register);
+    scrollPane.setContent(shoppingList);
+
+    // Add a button to add to pantry
+    StyledButton addToPantry = createAddToPantryButton();
+
+    // Create the add grocery list element
+    AddGroceryListElement addGroceryListElement = createAddGroceryListElement();
+
+    shoppingListBox.getChildren().addAll(titleBox, scrollPane, addToPantry, addGroceryListElement);
+    shoppingListBox.setAlignment(Pos.CENTER);
+
+    getBorderPane().setCenter(shoppingListBox);
+  }
+
+  private VBox createShoppingListBox() {
     VBox shoppingListBox = new VBox();
     shoppingListBox.setMaxWidth(getPrimary().getVisualBounds().getWidth() * 0.5);
     shoppingListBox.setMaxHeight(getPrimary().getVisualBounds().getHeight() * 0.70);
     shoppingListBox.setAlignment(Pos.CENTER);
-    shoppingListBox.setBackground(Background.fill(Color.WHITE));
     shoppingListBox.getStyleClass().add("shopping-list-box");
+    return shoppingListBox;
+  }
 
-    // Create a title for the shopping list
+  private HBox createTitleBox() {
     HBox titleBox = new HBox();
     titleBox.setAlignment(Pos.CENTER);
     titleBox.getStyleClass().add("shopping-list-title");
@@ -77,61 +95,59 @@ public class ShoppingListView extends View {
     HBox.setHgrow(spacerRight, Priority.ALWAYS);
 
     titleBox.getChildren().addAll(spacerLeft, shoppingListTitle, spacerRight);
+    return titleBox;
+  }
 
-    shoppingListBox.getChildren().add(titleBox);
-
-    // Create the scroll pane to hold the shopping list
+  private ScrollPane createScrollPane() {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(true);
     scrollPane.setMinHeight(getPrimary().getVisualBounds().getHeight() * 0.60);
     scrollPane.setPadding(new Insets(10, 0, 0, 0));
     scrollPane.setBackground(Background.fill(Color.WHITE));
+    return scrollPane;
+  }
 
-    // Create the VBox to hold the shopping list elements
+  private VBox createShoppingList(GroceryRegister register) {
     VBox shoppingList = new VBox();
-    scrollPane.setContent(shoppingList);
-    shoppingList.setBackground(Background.fill(Color.WHITE));
-
-    // render the scene
-      for (Grocery grocery : register.getRegister().values()) {
-        GroceryListElement element = new GroceryListElement.GroceryListElementBuilder(grocery)
-            .checkBox()
-            .text(grocery.getName())
-            .text(grocery.getShelf())
-            .quantity()
-            .button("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM, ButtonEnum.REMOVE)
-            .build();
-        for (Observer observer : observers) {
-          element.addObserver(observer);
-        }
-        shoppingList.getChildren().add(element.getPane());
+    for (Grocery grocery : register.getRegister().values()) {
+      GroceryListElement element = new GroceryListElement.GroceryListElementBuilder(grocery)
+          .checkBox()
+          .text(grocery.getName())
+          .text(grocery.getShelf())
+          .quantity()
+          .deleteButton()
+          .build();
+      for (Observer observer : observers) {
+        element.addObserver(observer);
       }
+      shoppingList.getChildren().add(element.getPane());
+    }
+    return shoppingList;
+  }
 
-    scrollPane.setContent(shoppingList);
-    shoppingListBox.getChildren().add(scrollPane);
-
-    // Add a button to add to pantry
+  private StyledButton createAddToPantryButton() {
     StyledButton addToPantry = new StyledButton("Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addToPantry.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_PANTRY));
-
     addToPantry.setMinWidth(getPrimary().getVisualBounds().getWidth()* 0.5);
-    shoppingListBox.getChildren().add(addToPantry);
+    return addToPantry;
+  }
 
-    // Create the add shopping list element
-    AddShoppingListElement addShoppingListElement = new AddShoppingListElement();
+  private AddGroceryListElement createAddGroceryListElement() {
+    AddGroceryListElement addGroceryListElement = new AddGroceryListElement.
+        AddGroceryListElementBuilder()
+        .name()
+        .shelfTextField()
+        .quantity()
+        .addButton()
+        .build();
     for (Observer observer : observers) {
-      addShoppingListElement.addObserver(observer);
+      addGroceryListElement.addObserver(observer);
     }
 
-    // Add the add shopping list element to the ShoppingListBox
-    addShoppingListElement.setMaxHeight(50);
-    addShoppingListElement.setAlignment(Pos.BOTTOM_CENTER);
-    shoppingListBox.getChildren().add(addShoppingListElement);
-    VBox.setVgrow(addShoppingListElement, Priority.ALWAYS);
-
-    shoppingListBox.setAlignment(Pos.CENTER);
-
-    getBorderPane().setCenter(shoppingListBox);
+    addGroceryListElement.setMaxHeight(50);
+    addGroceryListElement.setAlignment(Pos.BOTTOM_CENTER);
+    VBox.setVgrow(addGroceryListElement, Priority.ALWAYS);
+    return addGroceryListElement;
   }
 }
