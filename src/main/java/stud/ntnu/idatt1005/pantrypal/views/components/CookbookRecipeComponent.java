@@ -18,21 +18,30 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.shape.Rectangle;
-import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
+import stud.ntnu.idatt1005.pantrypal.views.Observable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a component for displaying a recipe within the cookbook.
  * It provides methods to create a visual representation of a recipe, including its image and name.
  */
-public class CookbookRecipeComponent {
+public class CookbookRecipeComponent implements Observable {
+
+  private final Recipe recipe;
 
   /**
    * The BorderPane displaying the recipe component.
    */
   private BorderPane borderPane;
+  private final List<Observer> observers = new ArrayList<>();
 
   /**
    * Constructs a CookbookRecipeComponent for a Recipe.
@@ -40,17 +49,17 @@ public class CookbookRecipeComponent {
    * using the image if it exists, and the name of the recipe.
    *
    * @param recipe     The recipe to be displayed.
-   * @param controller The controller for the cookbook view.
    */
-  public CookbookRecipeComponent(Recipe recipe, CookBookController controller) {
+  public CookbookRecipeComponent(Recipe recipe) {
+    this.recipe = recipe;
     BackgroundSize backgroundSize = new BackgroundSize(320, 200,
             true, true, false, true);
+    setUpBorderPane();
+
     if (recipe.getImagePath() == null || recipe.getImagePath().isEmpty()) {
       BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
               new CornerRadii(10), null);
-      setUpBorderPane(controller, recipe);
       borderPane.setBackground(new Background(backgroundFill));
-      setLabel(recipe.getKey());
     } else {
       Image image = new Image(recipe.getImagePath());
       BackgroundImage backgroundImage = new BackgroundImage(image,
@@ -58,20 +67,18 @@ public class CookbookRecipeComponent {
               BackgroundRepeat.NO_REPEAT,
               BackgroundPosition.CENTER,
               backgroundSize);
-      setUpBorderPane(controller, recipe);
       borderPane.setBackground(new Background(backgroundImage));
-      setLabel(recipe.getKey());
     }
+
+    setLabel(recipe.getKey());
   }
 
 
   /**
    * Sets up the BorderPane for the recipe component.
    *
-   * @param controller The controller for the cookbook view.
-   * @param recipe     The recipe to be displayed.
    */
-  private void setUpBorderPane(CookBookController controller, Recipe recipe) {
+  private void setUpBorderPane() {
     borderPane = new BorderPane();
     borderPane.setMaxWidth(getWidth());
     borderPane.setMaxHeight(getHeight());
@@ -86,7 +93,7 @@ public class CookbookRecipeComponent {
     clip.setArcWidth(20);
     clip.setArcHeight(20);
     borderPane.setClip(clip);
-    borderPane.setOnMouseClicked(e -> controller.openRecipe(recipe));
+    borderPane.setOnMouseClicked(e -> notifyObservers(ButtonEnum.OPEN_RECIPE));
   }
 
   /**
@@ -126,5 +133,32 @@ public class CookbookRecipeComponent {
    */
   public static double getHeight() {
     return getWidth() * 0.625;
+  }
+
+  @Override
+  public void addObserver(Observer observer) {
+    if (observer != null) {
+      if (!observers.contains(observer)) {
+        observers.add(observer);
+      }
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
+  }
+
+  @Override
+  public void removeObserver(Observer observer) {
+    if (observer != null) {
+      observers.remove(observer);
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
+  }
+
+  protected void notifyObservers(ButtonEnum buttonEnum) {
+    List<Observer> observersCopy = new ArrayList<>(this.observers);
+    for (Observer observer : observersCopy) {
+      observer.update(buttonEnum, this.recipe);
+    }
   }
 }
