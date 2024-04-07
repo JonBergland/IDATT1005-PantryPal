@@ -22,6 +22,7 @@ public class Recipe extends Model {
    */
   private final StepRegister steps;
   private final String imagePath;
+  private boolean isFavorite;
 
   /**
    * Constructor for the Recipe class.
@@ -35,6 +36,7 @@ public class Recipe extends Model {
     this.recipeGroceries = recipeGroceries;
     this.steps = steps;
     this.imagePath = imagePath;
+    this.isFavorite = false;
   }
 
   /**
@@ -62,5 +64,19 @@ public class Recipe extends Model {
    */
   public String getImagePath() {
     return imagePath;
+  }
+
+  /**
+   * Get the favorite status of the recipe.
+   */
+  public boolean getIsFavorite() {
+    return isFavorite;
+  }
+
+  /**
+   * Set the favorite status of the recipe.
+   */
+  public void setIsFavorite(boolean isFavorite) {
+    this.isFavorite = isFavorite;
   }
 }
