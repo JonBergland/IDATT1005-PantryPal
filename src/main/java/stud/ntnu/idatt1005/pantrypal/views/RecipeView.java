@@ -17,6 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
@@ -24,6 +26,9 @@ import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.FavoriteButton;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents the RecipeView in the application. It extends the View class and sets the
@@ -34,10 +39,8 @@ import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 public class RecipeView extends View {
 
   /**
-   * The controller responsible for managing the logic and
-   * actions associated with the recipe functionality.
+   * The recipe to be displayed in the view.
    */
-  private final CookBookController controller;
   private final Recipe recipe;
 
   /**
@@ -48,7 +51,6 @@ public class RecipeView extends View {
    */
   public RecipeView(CookBookController controller, Recipe recipe) {
     super(controller, Route.RECIPE, "/styles/recipe.css");
-    this.controller = controller;
     this.recipe = recipe;
     setUpView();
   }
@@ -134,11 +136,11 @@ public class RecipeView extends View {
     StyledButton addNeededGroceriesButton = new StyledButton("Add groceries",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addNeededGroceriesButton.getStyleClass().add("overview-buttons");
-    addNeededGroceriesButton.setOnAction(e -> this.controller.addGroceriesToShoppingList(recipe));
+    addNeededGroceriesButton.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST));
 
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,
-            new FavoriteButton().getFavoriteButton()
+            new FavoriteButton(this.recipe).getFavoriteButton()
     );
     overviewButtons.setAlignment(Pos.CENTER_LEFT);
     overviewButtons.setPadding(new Insets(0, 0, 0, 0));
@@ -276,5 +278,18 @@ public class RecipeView extends View {
     );
 
     return groceryTextWithSeparator;
+  }
+
+  /**
+   * Updates the observer based on the button pressed.
+   *
+   * @param buttonEnum the button that was pressed
+   */
+  @Override
+  protected void notifyObservers(ButtonEnum buttonEnum) {
+    List<Observer> observersCopy = new ArrayList<>(this.observers);
+    for (Observer observer : observersCopy) {
+      observer.update(buttonEnum, this.recipe);
+    }
   }
 }
