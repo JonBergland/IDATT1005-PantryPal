@@ -139,6 +139,7 @@ public class GroceryListElement implements Observable {
      */
     public GroceryListElementBuilder checkBox() {
       CheckBox checkBox = new CheckBox("");
+      checkBox.setPadding(new Insets(10));
       checkBox.setSelected(grocery.getChecked());
       checkBox.setOnAction(event -> grocery.setChecked(checkBox.isSelected()));
 
