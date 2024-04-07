@@ -37,7 +37,7 @@ public class View extends Scene implements Observable {
   /**
    * List of observers observing this view.
    */
-  protected static final List<Observer> observers = new ArrayList<>();
+  protected final List<Observer> observers = new ArrayList<>();
 
   /**
    * Constructs a View object with a specified controller, route, and style path.
@@ -150,7 +150,7 @@ public class View extends Scene implements Observable {
    * @param buttonEnum The ButtonEnum to notify the observers with.
    */
   protected void notifyObservers(ButtonEnum buttonEnum) {
-    List<Observer> observersCopy = new ArrayList<>(View.observers);
+    List<Observer> observersCopy = new ArrayList<>(this.observers);
     for (Observer observer : observersCopy) {
       observer.update(buttonEnum);
     }
