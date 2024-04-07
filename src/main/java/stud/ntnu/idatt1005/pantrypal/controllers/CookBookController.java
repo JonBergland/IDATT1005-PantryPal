@@ -117,6 +117,11 @@ public class CookBookController extends Controller {
     shoppingListController.rerender();
   }
 
+  public void toggleIsFavorite(Recipe recipe) {
+    recipe.toggleIsFavorite();
+    view.render();
+  }
+
   public void addPlaceholderRecipes() {
     // Recipe 1
     GroceryRegister groceries1 = new GroceryRegister();
