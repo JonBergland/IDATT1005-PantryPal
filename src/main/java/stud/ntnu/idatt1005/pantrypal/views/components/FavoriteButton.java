@@ -23,11 +23,6 @@ public class FavoriteButton extends Button {
   private final BooleanProperty isFavorite;
 
   /**
-   * The star is an SVGPath that represents the star shape of the favorite button.
-   */
-  private final SVGPath star;
-
-  /**
    * The stackPane is a StackPane that holds the star and the rectangle background.
    */
   private final StackPane stackPane;
@@ -41,22 +36,7 @@ public class FavoriteButton extends Button {
     super();
 
     // Create a less sharp star shape using SVG
-    star = new SVGPath();
-    star.setContent("M 15,5 17.5,12.5 25,12.5 20,17.5 22.5,25 15,20 7.5,25 10,17.5 5,12.5 12.5,12.5 z");
-
-    // Set the initial fill color of the star to the same color as the rectangle
-    star.setFill(Color.TRANSPARENT);
-
-    // Set the outline color of the star to black
-    star.setStroke(Color.BLACK);
-
-    // Set the outline width of the star to be less sharp
-    star.setStrokeWidth(2.0);
-
-    // Set the stroke type to outside
-    star.setStrokeType(StrokeType.OUTSIDE);
-
-    // Set the star shape as the button graphic
+    SVGPath star = createStar();
     setGraphic(star);
 
     // Create a rectangle to serve as the background of the star
@@ -70,30 +50,16 @@ public class FavoriteButton extends Button {
 
     // Initialize the isFavorite property
     isFavorite = new SimpleBooleanProperty(stackPane, "isFavorite", recipe.getIsFavorite());
-    setFavoriteButton(recipe.getIsFavorite());
+    setFavoriteButton(star, recipe.getIsFavorite());
 
     // Add a listener to the isFavorite property
     isFavorite.addListener((obs, wasFavorite, isNowFavorite) -> {
       recipe.setIsFavorite(isNowFavorite);
-      setFavoriteButton(isNowFavorite);
+      setFavoriteButton(star, isNowFavorite);
     });
 
     // Set the action to toggle the isFavorite property when the button is clicked
     stackPane.setOnMouseClicked(event -> isFavorite.set(!isFavorite.get()));
-  }
-
-  /**
-   * Sets the fill color of the star based on the isFavorite property.
-   *
-   * @param isFavorite the isFavorite property
-   */
-  private void setFavoriteButton(boolean isFavorite) {
-    if (isFavorite) {
-      star.setFill(Color.YELLOW);
-    } else {
-      star.setFill(Color.TRANSPARENT);
-    }
-
   }
 
   /**
@@ -103,6 +69,25 @@ public class FavoriteButton extends Button {
    */
   public StackPane getFavoriteButton() {
     return stackPane;
+  }
+
+  private SVGPath createStar() {
+    SVGPath star = new SVGPath();
+    star.setContent("M 15,5 17.5,12.5 25,12.5 20,17.5 22.5,25 15,20 7.5,25 10,17.5 5,12.5 12.5,12.5 z");
+    star.setFill(Color.TRANSPARENT);
+    star.setStroke(Color.BLACK);
+    star.setStrokeWidth(2.0);
+    star.setStrokeType(StrokeType.OUTSIDE);
+    return star;
+  }
+
+  /**
+   * Sets the fill color of the star based on the isFavorite property.
+   *
+   * @param isFavorite the isFavorite property
+   */
+  private void setFavoriteButton(SVGPath star, boolean isFavorite) {
+    star.setFill(isFavorite ? Color.YELLOW : Color.TRANSPARENT);
   }
 
 }
