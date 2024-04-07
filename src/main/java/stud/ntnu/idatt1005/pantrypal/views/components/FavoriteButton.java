@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
 import javafx.scene.shape.StrokeType;
+import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 
 /**
@@ -36,7 +37,7 @@ public class FavoriteButton extends Button {
    * This constructor sets up the visual representation of the favorite button
    * using the star shape and the rectangle background.
    */
-  public FavoriteButton() {
+  public FavoriteButton(Recipe recipe) {
     super();
 
     // Create a less sharp star shape using SVG
@@ -68,21 +69,31 @@ public class FavoriteButton extends Button {
     NodeUtils.addClasses(stackPane, "favorite-button");
 
     // Initialize the isFavorite property
-    isFavorite = new SimpleBooleanProperty(stackPane, "isFavorite", false);
+    isFavorite = new SimpleBooleanProperty(stackPane, "isFavorite", recipe.getIsFavorite());
+    setFavoriteButton(recipe.getIsFavorite());
 
     // Add a listener to the isFavorite property
     isFavorite.addListener((obs, wasFavorite, isNowFavorite) -> {
-      if (isNowFavorite) {
-        // If the button is clicked, set the fill color of the star to yellow
-        star.setFill(Color.YELLOW);
-      } else {
-        // If the button is not clicked, set the fill color of the star back to the same color as the rectangle
-        star.setFill(Color.TRANSPARENT);
-      }
+      recipe.setIsFavorite(isNowFavorite);
+      setFavoriteButton(isNowFavorite);
     });
 
     // Set the action to toggle the isFavorite property when the button is clicked
     stackPane.setOnMouseClicked(event -> isFavorite.set(!isFavorite.get()));
+  }
+
+  /**
+   * Sets the fill color of the star based on the isFavorite property.
+   *
+   * @param isFavorite the isFavorite property
+   */
+  private void setFavoriteButton(boolean isFavorite) {
+    if (isFavorite) {
+      star.setFill(Color.YELLOW);
+    } else {
+      star.setFill(Color.TRANSPARENT);
+    }
+
   }
 
   /**
