@@ -1,7 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
 import javafx.scene.control.Button;
-import stud.ntnu.idatt1005.pantrypal.enums.StarEnum;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 
 /**
@@ -27,7 +26,7 @@ public class FavoriteButton extends Button {
   public FavoriteButton(boolean isFavorite) {
     super();
     this.isFavorite = isFavorite;
-    this.star = new StarIcon(StarEnum.RECIPE, isFavorite);
+    this.star = new StarIcon(StarIcon.Variants.RECIPE, isFavorite);
     setGraphic(star);
     NodeUtils.addClasses(this, "favorite-button");
   }

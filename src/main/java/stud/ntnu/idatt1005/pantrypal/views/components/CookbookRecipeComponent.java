@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
-import stud.ntnu.idatt1005.pantrypal.enums.StarEnum;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
@@ -98,7 +97,7 @@ public class CookbookRecipeComponent {
    * @param isFavorite boolean indicating if the recipe is a favorite
    */
   private void setStarIcon(boolean isFavorite) {
-    StarIcon starIcon = new StarIcon(StarEnum.COOKBOOK, isFavorite);
+    StarIcon starIcon = new StarIcon(StarIcon.Variants.COOKBOOK, isFavorite);
     StackPane.setAlignment(starIcon, Pos.TOP_RIGHT);
     stackPane.getChildren().add(starIcon);
   }
