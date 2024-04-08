@@ -60,6 +60,10 @@ public class AddGroceryListElement extends HBox implements Observable {
         }
         if (shelf.getText().isEmpty()) {
           shelf.setText("Unassigned");
+        } else {
+          // Capitalize the first letter of the shelf
+          String str = shelf.getText();
+          shelf.setText(str.substring(0, 1).toUpperCase() + str.substring(1));
         }
         notifyObservers(ButtonEnum.ADD, name.getText(), Integer.parseInt(quantity.getText()), shelf.getText());
         name.clear();
