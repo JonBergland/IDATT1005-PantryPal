@@ -130,15 +130,21 @@ public class RecipeView extends View {
    * @return The overview buttons
    */
   private HBox createOverviewButtons() {
-    HBox overviewButtons = new HBox(20);
     StyledButton addNeededGroceriesButton = new StyledButton("Add groceries",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addNeededGroceriesButton.getStyleClass().add("overview-buttons");
     addNeededGroceriesButton.setOnAction(e -> this.controller.addGroceriesToShoppingList(recipe));
 
+    FavoriteButton favoriteButton = new FavoriteButton(recipe.getIsFavorite());
+    favoriteButton.setOnMouseClicked(e -> {
+      this.controller.toggleIsFavorite(recipe);
+      favoriteButton.toggleStarColor();
+    });
+
+    HBox overviewButtons = new HBox(20);
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,
-            new FavoriteButton().getFavoriteButton()
+            favoriteButton
     );
     overviewButtons.setAlignment(Pos.CENTER_LEFT);
     overviewButtons.setPadding(new Insets(0, 0, 0, 0));

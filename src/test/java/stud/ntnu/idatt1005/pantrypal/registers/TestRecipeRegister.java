@@ -27,7 +27,7 @@ class TestRecipeRegister {
     steps.addStep("Step 1");
     steps.addStep("Step 2");
 
-    recipe = new Recipe("Apple Banana Smoothie", groceries, steps, null);
+    recipe = new Recipe("Apple Banana Smoothie", groceries, steps, null, false);
     recipeRegister = new RecipeRegister();
     recipeRegister.addRecipe(recipe);
   }
@@ -37,21 +37,21 @@ class TestRecipeRegister {
   class PositiveTestsRecipeRegister {
     @Test
     @DisplayName("Test getRegister()")
-    public void testGetRegister() {
+    void testGetRegister() {
       assertEquals(1, recipeRegister.getRegister().size());
       assertEquals(recipe, recipeRegister.getRegister().get("Apple Banana Smoothie"));
     }
 
     @Test
     @DisplayName("Test getRecipeByName()")
-    public void testGetRecipeByName() {
+    void testGetRecipeByName() {
       assertEquals(recipe, recipeRegister.getRecipe("Apple Banana Smoothie"));
     }
 
     @Test
     @DisplayName("Test addRecipe() with recipe as parameter")
-    public void testAddRecipeWithRecipeAsParameter() {
-      Recipe newRecipe = new Recipe("Fruit salad", groceries, steps, null);
+    void testAddRecipeWithRecipeAsParameter() {
+      Recipe newRecipe = new Recipe("Fruit salad", groceries, steps, null, false);
       recipeRegister.addRecipe(newRecipe);
       assertEquals(2, recipeRegister.getRegister().size());
       assertEquals(newRecipe, recipeRegister.getRecipe("Fruit salad"));
@@ -68,7 +68,7 @@ class TestRecipeRegister {
     @DisplayName("Test updateRecipe() with recipe as parameter")
     void testUpdateRecipeWithRecipeAsParameter() {
       steps.addStep("Step 3");
-      Recipe newRecipe = new Recipe("Apple Banana Smoothie", groceries, steps, null);
+      Recipe newRecipe = new Recipe("Apple Banana Smoothie", groceries, steps, null, false);
       recipeRegister.addRecipe(newRecipe);
       assertEquals(1, recipeRegister.getRegister().size());
       assertEquals(newRecipe, recipeRegister.getRegister().get("Apple Banana Smoothie"));
@@ -102,7 +102,7 @@ class TestRecipeRegister {
     @DisplayName("Test removeRecipe() with non-existing recipe")
     void testRemoveRecipeWithNonExistingRecipe() {
       try {
-        Recipe fakeRecipe = new Recipe("Fruit salad", groceries, steps, null);
+        Recipe fakeRecipe = new Recipe("Fruit salad", groceries, steps, null, false);
         recipeRegister.removeRecipe(fakeRecipe);
       } catch (IllegalArgumentException e) {
         assertEquals("Recipe does not exist in register", e.getMessage());

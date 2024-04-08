@@ -2,21 +2,11 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 
 import static javafx.stage.Screen.getPrimary;
 
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
@@ -32,7 +22,7 @@ public class CookbookRecipeComponent {
   /**
    * The BorderPane displaying the recipe component.
    */
-  private BorderPane borderPane;
+  private StackPane stackPane;
 
   /**
    * Constructs a CookbookRecipeComponent for a Recipe.
@@ -49,8 +39,7 @@ public class CookbookRecipeComponent {
       BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
               new CornerRadii(10), null);
       setUpBorderPane(controller, recipe);
-      borderPane.setBackground(new Background(backgroundFill));
-      setLabel(recipe.getKey());
+      stackPane.setBackground(new Background(backgroundFill));
     } else {
       Image image = new Image(recipe.getImagePath());
       BackgroundImage backgroundImage = new BackgroundImage(image,
@@ -59,9 +48,10 @@ public class CookbookRecipeComponent {
               BackgroundPosition.CENTER,
               backgroundSize);
       setUpBorderPane(controller, recipe);
-      borderPane.setBackground(new Background(backgroundImage));
-      setLabel(recipe.getKey());
+      stackPane.setBackground(new Background(backgroundImage));
     }
+    setLabel(recipe.getKey());
+    setStarIcon(recipe.getIsFavorite());
   }
 
 
@@ -72,21 +62,21 @@ public class CookbookRecipeComponent {
    * @param recipe     The recipe to be displayed.
    */
   private void setUpBorderPane(CookBookController controller, Recipe recipe) {
-    borderPane = new BorderPane();
-    borderPane.setMaxWidth(getWidth());
-    borderPane.setMaxHeight(getHeight());
-    borderPane.setMinWidth(getWidth());
-    borderPane.setMinHeight(getHeight());
+    stackPane = new StackPane();
+    stackPane.setMaxWidth(getWidth());
+    stackPane.setMaxHeight(getHeight());
+    stackPane.setMinWidth(getWidth());
+    stackPane.setMinHeight(getHeight());
     BorderStroke borderStroke = new BorderStroke(ColorPalette.BLACK,
             BorderStrokeStyle.SOLID,
             new CornerRadii(10),
             new BorderWidths(1));
-    borderPane.setBorder(new Border(borderStroke));
+    stackPane.setBorder(new Border(borderStroke));
     Rectangle clip = new Rectangle(getWidth(), 200);
     clip.setArcWidth(20);
     clip.setArcHeight(20);
-    borderPane.setClip(clip);
-    borderPane.setOnMouseClicked(e -> controller.openRecipe(recipe));
+    stackPane.setClip(clip);
+    stackPane.setOnMouseClicked(e -> controller.openRecipe(recipe));
   }
 
   /**
@@ -97,7 +87,19 @@ public class CookbookRecipeComponent {
   private void setLabel(String recipeName) {
     Label label = new Label(recipeName);
     label.setFont(FontPalette.BUTTON);
-    borderPane.setCenter(label);
+    StackPane.setAlignment(label, Pos.CENTER);
+    stackPane.getChildren().add(label);
+  }
+
+  /**
+   * Sets the star icon of the recipe component, and places it in the top right corner.
+   *
+   * @param isFavorite boolean indicating if the recipe is a favorite
+   */
+  private void setStarIcon(boolean isFavorite) {
+    StarIcon starIcon = new StarIcon(StarIcon.Variants.COOKBOOK, isFavorite);
+    StackPane.setAlignment(starIcon, Pos.TOP_RIGHT);
+    stackPane.getChildren().add(starIcon);
   }
 
   /**
@@ -105,8 +107,8 @@ public class CookbookRecipeComponent {
    *
    * @return The BorderPane representing the recipe component.
    */
-  public BorderPane getBorderPane() {
-    return borderPane;
+  public StackPane getComponent() {
+    return stackPane;
   }
 
   /**
