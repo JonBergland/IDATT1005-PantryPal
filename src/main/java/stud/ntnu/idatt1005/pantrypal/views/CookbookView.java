@@ -50,14 +50,14 @@ public class CookbookView extends View {
     this.setScrollPane();
     spacing = calculateSpacing();
     recipes = controller.getRecipes();
-    createView();
+    render();
   }
   /**
    * Creates the view for the cookbook.
    * It creates a VBox to contain the rows of recipes, and an HBox for each row.
    * It then adds the CookbookRecipeComponents to the rows and the rows to the container.
    */
-  private void createView() {
+  public void render() {
     VBox recipeContainer = new VBox(spacing / 2);
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
     HBox row = new HBox(spacing);

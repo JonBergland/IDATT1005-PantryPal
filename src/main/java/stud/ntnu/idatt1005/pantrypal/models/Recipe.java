@@ -1,6 +1,7 @@
 package stud.ntnu.idatt1005.pantrypal.models;
 
 import java.util.List;
+
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 
@@ -21,7 +22,16 @@ public class Recipe extends Model {
    * The steps needed to make the recipe.
    */
   private final StepRegister steps;
+
+  /**
+   * The imagePath pointing to image location.
+   */
   private final String imagePath;
+  private boolean isFavorite;
+
+  /**
+   * The boolean isFavorite, which is true if the recipe is a favorite, and false if it is not.
+   */
   private boolean isFavorite;
 
   /**
@@ -31,12 +41,13 @@ public class Recipe extends Model {
    * @param recipeGroceries the groceries needed for the recipe.
    * @param steps           the steps needed to make the recipe.
    */
-  public Recipe(String name, GroceryRegister recipeGroceries, StepRegister steps, String imagePath) {
+  public Recipe(String name, GroceryRegister recipeGroceries, StepRegister steps,
+                String imagePath, boolean isFavorite) {
     super(name);
     this.recipeGroceries = recipeGroceries;
     this.steps = steps;
     this.imagePath = imagePath;
-    this.isFavorite = false;
+    this.isFavorite = isFavorite;
   }
 
   /**
@@ -67,16 +78,19 @@ public class Recipe extends Model {
   }
 
   /**
-   * Get the favorite status of the recipe.
+   * Get the isFavorite boolean of the recipe.
+   *
+   * @return the isFavorite boolean of the recipe.
    */
   public boolean getIsFavorite() {
     return isFavorite;
   }
 
   /**
-   * Set the favorite status of the recipe.
+   * Toggle the isFavorite boolean to the opposite. If isFavorite is true, it will be set to false,
+   * and if isFavorite is false, it will be set to true.
    */
-  public void setIsFavorite(boolean isFavorite) {
-    this.isFavorite = isFavorite;
+  public void toggleIsFavorite() {
+    isFavorite = !isFavorite;
   }
 }

@@ -150,6 +150,11 @@ public class CookBookController extends Controller implements Observer {
     shoppingListController.rerender();
   }
 
+  public void toggleIsFavorite(Recipe recipe) {
+    recipe.toggleIsFavorite();
+    view.render();
+  }
+
   public void addPlaceholderRecipes() {
     String cupboard = "Cupboard";
     // Recipe 1
@@ -163,7 +168,7 @@ public class CookBookController extends Controller implements Observer {
     steps1.addStep("Cook groceries");
     steps1.addStep("Eat groceries");
 
-    Recipe recipe1 = new Recipe("Tomato soup", groceries1, steps1, null);
+    Recipe recipe1 = new Recipe("Tomato soup", groceries1, steps1, null, false);
     recipeRegister.addRecipe(recipe1);
 
     // Recipe 2
@@ -179,7 +184,7 @@ public class CookBookController extends Controller implements Observer {
     steps2.addStep("Add porridge rice");
     steps2.addStep("Add sugar and cinnamon");
 
-    Recipe recipe2 = new Recipe("Rice porridge", groceries2, steps2, null);
+    Recipe recipe2 = new Recipe("Rice porridge", groceries2, steps2, null, false);
     recipeRegister.addRecipe(recipe2);
 
     // Recipe 3
@@ -194,7 +199,7 @@ public class CookBookController extends Controller implements Observer {
     steps3.addStep("Add tomato sauce");
     steps3.addStep("Add cheese");
 
-    Recipe recipe3 = new Recipe("Pasta", groceries3, steps3, null);
+    Recipe recipe3 = new Recipe("Pasta", groceries3, steps3, null, false);
     recipeRegister.addRecipe(recipe3);
   }
 }
