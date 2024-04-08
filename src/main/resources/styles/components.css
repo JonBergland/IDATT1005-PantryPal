@@ -119,6 +119,18 @@
     -fx-font-size: 16px;
 }
 
+.search-field {
+    -fx-max-height: 60px;
+    -fx-min-height: 60px;
+    -fx-background-color: white;
+    -fx-border-width: 1px 0 2px 0;
+    -fx-border-color: black;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-font-size: 25;
+}
 /*
     Add Shopping List Element
 */
