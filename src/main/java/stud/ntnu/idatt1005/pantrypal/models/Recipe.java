@@ -27,8 +27,6 @@ public class Recipe extends Model {
    * The imagePath pointing to image location.
    */
   private final String imagePath;
-  private boolean isFavorite;
-
   /**
    * The boolean isFavorite, which is true if the recipe is a favorite, and false if it is not.
    */

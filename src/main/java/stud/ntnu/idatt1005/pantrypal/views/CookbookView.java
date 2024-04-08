@@ -69,7 +69,7 @@ public class CookbookView extends View {
       }
       CookbookRecipeComponent recipeComponent = new CookbookRecipeComponent(recipe);
       recipeComponent.addObserver(controller);
-      row.getChildren().add(recipeComponent.getBorderPane());
+      row.getChildren().add(recipeComponent.getComponent());
 
     }
     row.setAlignment(Pos.CENTER);

@@ -24,6 +24,7 @@ public class CookBookController extends Controller implements Observer {
   private final ShelfRegister shelfRegister;
   private final GroceryRegister shoppingListRegister;
   private final ShoppingListController shoppingListController;
+  private final CookbookView view;
 
   /**
    * Constructor that takes in a ViewManager and sets the view for the controller
@@ -41,7 +42,7 @@ public class CookBookController extends Controller implements Observer {
 
     addPlaceholderRecipes();
 
-    CookbookView view = new CookbookView(this);
+    this.view = new CookbookView(this);
     this.viewManager.addView(Route.COOKBOOK, view);
   }
 
@@ -71,6 +72,9 @@ public class CookBookController extends Controller implements Observer {
         break;
       case ADD_TO_SHOPPING_LIST:
         addGroceriesToShoppingList(recipe);
+        break;
+      case EDIT:
+        toggleIsFavorite(recipe);
         break;
       default:
         break;

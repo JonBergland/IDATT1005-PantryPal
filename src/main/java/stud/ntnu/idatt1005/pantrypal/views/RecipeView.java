@@ -36,7 +36,7 @@ import java.util.List;
  * the application.
  * It includes the recipe overview, steps, and groceries.
  */
-public class RecipeView extends View {
+public class RecipeView extends View implements Observable {
 
   /**
    * The recipe to be displayed in the view.
@@ -139,15 +139,14 @@ public class RecipeView extends View {
 
     FavoriteButton favoriteButton = new FavoriteButton(recipe.getIsFavorite());
     favoriteButton.setOnMouseClicked(e -> {
-      this.controller.toggleIsFavorite(recipe);
+      notifyObservers(ButtonEnum.EDIT);
       favoriteButton.toggleStarColor();
     });
 
     HBox overviewButtons = new HBox(20);
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,
-            new FavoriteButton(this.recipe).getFavoriteButton()
-    );
+            favoriteButton);
     overviewButtons.setAlignment(Pos.CENTER_LEFT);
     overviewButtons.setPadding(new Insets(0, 0, 0, 0));
     return overviewButtons;

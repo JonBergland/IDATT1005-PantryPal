@@ -44,17 +44,12 @@ public class CookbookRecipeComponent implements Observable {
     this.recipe = recipe;
     BackgroundSize backgroundSize = new BackgroundSize(320, 200,
             true, true, false, true);
-    setUpBorderPane();
+    setUpStackPane();
 
     if (recipe.getImagePath() == null || recipe.getImagePath().isEmpty()) {
       BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
               new CornerRadii(10), null);
-<<<<<<< src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
-      borderPane.setBackground(new Background(backgroundFill));
-=======
-      setUpBorderPane(controller, recipe);
       stackPane.setBackground(new Background(backgroundFill));
->>>>>>> src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
     } else {
       Image image = new Image(recipe.getImagePath());
       BackgroundImage backgroundImage = new BackgroundImage(image,
@@ -62,18 +57,11 @@ public class CookbookRecipeComponent implements Observable {
               BackgroundRepeat.NO_REPEAT,
               BackgroundPosition.CENTER,
               backgroundSize);
-<<<<<<< src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
-      borderPane.setBackground(new Background(backgroundImage));
+      stackPane.setBackground(new Background(backgroundImage));
     }
 
     setLabel(recipe.getKey());
-=======
-      setUpBorderPane(controller, recipe);
-      stackPane.setBackground(new Background(backgroundImage));
-    }
-    setLabel(recipe.getKey());
     setStarIcon(recipe.getIsFavorite());
->>>>>>> src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
   }
 
 
@@ -81,21 +69,13 @@ public class CookbookRecipeComponent implements Observable {
    * Sets up the BorderPane for the recipe component.
    *
    */
-<<<<<<< src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
-  private void setUpBorderPane() {
-    borderPane = new BorderPane();
-    borderPane.setMaxWidth(getWidth());
-    borderPane.setMaxHeight(getHeight());
-    borderPane.setMinWidth(getWidth());
-    borderPane.setMinHeight(getHeight());
-=======
-  private void setUpBorderPane(CookBookController controller, Recipe recipe) {
+
+  private void setUpStackPane() {
     stackPane = new StackPane();
     stackPane.setMaxWidth(getWidth());
     stackPane.setMaxHeight(getHeight());
     stackPane.setMinWidth(getWidth());
     stackPane.setMinHeight(getHeight());
->>>>>>> src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
     BorderStroke borderStroke = new BorderStroke(ColorPalette.BLACK,
             BorderStrokeStyle.SOLID,
             new CornerRadii(10),
@@ -104,13 +84,8 @@ public class CookbookRecipeComponent implements Observable {
     Rectangle clip = new Rectangle(getWidth(), 200);
     clip.setArcWidth(20);
     clip.setArcHeight(20);
-<<<<<<< src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
-    borderPane.setClip(clip);
-    borderPane.setOnMouseClicked(e -> notifyObservers(ButtonEnum.OPEN_RECIPE));
-=======
     stackPane.setClip(clip);
-    stackPane.setOnMouseClicked(e -> controller.openRecipe(recipe));
->>>>>>> src/main/java/stud/ntnu/idatt1005/pantrypal/views/components/CookbookRecipeComponent.java
+    stackPane.setOnMouseClicked(e -> notifyObservers(ButtonEnum.OPEN_RECIPE));
   }
 
   /**
