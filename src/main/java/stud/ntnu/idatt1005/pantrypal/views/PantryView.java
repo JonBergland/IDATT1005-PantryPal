@@ -5,18 +5,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
+import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
+
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Shelf;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
+import stud.ntnu.idatt1005.pantrypal.views.components.AddGroceryListElement;
+import stud.ntnu.idatt1005.pantrypal.views.components.GroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
 import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.addClasses;
@@ -48,10 +48,8 @@ public class PantryView extends View {
         this.setScrollPane();
     }
 
-    public void render() {
+    public void render(Shelf[] shelves) {
         GridPane shelfGrid = new GridPane();
-
-        Shelf[] shelves = controller.getShelves();
 
         int row = 0;
         int col = 0;
@@ -134,94 +132,23 @@ public class PantryView extends View {
         scrollContainer.setFitToWidth(true);
 
         for(Grocery grocery : groceries){
-            HBox groceryItem = this.groceryItem(shelf, grocery);
-            addChildren(groceryList, groceryItem);
+            GroceryListElement element = new GroceryListElement.GroceryListElementBuilder(grocery)
+                .text(grocery.getName())
+                .quantity()
+                .build();
+            for (Observer observer : observers) {
+                element.addObserver(observer);
+            }
+            addChildren(groceryList, element.getPane());
         }
 
-        HBox addGroceryButton = this.addGroceryButton(shelf);
+        AddGroceryListElement addGroceryButton = new AddGroceryListElement(shelf.getName());
+        for (Observer observer : observers) {
+            addGroceryButton.addObserver(observer);
+        }
 
         addChildren(container, scrollContainer, addGroceryButton);
 
         return container;
-    }
-
-    private HBox groceryItem(Shelf shelf, Grocery grocery){
-        HBox container = new HBox();
-        container.setAlignment(Pos.CENTER);
-        HBox.setHgrow(container, Priority.ALWAYS);
-        NodeUtils.addClasses(container, "grocery-item");
-
-        HBox nameContainer = new HBox();
-        nameContainer.setAlignment(Pos.CENTER);
-        HBox.setHgrow(nameContainer, Priority.ALWAYS);
-        NodeUtils.addClasses(nameContainer, "grocery-item-text-container");
-        Text name = new Text(grocery.getName());
-        NodeUtils.addClasses(name, "grocery-item-text");
-        addChildren(nameContainer, name);
-
-        HBox quantityContainer = new HBox();
-        quantityContainer.setAlignment(Pos.CENTER);
-        HBox.setHgrow(quantityContainer, Priority.ALWAYS);
-        NodeUtils.addClasses(quantityContainer, "grocery-item-text-container");
-        Spinner<Integer> spinner = createSpinner(grocery);
-        spinner.setMaxWidth(100);
-        spinner.setMaxHeight(50);
-        NodeUtils.addClasses(spinner, "grocery-item-text");
-        addChildren(quantityContainer, spinner);
-
-        StyledButton deleteButton = new StyledButton("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM);
-        deleteButton.setAlignment(Pos.CENTER);
-        deleteButton.setOnAction(e -> {
-            this.controller.deleteGrocery(shelf, grocery);
-        });
-
-        addChildren(container, nameContainer, quantityContainer, deleteButton);
-
-        return container;
-    }
-
-    private HBox addGroceryButton(Shelf shelf){
-        HBox container = new HBox();
-        container.setAlignment(Pos.CENTER);
-        NodeUtils.addClasses(container, "add-grocery-container");
-
-        TextField groceryName = new TextField();
-        groceryName.setPromptText("Name");
-        groceryName.setMinWidth(60);
-        addClasses(groceryName, "add-grocery-textfield");
-        TextField groceryQuantity = new TextField();
-        groceryQuantity.setPromptText("Quantity");
-        groceryQuantity.setMinWidth(60);
-        addClasses(groceryQuantity, "add-grocery-textfield");
-
-        StyledButton addGroceryButton = new StyledButton("Add");
-        addGroceryButton.setStyle("-fx-min-width: 60; -fx-padding: 10; -fx-background-insets: 0; -fx-border-insets: 0");
-        addGroceryButton.setOnAction(e -> {
-            try {
-                this.controller.addGrocery(shelf, groceryName.getText(), Integer.parseInt(groceryQuantity.getText()));
-            } catch (Exception ex) {
-                System.err.println(ex.getMessage());
-            }
-        });
-
-        addChildren(container, groceryName, groceryQuantity, addGroceryButton);
-
-        return container;
-    }
-
-    protected Spinner<Integer> createSpinner(Grocery grocery) {
-        Spinner<Integer> spinner = new Spinner<>();
-
-        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
-            new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, grocery.getQuantity());
-
-        valueFactory.setAmountToStepBy(1);
-
-        valueFactory.valueProperty().addListener((observable, oldValue, newValue) ->
-            grocery.setQuantity(newValue)
-        );
-
-        spinner.setValueFactory(valueFactory);
-        return spinner;
     }
 }

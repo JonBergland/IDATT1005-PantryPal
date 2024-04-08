@@ -35,18 +35,20 @@ public class View extends Scene implements Observable {
   private final BorderPane root;
 
   /**
-   * The list of observers that are observing this view
+   * List of observers observing this view.
    */
   protected final List<Observer> observers = new ArrayList<>();
 
   /**
-   * Constructor for the View class. Initializes the view based on the viewType.
-   * The view is created with a BorderPane as the root node.
-   * The view is styled with a style sheet based on the route.
+   * Constructs a View object with a specified controller, route, and style path.
+   * The view is created with a BorderPane as the root node
+   * and styled with a style sheet based on the route.
    * The view is associated with a controller to handle the logic and actions.
    * The view is created with a size to match the screen size.
    *
-   * @param route The route of the view.
+   * @param controller  The controller associated with the view.
+   * @param route       The route of the view.
+   * @param stylePath   The path to the style sheet for the view.
    */
   public View(Controller controller, Route route, String stylePath) {
     super(new BorderPane(), getPrimary().getVisualBounds().getWidth(),
@@ -68,9 +70,9 @@ public class View extends Scene implements Observable {
   }
 
   /**
-   * Sets the view for the scene. The view is set based on the route of the scene.
-   * The view includes a navigation bar and a title if the route is HOME.
-   * The view only includes a navigation bar if the route is DEFAULT.
+   * Sets up the view for the scene based on the route of the scene.
+   * If the route is HOME, the view includes a navigation bar and a title.
+   * For other routes, the view only includes a navigation bar.
    *
    * @param borderPane The BorderPane to set the view in.
    */
@@ -109,32 +111,47 @@ public class View extends Scene implements Observable {
   }
 
   /**
-   * Adds an observer to the observable
+   * Adds an observer to the list of observers for this view.
    *
-   * @param observer the observer to be added
+   * @param observer The observer to be added.
+   * @throws IllegalArgumentException If the observer is null.
    */
   @Override
-  public void addObserver(Observer observer) {
-    observers.add(observer);
+  public void addObserver(Observer observer) throws IllegalArgumentException {
+    if (observer != null) {
+      if (!observers.contains(observer)) {
+        observers.add(observer);
+      }
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
   }
 
   /**
-   * Removes an observer from the observable
+   * Removes an observer from the list of observers for this view.
    *
-   * @param observer the observer to be removed
+   * @param observer The observer to be removed.
+   * @throws IllegalArgumentException If the observer is null.
    */
   @Override
-  public void removeObserver(Observer observer) {
-    observers.remove(observer);
+  public void removeObserver(Observer observer) throws IllegalArgumentException {
+    if (observer != null) {
+      if (observers.contains(observer)) {
+        observers.remove(observer);
+      }
+    } else {
+      throw new IllegalArgumentException("Observer cannot be null");
+    }
   }
 
   /**
-   * Notifies the observers with the given enum and grocery.
+   * Notifies all observers with the given ButtonEnum.
    *
-   * @param buttonEnum the enum to be notified.
+   * @param buttonEnum The ButtonEnum to notify the observers with.
    */
   protected void notifyObservers(ButtonEnum buttonEnum) {
-    for (Observer observer : observers) {
+    List<Observer> observersCopy = new ArrayList<>(this.observers);
+    for (Observer observer : observersCopy) {
       observer.update(buttonEnum);
     }
   }

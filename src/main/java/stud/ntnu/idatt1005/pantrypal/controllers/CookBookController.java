@@ -2,6 +2,7 @@ package stud.ntnu.idatt1005.pantrypal.controllers;
 
 import java.util.Map;
 
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
@@ -17,16 +18,13 @@ import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
  * The controller for the CookBookView and RecipeView
  * Handles the logic for the CookBookView and RecipeView, in addition to updating the view.
  */
-public class CookBookController extends Controller {
+public class CookBookController extends Controller implements Observer {
 
-  /**
-   * The view for the CookBookController
-   */
-  private final CookbookView view;
   private final RecipeRegister recipeRegister;
   private final ShelfRegister shelfRegister;
   private final GroceryRegister shoppingListRegister;
   private final ShoppingListController shoppingListController;
+  private final CookbookView view;
 
   /**
    * Constructor that takes in a ViewManager and sets the view for the controller
@@ -45,7 +43,7 @@ public class CookBookController extends Controller {
     addPlaceholderRecipes();
 
     this.view = new CookbookView(this);
-    this.viewManager.addView(Route.COOKBOOK, this.view);
+    this.viewManager.addView(Route.COOKBOOK, view);
   }
 
   /**
@@ -55,6 +53,43 @@ public class CookBookController extends Controller {
    */
   public Map<String, Recipe> getRecipes() {
     return this.recipeRegister.getRegister();
+  }
+
+  /**
+   * Updates the observer with the button that was pressed and the object affected
+   *
+   * @param buttonEnum the button that was pressed
+   * @param object     the object that was pressed
+   */
+  @Override
+  public void update(ButtonEnum buttonEnum, Object object) {
+    if (!(object instanceof Recipe recipe)) {
+      throw new IllegalArgumentException("Object is not of type Recipe");
+    }
+    switch (buttonEnum) {
+      case OPEN_RECIPE:
+        openRecipe(recipe);
+        break;
+      case ADD_TO_SHOPPING_LIST:
+        addGroceriesToShoppingList(recipe);
+        break;
+      case EDIT:
+        toggleIsFavorite(recipe);
+        break;
+      default:
+        break;
+    }
+
+  }
+
+  /**
+   * Updates the observer with the button that was pressed
+   *
+   * @param buttonEnum the button that was pressed
+   */
+  @Override
+  public void update(ButtonEnum buttonEnum) {
+    throw new UnsupportedOperationException("Not implemented");
   }
 
   /**
@@ -72,7 +107,9 @@ public class CookBookController extends Controller {
    * @param recipe the recipe to be opened in the RecipeView.
    */
   public void openRecipe(Recipe recipe) {
-    this.viewManager.addView(Route.RECIPE, new RecipeView(this, recipe));
+    RecipeView recipeView = new RecipeView(this, recipe);
+    recipeView.addObserver(this);
+    this.viewManager.addView(Route.RECIPE, recipeView);
     this.viewManager.setView(Route.RECIPE);
   }
 
@@ -123,11 +160,12 @@ public class CookBookController extends Controller {
   }
 
   public void addPlaceholderRecipes() {
+    String cupboard = "Cupboard";
     // Recipe 1
     GroceryRegister groceries1 = new GroceryRegister();
-    groceries1.addGrocery(new Grocery("Tomato", 1, "Cupboard", false));
-    groceries1.addGrocery(new Grocery("Onion", 1, "Cupboard", false));
-    groceries1.addGrocery(new Grocery("Garlic", 1, "Cupboard", false));
+    groceries1.addGrocery(new Grocery("Tomato", 1, cupboard, false));
+    groceries1.addGrocery(new Grocery("Onion", 1, cupboard, false));
+    groceries1.addGrocery(new Grocery("Garlic", 1, cupboard, false));
 
     StepRegister steps1 = new StepRegister();
     steps1.addStep("Cut groceries");
@@ -141,9 +179,9 @@ public class CookBookController extends Controller {
 
     GroceryRegister groceries2 = new GroceryRegister();
     groceries2.addGrocery(new Grocery("Milk", 1, "Fridge", false));
-    groceries2.addGrocery(new Grocery("Porridge rice", 1, "Cupboard", false));
-    groceries2.addGrocery(new Grocery("Sugar", 1, "Cupboard", false));
-    groceries2.addGrocery(new Grocery("Cinnamon", 1, "Cupboard", false));
+    groceries2.addGrocery(new Grocery("Porridge rice", 1, cupboard, false));
+    groceries2.addGrocery(new Grocery("Sugar", 1, cupboard, false));
+    groceries2.addGrocery(new Grocery("Cinnamon", 1, cupboard, false));
 
     StepRegister steps2 = new StepRegister();
     steps2.addStep("Boil milk");
@@ -156,8 +194,8 @@ public class CookBookController extends Controller {
     // Recipe 3
 
     GroceryRegister groceries3 = new GroceryRegister();
-    groceries3.addGrocery(new Grocery("Pasta", 1, "Cupboard", false));
-    groceries3.addGrocery(new Grocery("Tomato sauce", 1, "Cupboard", false));
+    groceries3.addGrocery(new Grocery("Pasta", 1, cupboard, false));
+    groceries3.addGrocery(new Grocery("Tomato sauce", 1, cupboard, false));
     groceries3.addGrocery(new Grocery("Cheese", 1, "Fridge", false));
 
     StepRegister steps3 = new StepRegister();

@@ -25,7 +25,7 @@ public class CookbookView extends View {
   /**
    * The number of recipes per row in the view.
    */
-  private final int amountOfRecipesPerRow;
+  private static final int RECIPES_PER_ROW = 4;
   /**
    * The spacing between the recipes in the view.
    */
@@ -48,7 +48,6 @@ public class CookbookView extends View {
     super(controller, Route.COOKBOOK, "/styles/cookbook.css");
     this.controller = controller;
     this.setScrollPane();
-    amountOfRecipesPerRow = 4;
     spacing = calculateSpacing();
     recipes = controller.getRecipes();
     render();
@@ -63,14 +62,14 @@ public class CookbookView extends View {
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
     HBox row = new HBox(spacing);
     for (Recipe recipe : recipes.values()) {
-      if (row.getChildren().size() < amountOfRecipesPerRow) {
-        row.getChildren().add(new CookbookRecipeComponent(recipe, this.controller).getComponent());
-      } else {
+      if (row.getChildren().size() >= RECIPES_PER_ROW) {
         row.setAlignment(Pos.CENTER);
         recipeContainer.getChildren().add(row);
         row = new HBox(spacing);
-        row.getChildren().add(new CookbookRecipeComponent(recipe, this.controller).getComponent());
       }
+      CookbookRecipeComponent recipeComponent = new CookbookRecipeComponent(recipe);
+      recipeComponent.addObserver(controller);
+      row.getChildren().add(recipeComponent.getComponent());
 
     }
     row.setAlignment(Pos.CENTER);
@@ -86,7 +85,7 @@ public class CookbookView extends View {
    */
   private double calculateSpacing() {
     Rectangle2D visualBounds = getPrimary().getVisualBounds();
-    return ((visualBounds.getWidth() - amountOfRecipesPerRow * CookbookRecipeComponent.getWidth())
-        / (amountOfRecipesPerRow + 1));
+    return ((visualBounds.getWidth() - RECIPES_PER_ROW * CookbookRecipeComponent.getWidth())
+        / (RECIPES_PER_ROW + 1));
   }
 }
