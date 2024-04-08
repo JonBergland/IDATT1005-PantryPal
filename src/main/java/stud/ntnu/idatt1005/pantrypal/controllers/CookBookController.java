@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
@@ -21,6 +22,7 @@ import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 public class CookBookController extends Controller implements Observer {
 
   private final RecipeRegister recipeRegister;
+  private List<Recipe> currentSearch;
   private final ShelfRegister shelfRegister;
   private final GroceryRegister shoppingListRegister;
   private final ShoppingListController shoppingListController;
@@ -41,6 +43,7 @@ public class CookBookController extends Controller implements Observer {
     this.shoppingListController = shoppingListController;
 
     addPlaceholderRecipes();
+    this.currentSearch = recipeRegister.getRegister().values().stream().toList();
 
     this.view = new CookbookView(this);
     this.viewManager.addView(Route.COOKBOOK, view);
@@ -55,6 +58,9 @@ public class CookBookController extends Controller implements Observer {
     return this.recipeRegister.getRegister();
   }
 
+  public List<Recipe> getCurrentSearch() {
+    return currentSearch;
+  }
   /**
    * Updates the observer with the button that was pressed and the object affected
    *
@@ -101,6 +107,10 @@ public class CookBookController extends Controller implements Observer {
     this.recipeRegister.addRecipe(recipe);
   }
 
+  public void searchRecipes(String search) {
+      currentSearch = recipeRegister.searchRecipes(search);
+      view.render();
+  }
   /**
    * Opens a recipe in the RecipeView, and sets the view to RecipeView.
    *
