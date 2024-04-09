@@ -9,9 +9,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.views.components.CookbookRecipeComponent;
+import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
 /**
  * The CookbookView class is responsible for creating and managing the view for the
@@ -59,6 +61,8 @@ public class CookbookView extends View {
    */
   public void render() {
     VBox recipeContainer = new VBox(spacing / 2);
+    //StyledButton addRecipe = addRecipe();
+    //recipeContainer.getChildren().add(addRecipe);
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
     HBox row = new HBox(spacing);
     for (Recipe recipe : recipes.values()) {
@@ -75,6 +79,13 @@ public class CookbookView extends View {
     row.setAlignment(Pos.CENTER);
     recipeContainer.getChildren().add(row);
     getBorderPane().setCenter(recipeContainer);
+  }
+
+  private StyledButton addRecipe() {
+    StyledButton button = new StyledButton("Add Recipe");
+    button.setOnAction(e -> notifyObservers(ButtonEnum.ADD));
+
+    return button;
   }
 
   /**
