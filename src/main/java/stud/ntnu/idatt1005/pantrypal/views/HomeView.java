@@ -2,14 +2,12 @@ package stud.ntnu.idatt1005.pantrypal.views;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -52,7 +50,7 @@ public class HomeView extends View {
   private final VBox homeViewPantryBackground = new VBox();
 
   // Background for the "Cook Book" section.
-  private final VBox homeViewCookBookBackground = new VBox();
+  private final VBox homeViewCookbookBackground = new VBox();
 
   // Background for the "Shopping List" section.
   private final VBox homeViewShoppingListBackground = new VBox();
@@ -68,10 +66,6 @@ public class HomeView extends View {
   // Button for the "Shopping List" section.
   private final StyledButton shoppingListButton = new StyledButton(
       "Shopping List", StyledButton.Variant.BLACK, StyledButton.Size.LARGE);
-
-  // The primary screen bounds.
-  private final Rectangle2D primaryScreenBounds =
-      javafx.stage.Screen.getPrimary().getVisualBounds();
 
   /**
    * Constructor for HomeView.
@@ -89,7 +83,7 @@ public class HomeView extends View {
    * Initializes the HomeView by setting up the layout and styling.
    */
   private void initializeHomeView() {
-    setCookBookBox();
+    setCookbookBox();
     setPantryBox();
     setShoppingListBox();
     setLayout();
@@ -103,17 +97,22 @@ public class HomeView extends View {
    * The box is styled and added to the right side of the view.
    * The box is set to take up 50% of the width and 100% of the height of the view.
    */
-  private void setCookBookBox() {
-    VBox recipeBox = new VBox(cookBookText, cookBookUndertext, cookBookButton);
-    recipeBox.setAlignment(Pos.TOP_LEFT);
-    recipeBox.setPadding(new Insets(0, 0, 0, 60));
-    recipeBox.setSpacing(5);
+  private void setCookbookBox() {
+    HBox cookBookBox = new HBox(40);
+    cookBookBox.setAlignment(Pos.CENTER);
+    VBox cookbookTextBox = new VBox(cookBookText, cookBookUndertext, cookBookButton);
+    cookbookTextBox.setAlignment(Pos.TOP_LEFT);
+    cookbookTextBox.setPadding(new Insets(0, 0, 0, 60));
+    cookbookTextBox.setSpacing(5);
     cookBookUndertext.setWrappingWidth(300);
-    homeViewCookBookBackground.getChildren().add(recipeBox);
-    homeViewCookBookBackground.setAlignment(Pos.CENTER_LEFT);
-    homeViewCookBookBackground.getStyleClass().add("cookbook-background");
-    setBoxSize(homeViewCookBookBackground, 0.5, 1.0);
-    getBorderPane().setLeft(homeViewCookBookBackground);
+    homeViewCookbookBackground.getChildren().add(cookBookBox);
+    homeViewCookbookBackground.setAlignment(Pos.CENTER_LEFT);
+    homeViewCookbookBackground.getStyleClass().add("cookbook-background");
+    setBoxSize(homeViewCookbookBackground, 0.5, 1.0);
+    getBorderPane().setLeft(homeViewCookbookBackground);
+
+    ImageView icon = createIcon("images/icons/cookbookIcon.png");
+    NodeUtils.addChildren(cookBookBox, cookbookTextBox, icon);
   }
 
   /**
@@ -123,15 +122,20 @@ public class HomeView extends View {
    * The box is set to take up 50% of the width and 50% of the height of the view.
    */
   private void setPantryBox() {
-    VBox pantryBox = new VBox(pantryText, pantryUndertext, pantryButton);
-    pantryBox.setAlignment(Pos.TOP_LEFT);
-    pantryBox.setPadding(new Insets(0, 0, 0, 60));
-    pantryBox.setSpacing(5);
+    HBox pantryBox = new HBox(40);
+    pantryBox.setAlignment(Pos.CENTER);
+    VBox pantryTextBox = new VBox(pantryText, pantryUndertext, pantryButton);
+    pantryTextBox.setAlignment(Pos.TOP_LEFT);
+    pantryTextBox.setPadding(new Insets(0, 0, 0, 60));
+    pantryTextBox.setSpacing(5);
     pantryUndertext.setWrappingWidth(300);
     homeViewPantryBackground.getChildren().add(pantryBox);
     homeViewPantryBackground.setAlignment(Pos.CENTER_LEFT);
     homeViewPantryBackground.getStyleClass().add("pantry-background");
     setBoxSize(homeViewPantryBackground, 0.5, 0.5);
+
+    ImageView icon = createIcon("images/icons/fridgeIcon.png");
+    NodeUtils.addChildren(pantryBox, pantryTextBox, icon);
   }
 
   /**
@@ -141,17 +145,28 @@ public class HomeView extends View {
    * The box is set to take up 50% of the width and 50% of the height of the view.
    */
   private void setShoppingListBox() {
-    VBox shoppingListBox = new VBox(shoppingListText, shoppingListUndertext, shoppingListButton);
-    shoppingListBox.setAlignment(Pos.TOP_LEFT);
-    shoppingListBox.setPadding(new Insets(0, 0, 0, 60));
-    shoppingListBox.setSpacing(5);
+    HBox shoppingListBox = new HBox(40);
+    shoppingListBox.setAlignment(Pos.CENTER);
+    VBox shoppingListTextBox = new VBox(shoppingListText, shoppingListUndertext, shoppingListButton);
+    shoppingListTextBox.setAlignment(Pos.TOP_LEFT);
+    shoppingListTextBox.setPadding(new Insets(0, 0, 0, 60));
+    shoppingListTextBox.setSpacing(5);
     shoppingListUndertext.setWrappingWidth(300);
     homeViewShoppingListBackground.getChildren().add(shoppingListBox);
     homeViewShoppingListBackground.setAlignment(Pos.CENTER_LEFT);
     homeViewShoppingListBackground.getStyleClass().add("shopping-list-background");
     setBoxSize(homeViewShoppingListBackground, 0.5, 0.5);
+
+    ImageView icon = createIcon("images/icons/shoppingCartIcon.png");
+    NodeUtils.addChildren(shoppingListBox, shoppingListTextBox, icon);
   }
 
+  private ImageView createIcon(String path) {
+    ImageView icon = new ImageView(new Image(path));
+    icon.setFitHeight(150);
+    icon.setFitWidth(150);
+    return icon;
+  }
   /**
    * Sets the size of the box based on the width and height factor.
    *
