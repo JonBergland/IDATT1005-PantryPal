@@ -113,11 +113,15 @@ public class RecipeView extends View implements Observable {
     textContainer.setMinHeight(Sizing.getRecipeBoxSize()[1]);
     Text header = new Text(this.recipe.getKey());
     header.setFont(new Font("Times new roman", 60));
-
-    Text description = new Text("Recipe description - Lorem ipsum dolor sit amet, "
-            + "consectetur adipiscing elit. Morbi malesuada nulla diam, quis vulputate augue "
-            + "porta sed. Sed semper neque ac tempus molestie. Suspendisse ultricies erat nunc, "
-            + "ut fringilla leo porta id. Vivamus euismod fringilla leo.");
+    Text description = new Text();
+    if(recipe.getDescription() != null && !recipe.getDescription().isEmpty()) {
+      description.setText(recipe.getDescription());
+    } else {
+      description = new Text("Recipe description - Lorem ipsum dolor sit amet, "
+          + "consectetur adipiscing elit. Morbi malesuada nulla diam, quis vulputate augue "
+          + "porta sed. Sed semper neque ac tempus molestie. Suspendisse ultricies erat nunc, "
+          + "ut fringilla leo porta id. Vivamus euismod fringilla leo.");
+    }
     description.setWrappingWidth(400);
 
     textContainer.getChildren().addAll(header, description, createOverviewButtons());
