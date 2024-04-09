@@ -1,6 +1,7 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
 import java.util.Map;
+import java.util.Objects;
 
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -43,6 +44,7 @@ public class CookBookController extends Controller implements Observer {
     addPlaceholderRecipes();
 
     this.view = new CookbookView(this);
+    this.view.addObserver(this);
     this.viewManager.addView(Route.COOKBOOK, view);
   }
 
@@ -94,23 +96,20 @@ public class CookBookController extends Controller implements Observer {
    */
   @Override
   public void update(ButtonEnum buttonEnum) {
-    switch (buttonEnum) {
-      case ADD:
-        openAddRecipe();
-        break;
-      default:
-        break;
+    if (Objects.requireNonNull(buttonEnum) == ButtonEnum.ADD) {
+      openAddRecipe();
+    } else {
+      throw new UnsupportedOperationException("Button not supported: " + buttonEnum);
     }
   }
 
   /**
-   * Adds a recipe to the recipeRegister.
-   *
-   * @param recipe the recipe to be added to the recipeRegister.
+   * Opens the AddRecipeView and sets the view to AddRecipeView.
+   * Creates a new AddRecipeController and AddRecipeView and
+   * set the view to AddRecipeView.
    */
   private void openAddRecipe() {
-    AddRecipeController addRecipeController = new AddRecipeController(this.viewManager, this);
-    AddRecipeView addRecipeView = new AddRecipeView(addRecipeController);
+    new AddRecipeController(this.viewManager, this);
     this.viewManager.setView(Route.ADD_RECIPE);
   }
 
@@ -126,6 +125,17 @@ public class CookBookController extends Controller implements Observer {
     this.viewManager.setView(Route.RECIPE);
   }
 
+  /**
+   * Adds the groceries from a recipe to the shopping list.
+   * This method gets the grocery from the recipe and checks
+   * if the grocery is already in the shopping list or pantry.
+   * If the grocery is in the pantry, it checks if the quantity
+   * is enough. If not, it adds the difference to the shopping list.
+   * If the grocery is not in the pantry, it adds the grocery to the
+   * shopping list.
+   *
+   * @param recipe the recipe to add groceries from.
+   */
   private void addGroceriesToShoppingList(Recipe recipe) {
     for (Map.Entry<String, Grocery> entry : recipe.getRecipeGroceries().getRegister().entrySet()) {
       String groceryName = entry.getKey();
@@ -167,11 +177,19 @@ public class CookBookController extends Controller implements Observer {
     shoppingListController.rerender();
   }
 
+  /**
+   * Toggles the favorite status of a recipe.
+   *
+   * @param recipe the recipe to toggle the favorite status of.
+   */
   private void toggleIsFavorite(Recipe recipe) {
     recipe.toggleIsFavorite();
     view.render();
   }
 
+  /**
+   * Adds placeholder recipes to the recipe register.
+   */
   private void addPlaceholderRecipes() {
     String cupboard = "Cupboard";
     // Recipe 1
