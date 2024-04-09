@@ -12,8 +12,11 @@ import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.*;
+
+import java.util.Objects;
 
 /**
  * A class that extends View and creates a render for adding a recipe.
@@ -22,6 +25,8 @@ import stud.ntnu.idatt1005.pantrypal.views.components.*;
  * and actions related to adding a recipe.
  */
 public class AddRecipeView extends View {
+  private final StyledTextField name;
+  private final StyledTextArea descriptionField;
 
   /**
    * Constructor for AddRecipeView.
@@ -30,6 +35,8 @@ public class AddRecipeView extends View {
    */
   public AddRecipeView(AddRecipeController controller) {
     super(controller, Route.ADD_RECIPE, "/styles/add-recipe.css");
+    this.name = new StyledTextField("Name");
+    this.descriptionField = createDescription();
   }
 
   public void render(GroceryRegister groceryRegister, StepRegister stepRegister) {
@@ -53,12 +60,6 @@ public class AddRecipeView extends View {
     HBox titleBox = createTitleBox(title);
     titleBox.setAlignment(Pos.TOP_LEFT);
 
-    // Create the text field for the name
-    StyledTextField name = createName();
-
-    // Create the text area for the description
-    StyledTextArea description = createDescription();
-
     // Create the grocery list with title and option to add groceries
     Text groceryListTitle = new Text("Ingredients:");
     groceryListTitle.getStyleClass().add("subtitle");
@@ -77,21 +78,25 @@ public class AddRecipeView extends View {
     ScrollPane stepList = createStepList(stepRegister);
 
     // Create the button to add a step
-    StyledButton addStep = createAddStepButton();
+    HBox addStep = createAddStepBox();
 
+    // Create a border to separate the form from the button
+    Pane border = new Pane();
+    border.setMinHeight(10);
+    border.setStyle("-fx-border-width: 1 0 0 0; -fx-border-color: #000000;");
 
     // Create the button to submit the form
     StyledButton submit = new StyledButton("Add Recipe");
     submit.setMaxWidth(Double.MAX_VALUE);
     submit.setOnAction(e -> {
-      //Recipe recipe = new Recipe(name.getText(), description.getText());
-      //recipe.addIngredient(ingredient.getGrocery());
-      //notifyObservers(ButtonEnum.ADD, recipe);
+      Recipe recipe = new Recipe(name.getText(), descriptionField.getText(), groceryRegister, stepRegister, null, false);
+      notifyObservers(ButtonEnum.ADD, recipe);
     });
-    Pane filler = createFiller();
 
-    innerForm.getChildren().addAll(titleBox,name, description,
-        groceryListTitleBox, groceryList, addGrocery, stepListTitleBox, stepList, submit, filler);
+    innerForm.getChildren().addAll(titleBox,name, descriptionField,
+        groceryListTitleBox, groceryList, addGrocery,
+        stepListTitleBox, stepList, addStep,
+        border, submit);
     scrollPane.setContent(innerForm);
     form.getChildren().add(scrollPane);
     this.getBorderPane().setCenter(form);
@@ -104,9 +109,8 @@ public class AddRecipeView extends View {
 
   private StyledTextArea createDescription() {
     StyledTextArea descriptionField = new StyledTextArea("Description");
-    //descriptionField.setMinHeight(Sizing.getScreenWidth() * 0.18);
+    descriptionField.setMinHeight(Sizing.getScreenHeight() * 0.18);
     descriptionField.setMaxHeight(Sizing.getScreenHeight() * 0.18);
-    descriptionField.setMaxWidth(Sizing.getScreenWidth() * 0.6);
     descriptionField.setWrapText(true);
     return descriptionField;
   }
@@ -115,7 +119,8 @@ public class AddRecipeView extends View {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(true);
-    scrollPane.setMaxHeight(Sizing.getScreenHeight() * 0.2);
+    scrollPane.setMinHeight(Sizing.getScreenHeight() * 0.3);
+    scrollPane.setMaxHeight(Sizing.getScreenHeight() * 0.3);
     VBox groceryList = new VBox();
 
     for (Grocery grocery : groceryRegister.getRegister().values()) {
@@ -150,11 +155,13 @@ public class AddRecipeView extends View {
   }
 
   private ScrollPane createStepList(StepRegister stepRegister) {
+    int elementHeight = 20;
+
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
     scrollPane.setFitToHeight(true);
-    //scrollPane.setMinHeight(Sizing.getScreenWidth() * 0.2);
-    scrollPane.setMaxHeight(Sizing.getScreenHeight() * 0.2);
+    scrollPane.setMinHeight(Sizing.getScreenHeight() * 0.3);
+    scrollPane.setMaxHeight(Sizing.getScreenHeight() * 0.3);
     VBox stepList = new VBox();
     stepList.getStyleClass().add("step-list");
 
@@ -162,17 +169,23 @@ public class AddRecipeView extends View {
       Text stepNumber = new Text(i + 1 + ".");
       StackPane stepNumberPane = new StackPane(stepNumber);
       stepNumberPane.setAlignment(Pos.CENTER);
+      stepNumberPane.setMaxHeight(elementHeight);
 
       String step = stepRegister.getSteps().get(i);
+      StackPane stepPane = new StackPane(new Text(step));
+      stepPane.setAlignment(Pos.CENTER);
+      stepPane.setMaxHeight(elementHeight);
 
       StyledButton removeStep = new StyledButton("X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM);
       removeStep.setOnAction(e -> notifyObservers(ButtonEnum.REMOVE, step));
+      removeStep.setMaxHeight(elementHeight);
 
       BorderPane stepElement = new BorderPane();
       stepElement.getStyleClass().add("step-element");
       stepElement.setLeft(stepNumberPane);
-      stepElement.setCenter(new Text(step));
+      stepElement.setCenter(stepPane);
       stepElement.setRight(removeStep);
+      stepElement.setMaxHeight(elementHeight);
 
       stepList.getChildren().add(stepElement);
     }
@@ -181,19 +194,27 @@ public class AddRecipeView extends View {
     return scrollPane;
   }
 
-  private StyledButton createAddStepButton(){
+  private HBox createAddStepBox(){
+    HBox addStepBox = new HBox();
+    addStepBox.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/pantry.css")).toExternalForm());
+    addStepBox.setAlignment(Pos.CENTER);
+    NodeUtils.addClasses(addStepBox, "add-grocery-container");
+
+    StyledTextField stepField = new StyledTextField("Step");
+    addStepBox.getChildren().add(stepField);
+
+
     StyledButton addStep = new StyledButton("Add Step");
     addStep.setMaxWidth(Double.MAX_VALUE);
     addStep.setOnAction(e -> {
-      notifyObservers(ButtonEnum.ADD, "Step");
+      if (!stepField.getText().isEmpty()) {
+        notifyObservers(ButtonEnum.ADD, stepField.getText());
+        stepField.clear();
+      }
     });
-    return addStep;
-  }
 
-  private Pane createFiller() {
-    Pane filler = new Pane();
-    VBox.setVgrow(filler, Priority.ALWAYS);
-    return filler;
+    addStepBox.getChildren().add(addStep);
+    return addStepBox;
   }
 
   private void notifyObservers(ButtonEnum buttonEnum, Recipe recipe) {
