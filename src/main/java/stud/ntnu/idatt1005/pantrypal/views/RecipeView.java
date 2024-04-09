@@ -143,10 +143,14 @@ public class RecipeView extends View implements Observable {
       favoriteButton.toggleStarColor();
     });
 
+    StyledButton deleteButton = new StyledButton("Delete",
+            StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM);
+    deleteButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.REMOVE));
     HBox overviewButtons = new HBox(20);
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,
-            favoriteButton);
+            favoriteButton,
+            deleteButton);
     overviewButtons.setAlignment(Pos.CENTER_LEFT);
     overviewButtons.setPadding(new Insets(0, 0, 0, 0));
     return overviewButtons;

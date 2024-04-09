@@ -52,7 +52,7 @@
 
 .button-danger {
     -fx-background-color: #EF4444;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 .button-danger:hover {
@@ -65,7 +65,7 @@
 }
 
 .button-delete {
-    -fx-background-color: white;
+    -fx-background-color: transparent;
     -fx-text-fill: black;
 
 }
