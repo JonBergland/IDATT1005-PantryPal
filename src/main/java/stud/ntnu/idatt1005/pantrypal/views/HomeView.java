@@ -2,16 +2,16 @@ package stud.ntnu.idatt1005.pantrypal.views;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
-import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
-import stud.ntnu.idatt1005.pantrypal.views.components.NavLink;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
+import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
 /**
@@ -87,10 +87,9 @@ public class HomeView extends View {
     setPantryBox();
     setShoppingListBox();
     setLayout();
-    applyHeaderText();
-    applySubHeaderText();
     applyButtons();
   }
+
   /**
    * Sets the "Cook Book" section box.
    * The box contains the cookBookText, cookBookUndertext and cookBookButton.
@@ -100,16 +99,12 @@ public class HomeView extends View {
   private void setCookbookBox() {
     HBox cookBookBox = new HBox(40);
     cookBookBox.setAlignment(Pos.CENTER);
-    VBox cookbookTextBox = new VBox(cookBookText, cookBookUndertext, cookBookButton);
-    cookbookTextBox.setAlignment(Pos.TOP_LEFT);
-    cookbookTextBox.setPadding(new Insets(0, 0, 0, 60));
-    cookbookTextBox.setSpacing(5);
-    cookBookUndertext.setWrappingWidth(300);
     homeViewCookbookBackground.getChildren().add(cookBookBox);
     homeViewCookbookBackground.setAlignment(Pos.CENTER_LEFT);
     homeViewCookbookBackground.getStyleClass().add("cookbook-background");
-    setBoxSize(homeViewCookbookBackground, 0.5, 1.0);
+    setBoxSize(homeViewCookbookBackground,  1.0);
     getBorderPane().setLeft(homeViewCookbookBackground);
+    VBox cookbookTextBox = createTextBox(cookBookText, cookBookUndertext, cookBookButton);
 
     ImageView icon = createIcon("images/icons/cookbookIcon.png");
     NodeUtils.addChildren(cookBookBox, cookbookTextBox, icon);
@@ -124,15 +119,11 @@ public class HomeView extends View {
   private void setPantryBox() {
     HBox pantryBox = new HBox(40);
     pantryBox.setAlignment(Pos.CENTER);
-    VBox pantryTextBox = new VBox(pantryText, pantryUndertext, pantryButton);
-    pantryTextBox.setAlignment(Pos.TOP_LEFT);
-    pantryTextBox.setPadding(new Insets(0, 0, 0, 60));
-    pantryTextBox.setSpacing(5);
-    pantryUndertext.setWrappingWidth(300);
     homeViewPantryBackground.getChildren().add(pantryBox);
     homeViewPantryBackground.setAlignment(Pos.CENTER_LEFT);
     homeViewPantryBackground.getStyleClass().add("pantry-background");
-    setBoxSize(homeViewPantryBackground, 0.5, 0.5);
+    setBoxSize(homeViewPantryBackground,  0.5);
+    VBox pantryTextBox = createTextBox(pantryText, pantryUndertext, pantryButton);
 
     ImageView icon = createIcon("images/icons/fridgeIcon.png");
     NodeUtils.addChildren(pantryBox, pantryTextBox, icon);
@@ -147,18 +138,35 @@ public class HomeView extends View {
   private void setShoppingListBox() {
     HBox shoppingListBox = new HBox(40);
     shoppingListBox.setAlignment(Pos.CENTER);
-    VBox shoppingListTextBox = new VBox(shoppingListText, shoppingListUndertext, shoppingListButton);
-    shoppingListTextBox.setAlignment(Pos.TOP_LEFT);
-    shoppingListTextBox.setPadding(new Insets(0, 0, 0, 60));
-    shoppingListTextBox.setSpacing(5);
-    shoppingListUndertext.setWrappingWidth(300);
+
     homeViewShoppingListBackground.getChildren().add(shoppingListBox);
     homeViewShoppingListBackground.setAlignment(Pos.CENTER_LEFT);
     homeViewShoppingListBackground.getStyleClass().add("shopping-list-background");
-    setBoxSize(homeViewShoppingListBackground, 0.5, 0.5);
+    setBoxSize(homeViewShoppingListBackground,  0.5);
 
+    VBox shoppingListTextBox = createTextBox(shoppingListText, shoppingListUndertext,
+            shoppingListButton);
     ImageView icon = createIcon("images/icons/shoppingCartIcon.png");
     NodeUtils.addChildren(shoppingListBox, shoppingListTextBox, icon);
+  }
+
+  /**
+   * Creates a text box with the specified header, subText and button.
+   *
+   * @param header The header text for the box.
+   * @param subText The subText for the box.
+   * @param button The button for the box.
+   * @return The VBox containing the header, subText and button.
+   */
+  private VBox createTextBox(Text header, Text subText, Button button) {
+    header.getStyleClass().add("header-text");
+    subText.getStyleClass().add("subheader-text");
+    subText.setWrappingWidth(300);
+    button.getStyleClass().add("styled-button");
+    VBox textBox = new VBox(5);
+    NodeUtils.addChildren(textBox, header, subText, button);
+    textBox.setAlignment(Pos.TOP_LEFT);
+    return textBox;
   }
 
   private ImageView createIcon(String path) {
@@ -167,47 +175,25 @@ public class HomeView extends View {
     icon.setFitWidth(150);
     return icon;
   }
+
   /**
    * Sets the size of the box based on the width and height factor.
    *
    * @param box The box to set the size of.
-   * @param widthFactor The factor to multiply the width of the box with.
    * @param heightFactor The factor to multiply the height of the box with.
    */
-  private void setBoxSize(VBox box, double widthFactor, double heightFactor) {
-    box.setMaxWidth(widthFactor * Sizing.getScreenWidth());
-    box.setPrefWidth(widthFactor * Sizing.getScreenWidth());
+  private void setBoxSize(VBox box, double heightFactor) {
+    box.setMaxWidth(0.5 * Sizing.getScreenWidth());
+    box.setPrefWidth(0.5 * Sizing.getScreenWidth());
     box.setMaxHeight(heightFactor * Sizing.getScreenHeight());
     box.setPrefHeight(heightFactor * Sizing.getScreenHeight());
     VBox.setVgrow(box, Priority.ALWAYS);
   }
 
   /**
-   * Styles the header text for all the sections.
-   */
-  private void applyHeaderText() {
-
-    pantryText.getStyleClass().add("header-text");
-    cookBookText.getStyleClass().add("header-text");
-    shoppingListText.getStyleClass().add("header-text");
-  }
-
-  /**
-   * Styles the subheader text for all the sections.
-   */
-  private void applySubHeaderText() {
-    pantryUndertext.getStyleClass().add("subheader-text");
-    cookBookUndertext.getStyleClass().add("subheader-text");
-    shoppingListUndertext.getStyleClass().add("subheader-text");
-  }
-
-  /**
    * Uses the buttons to navigate to the corresponding view.
    */
   private void applyButtons() {
-    pantryButton.getStyleClass().add("styled-button");
-    cookBookButton.getStyleClass().add("styled-button");
-    shoppingListButton.getStyleClass().add("styled-button");
     createButton(pantryButton, () -> controller.onNavLinkPress(Route.PANTRY));
     createButton(cookBookButton, () -> controller.onNavLinkPress(Route.COOKBOOK));
     createButton(shoppingListButton, () -> controller.onNavLinkPress(Route.SHOPPING_LIST));
@@ -219,14 +205,12 @@ public class HomeView extends View {
    * @param button The button to create.
    * @param action The action to be executed on button click.
    */
-  private NavLink createButton(StyledButton button, Runnable action) {
+  private void createButton(StyledButton button, Runnable action) {
     button.setBackground(new Background(
         new BackgroundFill(Color.BLACK, new CornerRadii(10), Insets.EMPTY)));
-    NavLink link = new NavLink(button.getText());
     if (action != null) {
       button.setOnAction(event -> action.run());
     }
-    return link;
   }
 
   /**
