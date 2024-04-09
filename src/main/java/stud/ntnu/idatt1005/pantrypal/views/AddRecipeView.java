@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 public class AddRecipeView extends View {
   private final StyledTextField name;
-  private final StyledTextArea descriptionField;
+  private final StyledTextArea description;
 
   /**
    * Constructor for AddRecipeView.
@@ -36,9 +36,18 @@ public class AddRecipeView extends View {
   public AddRecipeView(AddRecipeController controller) {
     super(controller, Route.ADD_RECIPE, "/styles/add-recipe.css");
     this.name = new StyledTextField("Name");
-    this.descriptionField = createDescription();
+    this.description = createDescription();
   }
 
+  /**
+   * Renders the view for adding a recipe.
+   * The view consists of a form with fields for name, description, ingredients, and steps.
+   * The user can add ingredients and steps to the recipe.
+   * The user can submit the form to add the recipe to the cookbook.
+   *
+   * @param groceryRegister The register containing the groceries to be added to the recipe.
+   * @param stepRegister The register containing the steps to be added to the recipe.
+   */
   public void render(GroceryRegister groceryRegister, StepRegister stepRegister) {
     // Create the overarching VBox
     VBox form = new VBox();
@@ -89,11 +98,11 @@ public class AddRecipeView extends View {
     StyledButton submit = new StyledButton("Add Recipe");
     submit.setMaxWidth(Double.MAX_VALUE);
     submit.setOnAction(e -> {
-      Recipe recipe = new Recipe(name.getText(), descriptionField.getText(), groceryRegister, stepRegister, null, false);
+      Recipe recipe = new Recipe(name.getText(), description.getText(), groceryRegister, stepRegister, null, false);
       notifyObservers(ButtonEnum.ADD, recipe);
     });
 
-    innerForm.getChildren().addAll(titleBox,name, descriptionField,
+    innerForm.getChildren().addAll(titleBox,name, description,
         groceryListTitleBox, groceryList, addGrocery,
         stepListTitleBox, stepList, addStep,
         border, submit);
@@ -102,11 +111,10 @@ public class AddRecipeView extends View {
     this.getBorderPane().setCenter(form);
   }
 
-  private StyledTextField createName() {
-    StyledTextField nameField = new StyledTextField("Name");
-    return nameField;
-  }
-
+  /**
+   * Creates a text area for the description of the recipe.
+   * @return A text area for the description of the recipe.
+   */
   private StyledTextArea createDescription() {
     StyledTextArea descriptionField = new StyledTextArea("Description");
     descriptionField.setMinHeight(Sizing.getScreenHeight() * 0.18);
@@ -115,6 +123,11 @@ public class AddRecipeView extends View {
     return descriptionField;
   }
 
+  /**
+   * Creates a grocery list with the groceries in the grocery register.
+   * @param groceryRegister The register containing the groceries to be added to the recipe.
+   * @return A scroll pane containing the grocery list.
+   */
   private ScrollPane createGroceryList(GroceryRegister groceryRegister) {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
@@ -142,6 +155,11 @@ public class AddRecipeView extends View {
     return scrollPane;
   }
 
+  /**
+   * Creates a title box with the given text.
+   * @param text The text to be displayed in the title box.
+   * @return A title box with the given text.
+   */
   private HBox createTitleBox(Text text) {
     HBox titleBox = new HBox();
     Pane fillerPaneLeft = new Pane();
@@ -154,6 +172,11 @@ public class AddRecipeView extends View {
     return titleBox;
   }
 
+  /**
+   * Creates a scroll pane with the steps in the step register.
+   * @param stepRegister The register containing the steps to be added to the recipe.
+   * @return A scroll pane containing the step list.
+   */
   private ScrollPane createStepList(StepRegister stepRegister) {
     int elementHeight = 20;
 
@@ -194,6 +217,10 @@ public class AddRecipeView extends View {
     return scrollPane;
   }
 
+  /**
+   * Creates a box with a text field for adding a step to the recipe.
+   * @return A box with a text field for adding a step to the recipe.
+   */
   private HBox createAddStepBox(){
     HBox addStepBox = new HBox();
     addStepBox.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/pantry.css")).toExternalForm());
@@ -217,12 +244,22 @@ public class AddRecipeView extends View {
     return addStepBox;
   }
 
+  /**
+   * Notifies the observers of the button that was pressed and the object affected.
+   * @param buttonEnum The button that was pressed.
+   * @param recipe The Recipe-object that was pressed.
+   */
   private void notifyObservers(ButtonEnum buttonEnum, Recipe recipe) {
     for (Observer observer : observers) {
       observer.update(buttonEnum, recipe);
     }
   }
 
+  /**
+   * Notifies the observers of the button that was pressed and the object affected.
+   * @param buttonEnum The button that was pressed.
+   * @param step The step that was added
+   */
   private void notifyObservers(ButtonEnum buttonEnum, String step) {
     for (Observer observer : observers) {
       observer.update(buttonEnum, step);
