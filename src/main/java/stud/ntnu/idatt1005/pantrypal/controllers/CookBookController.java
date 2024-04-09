@@ -76,6 +76,11 @@ public class CookBookController extends Controller implements Observer {
       case EDIT:
         toggleIsFavorite(recipe);
         break;
+      case ADD:
+        recipeRegister.addRecipe(recipe);
+        view.render();
+        this.viewManager.setView(Route.COOKBOOK);
+        break;
       default:
         break;
     }
@@ -89,7 +94,13 @@ public class CookBookController extends Controller implements Observer {
    */
   @Override
   public void update(ButtonEnum buttonEnum) {
-    throw new UnsupportedOperationException("Not implemented");
+    switch (buttonEnum) {
+      case ADD:
+        openAddRecipe();
+        break;
+      default:
+        break;
+    }
   }
 
   /**
@@ -97,8 +108,10 @@ public class CookBookController extends Controller implements Observer {
    *
    * @param recipe the recipe to be added to the recipeRegister.
    */
-  public void addRecipe(Recipe recipe) {
-    this.recipeRegister.addRecipe(recipe);
+  private void openAddRecipe() {
+    AddRecipeController addRecipeController = new AddRecipeController(this.viewManager, this);
+    AddRecipeView addRecipeView = new AddRecipeView(addRecipeController);
+    this.viewManager.setView(Route.ADD_RECIPE);
   }
 
   /**
@@ -106,14 +119,14 @@ public class CookBookController extends Controller implements Observer {
    *
    * @param recipe the recipe to be opened in the RecipeView.
    */
-  public void openRecipe(Recipe recipe) {
+  private void openRecipe(Recipe recipe) {
     RecipeView recipeView = new RecipeView(this, recipe);
     recipeView.addObserver(this);
     this.viewManager.addView(Route.RECIPE, recipeView);
     this.viewManager.setView(Route.RECIPE);
   }
 
-  public void addGroceriesToShoppingList(Recipe recipe) {
+  private void addGroceriesToShoppingList(Recipe recipe) {
     for (Map.Entry<String, Grocery> entry : recipe.getRecipeGroceries().getRegister().entrySet()) {
       String groceryName = entry.getKey();
       String groceryShelf = entry.getValue().getShelf();
@@ -154,12 +167,12 @@ public class CookBookController extends Controller implements Observer {
     shoppingListController.rerender();
   }
 
-  public void toggleIsFavorite(Recipe recipe) {
+  private void toggleIsFavorite(Recipe recipe) {
     recipe.toggleIsFavorite();
     view.render();
   }
 
-  public void addPlaceholderRecipes() {
+  private void addPlaceholderRecipes() {
     String cupboard = "Cupboard";
     // Recipe 1
     GroceryRegister groceries1 = new GroceryRegister();
@@ -172,7 +185,7 @@ public class CookBookController extends Controller implements Observer {
     steps1.addStep("Cook groceries");
     steps1.addStep("Eat groceries");
 
-    Recipe recipe1 = new Recipe("Tomato soup", groceries1, steps1, null, false);
+    Recipe recipe1 = new Recipe("Tomato soup", "", groceries1, steps1, null, false);
     recipeRegister.addRecipe(recipe1);
 
     // Recipe 2
@@ -188,7 +201,7 @@ public class CookBookController extends Controller implements Observer {
     steps2.addStep("Add porridge rice");
     steps2.addStep("Add sugar and cinnamon");
 
-    Recipe recipe2 = new Recipe("Rice porridge", groceries2, steps2, null, false);
+    Recipe recipe2 = new Recipe("Rice porridge", "", groceries2, steps2, null, false);
     recipeRegister.addRecipe(recipe2);
 
     // Recipe 3
@@ -203,7 +216,7 @@ public class CookBookController extends Controller implements Observer {
     steps3.addStep("Add tomato sauce");
     steps3.addStep("Add cheese");
 
-    Recipe recipe3 = new Recipe("Pasta", groceries3, steps3, null, false);
+    Recipe recipe3 = new Recipe("Pasta", "", groceries3, steps3, null, false);
     recipeRegister.addRecipe(recipe3);
   }
 }
