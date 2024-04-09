@@ -8,40 +8,40 @@ import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.AddRecipeView;
-import stud.ntnu.idatt1005.pantrypal.views.Observable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 /**
  * Controller class for the AddRecipeView. This class is responsible for handling the logic for the
  * AddRecipeView.
  */
-public class AddRecipeController extends Controller implements Observer, Observable {
-  private final List<Observer> observers = new ArrayList<>();
+public class AddRecipeController extends Controller implements Observer {
   private final GroceryRegister groceryRegister;
   private final StepRegister stepRegister;
+  private static final String BUTTON_NOT_SUPPORTED = "Button not supported";
 
   /**
    * The view for the AddRecipeController
    */
   private final AddRecipeView view;
 
+  private final CookBookController cookBookController;
+
   /**
    * Constructor that takes in a ViewManager and sets the view for the controller
    *
    * @param viewManager the ViewManager for the application
    */
-  public AddRecipeController(ViewManager viewManager) {
+  public AddRecipeController(ViewManager viewManager, CookBookController cookBookController) {
     super(viewManager);
     this.groceryRegister = new GroceryRegister();
     this.stepRegister = new StepRegister();
-    this.stepRegister.addStep("Step 1");
     this.view = new AddRecipeView(this);
     this.view.addObserver(this);
     this.view.render(groceryRegister, stepRegister);
     this.viewManager.addView(Route.ADD_RECIPE, this.view);
 
+    this.cookBookController = cookBookController;
 
   }
 
@@ -53,43 +53,43 @@ public class AddRecipeController extends Controller implements Observer, Observa
    */
   @Override
   public void update(ButtonEnum buttonEnum, Object object) {
-    if (object instanceof Recipe recipe) {
-      switch (buttonEnum) {
-        case ADD:
-          notifyObservers(ButtonEnum.ADD, recipe);
-          break;
+    switch (object) {
+      case Recipe recipe -> {
+        if (Objects.requireNonNull(buttonEnum) == ButtonEnum.ADD) {
+          cookBookController.update(ButtonEnum.ADD, recipe);
+        } else {
+          throw new UnsupportedOperationException(BUTTON_NOT_SUPPORTED);
+        }
       }
-    } else if (object instanceof Grocery grocery) {
-      switch (buttonEnum) {
-        case ADD:
-          groceryRegister.addGrocery(grocery);
-          rerender();
-          break;
-        case REMOVE:
-          groceryRegister.removeGrocery(grocery);
-          rerender();
-          break;
-        default:
-          System.out.println("Button not found");
-          break;
+      case Grocery grocery -> {
+        switch (buttonEnum) {
+          case ADD:
+            groceryRegister.addGrocery(grocery);
+            rerender();
+            break;
+          case REMOVE:
+            groceryRegister.removeGrocery(grocery);
+            rerender();
+            break;
+          default:
+            throw new UnsupportedOperationException(BUTTON_NOT_SUPPORTED);
+        }
       }
-    } else if (object instanceof String string) {
-      switch (buttonEnum) {
-        case ADD:
-          stepRegister.addStep(string);
-          rerender();
-          break;
-        case REMOVE:
-          stepRegister.removeStep(string);
-          rerender();
-          break;
-        default:
-          System.out.println("Button not found");
-          break;
+      case String string -> {
+        switch (buttonEnum) {
+          case ADD:
+            stepRegister.addStep(string);
+            rerender();
+            break;
+          case REMOVE:
+            stepRegister.removeStep(string);
+            rerender();
+            break;
+          default:
+            throw new UnsupportedOperationException(BUTTON_NOT_SUPPORTED);
+        }
       }
-    }
-    else {
-      throw new IllegalArgumentException("Object is not of type Recipe, Grocery or String");
+      case null, default -> throw new IllegalArgumentException("Object is not of type Recipe, Grocery or String");
     }
   }
 
@@ -105,51 +105,5 @@ public class AddRecipeController extends Controller implements Observer, Observa
 
   public void rerender() {
     view.render(groceryRegister, stepRegister);
-  }
-
-  /**
-   * Adds an observer to the list of observers for this view.
-   *
-   * @param observer The observer to be added.
-   * @throws IllegalArgumentException If the observer is null.
-   */
-  @Override
-  public void addObserver(Observer observer) throws IllegalArgumentException {
-    if (observer != null) {
-      if (!observers.contains(observer)) {
-        observers.add(observer);
-      }
-    } else {
-      throw new IllegalArgumentException("Observer cannot be null");
-    }
-  }
-
-  /**
-   * Removes an observer from the list of observers for this view.
-   *
-   * @param observer The observer to be removed.
-   * @throws IllegalArgumentException If the observer is null.
-   */
-  @Override
-  public void removeObserver(Observer observer) throws IllegalArgumentException {
-    if (observer != null) {
-      if (observers.contains(observer)) {
-        observers.remove(observer);
-      }
-    } else {
-      throw new IllegalArgumentException("Observer cannot be null");
-    }
-  }
-
-  /**
-   * Notifies all observers with the given ButtonEnum.
-   *
-   * @param buttonEnum The ButtonEnum to notify the observers with.
-   */
-  protected void notifyObservers(ButtonEnum buttonEnum, Recipe recipe) {
-    List<Observer> observersCopy = new ArrayList<>(this.observers);
-    for (Observer observer : observersCopy) {
-      observer.update(buttonEnum, recipe);
-    }
   }
 }
