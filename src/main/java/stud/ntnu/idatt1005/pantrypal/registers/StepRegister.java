@@ -56,4 +56,16 @@ public class StepRegister {
     }
     steps.remove(steps.get(index));
   }
+
+  /**
+   * Removes a step from the list of steps.
+   *
+   * @param step The step to be removed from the steps list.
+   */
+  public void removeStep(String step) {
+    if (step == null || step.isEmpty()) {
+      throw new IllegalArgumentException("Step cannot be empty.");
+    }
+    steps.remove(step);
+  }
 }
