@@ -82,6 +82,12 @@ public class CookBookController extends Controller implements Observer {
       case EDIT:
         toggleIsFavorite(recipe);
         break;
+      case REMOVE:
+        recipeRegister.removeRecipe(recipe);
+        currentSearch = recipeRegister.getRegister().values().stream().toList();
+        view.render();
+        viewManager.setView(Route.COOKBOOK);
+        break;
       default:
         break;
     }
