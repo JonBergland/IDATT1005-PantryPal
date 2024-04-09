@@ -3,20 +3,13 @@ package stud.ntnu.idatt1005.pantrypal;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import stud.ntnu.idatt1005.pantrypal.controllers.AddRecipeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
-import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.models.Shelf;
-import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
-import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
-
-import java.util.Date;
 
 /**
  * The main class for the PantryPal application.
@@ -32,7 +25,6 @@ public class PantryPal extends Application {
   // Controllers for the cookBook.
   private CookBookController cookBookController;
   // Controllers for adding a recipe.
-  private AddRecipeController addRecipeController;
   // Controllers for the pantry.
   private PantryController pantryController;
   // Controllers for the shopping list.
@@ -57,7 +49,6 @@ public class PantryPal extends Application {
     pantryController = new PantryController(viewManager);
     shoppingListController = new ShoppingListController(viewManager, pantryController);
     cookBookController = new CookBookController(viewManager, shoppingListController, pantryController);
-    addRecipeController = new AddRecipeController(viewManager);
     logInController = new LogInController(viewManager);
 
     //Init view
