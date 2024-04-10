@@ -81,8 +81,15 @@ public class CookBookController extends Controller implements Observer {
       case ADD_TO_SHOPPING_LIST:
         addGroceriesToShoppingList(recipe);
         break;
-      case EDIT:
+      case EDIT_FAVORITE:
         toggleIsFavorite(recipe);
+        break;
+      case EDIT_RECIPE:
+        AddRecipeController addRecipeController = new AddRecipeController(
+            this.viewManager, this);
+        addRecipeController.setRecipeToAddRecipeView(recipe);
+
+        this.viewManager.setView(Route.ADD_RECIPE);
         break;
       case ADD:
         recipeRegister.addRecipe(recipe);
