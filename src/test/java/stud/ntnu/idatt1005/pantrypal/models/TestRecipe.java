@@ -17,6 +17,7 @@ class TestRecipe {
   static Recipe recipe;
   static GroceryRegister groceries;
   static StepRegister steps;
+  static String description;
 
 
   @BeforeEach
@@ -31,7 +32,9 @@ class TestRecipe {
     steps.addStep("Step 1");
     steps.addStep("Step 2");
 
-    recipe = new Recipe("Apple Banana Smoothie", groceries, steps, null, false);
+    description = "Dette er en oppskrift på en smoothie.";
+
+    recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps, null, false);
 
   }
 
@@ -71,5 +74,17 @@ class TestRecipe {
   void testToggleIsFavorite() {
     recipe.toggleIsFavorite();
     assertTrue(recipe.getIsFavorite());
+  }
+
+  @Test
+  @DisplayName("Test getDescription()")
+  void testGetDescription() {
+    assertEquals(description, recipe.getDescription());
+  }
+
+  @Test
+  @DisplayName("Test getImagePath()")
+  void testGetImagePath() {
+    assertNull(recipe.getImagePath());
   }
 }

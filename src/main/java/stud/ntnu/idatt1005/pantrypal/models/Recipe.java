@@ -14,6 +14,11 @@ import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 public class Recipe extends Model {
 
   /**
+   * The recipe description of the recipe.
+   */
+  private final String description;
+
+  /**
    * The groceries needed for the recipe.
    */
   private final GroceryRegister recipeGroceries;
@@ -39,13 +44,23 @@ public class Recipe extends Model {
    * @param recipeGroceries the groceries needed for the recipe.
    * @param steps           the steps needed to make the recipe.
    */
-  public Recipe(String name, GroceryRegister recipeGroceries, StepRegister steps,
+  public Recipe(String name, String description, GroceryRegister recipeGroceries, StepRegister steps,
                 String imagePath, boolean isFavorite) {
     super(name);
+    this.description = description;
     this.recipeGroceries = recipeGroceries;
     this.steps = steps;
     this.imagePath = imagePath;
     this.isFavorite = isFavorite;
+  }
+
+  /**
+   * Get the description of the recipe.
+   *
+   * @return the description of the recipe.
+   */
+  public String getDescription() {
+    return description;
   }
 
   /**

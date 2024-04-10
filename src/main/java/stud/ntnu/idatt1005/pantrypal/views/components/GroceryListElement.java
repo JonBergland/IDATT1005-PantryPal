@@ -177,6 +177,7 @@ public class GroceryListElement implements Observable {
       Spinner<Integer> spinner = createSpinner();
       spinner.setMaxWidth(100);
       spinner.setMaxHeight(50);
+      spinner.setPadding(new Insets(0, 0, 0, 10));
 
       textBox.getChildren().add(spinner);
       return this;
