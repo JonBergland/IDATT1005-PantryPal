@@ -52,7 +52,7 @@
 
 .button-danger {
     -fx-background-color: #EF4444;
-    -fx-text-fill: white;
+    -fx-text-fill: black;
 }
 
 .button-danger:hover {
@@ -65,9 +65,8 @@
 }
 
 .button-delete {
-    -fx-background-color: white;
+    -fx-background-color: transparent;
     -fx-text-fill: black;
-
 }
 
 .favorite-button {
@@ -119,6 +118,18 @@
     -fx-font-size: 16px;
 }
 
+.search-field {
+    -fx-max-height: 60px;
+    -fx-min-height: 60px;
+    -fx-background-color: white;
+    -fx-border-width: 1px 0 2px 0;
+    -fx-border-color: black;
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-font-size: 25;
+}
 /*
     Add Shopping List Element
 */

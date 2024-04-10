@@ -2,16 +2,18 @@ package stud.ntnu.idatt1005.pantrypal.views;
 
 import static javafx.stage.Screen.getPrimary;
 
-import java.util.Map;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
+import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.CookbookRecipeComponent;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
@@ -35,8 +37,9 @@ public class CookbookView extends View {
   /**
    * A map containing the recipes to be displayed in the view.
    */
-  private final Map<String, Recipe> recipes;
   private final CookBookController controller;
+
+  private final VBox pageContainer;
 
   /**
    * Constructs a CookbookView with a given CookBookController.
@@ -50,10 +53,23 @@ public class CookbookView extends View {
     super(controller, Route.COOKBOOK, "/styles/cookbook.css");
     this.controller = controller;
     this.setScrollPane();
+    this.pageContainer = new VBox();
     spacing = calculateSpacing();
-    recipes = controller.getRecipes();
+    addSearchBar();
     render();
   }
+
+  private void addSearchBar() {
+    TextField searchField = new TextField();
+    searchField.setPromptText("Search");
+    NodeUtils.addClasses(searchField, "search-field");
+    searchField.setMaxWidth(Sizing.getScreenWidth());
+    searchField.setMinWidth(Sizing.getScreenWidth());
+    NodeUtils.addChildren(pageContainer, searchField);
+    searchField.textProperty().addListener((observable, oldValue, newValue) ->
+            this.controller.searchRecipes(newValue));
+  }
+
   /**
    * Creates the view for the cookbook.
    * It creates a VBox to contain the rows of recipes, and an HBox for each row.
@@ -65,7 +81,7 @@ public class CookbookView extends View {
     //recipeContainer.getChildren().add(addRecipe);
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
     HBox row = new HBox(spacing);
-    for (Recipe recipe : recipes.values()) {
+    for (Recipe recipe : controller.getCurrentSearch()) {
       if (row.getChildren().size() >= RECIPES_PER_ROW) {
         row.setAlignment(Pos.CENTER);
         recipeContainer.getChildren().add(row);
@@ -78,7 +94,12 @@ public class CookbookView extends View {
     }
     row.setAlignment(Pos.CENTER);
     recipeContainer.getChildren().add(row);
-    getBorderPane().setCenter(recipeContainer);
+    if (pageContainer.getChildren().size() < 2) {
+      NodeUtils.addChildren(pageContainer, recipeContainer);
+    } else {
+      pageContainer.getChildren().set(1, recipeContainer);
+    }
+    getBorderPane().setCenter(pageContainer);
   }
 
   private StyledButton addRecipe() {

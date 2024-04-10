@@ -1,8 +1,9 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import stud.ntnu.idatt1005.pantrypal.models.Model;
-
-import java.util.*;
 
 /**
  * This is an abstract class representing a register. It contains a LinkedHashMap where the key is a
@@ -39,7 +40,7 @@ public abstract class Register<T extends Model> {
   protected abstract String getErrorMessage();
 
   /**
-   * Get the register map
+   * Get the register map.
    *
    * @return the register map
    */
@@ -48,7 +49,7 @@ public abstract class Register<T extends Model> {
   }
 
   /**
-   * Get a model from the register
+   * Get a model from the register.
    *
    * @param key the key of the model to be retrieved
    * @return the model with the specified name
@@ -62,7 +63,7 @@ public abstract class Register<T extends Model> {
   }
 
   /**
-   * Add an item to the register
+   * Add an item to the register.
    *
    * @param model item to be added
    */
@@ -70,10 +71,8 @@ public abstract class Register<T extends Model> {
     register.put(model.getKey(), model);
   }
 
-  ;
-
   /**
-   * Remove an item from the register
+   * Remove an item from the register.
    *
    * @param model the key of the item to be removed
    * @throws IllegalArgumentException if the item does not exist in the register
@@ -83,5 +82,19 @@ public abstract class Register<T extends Model> {
       throw new IllegalArgumentException(getErrorMessage());
     }
     register.remove(model.getKey());
+  }
+
+  /**
+   * Searches for items in the register by name, and searches for all names that
+   * contains the search-string.
+   *
+   * @param search the name of the item to be searched for
+   * @return a list of items with the specified name
+   */
+  protected List<T> searchModels(String search) {
+    return register.entrySet().stream()
+            .filter(model -> model.getKey().toLowerCase().contains(search.toLowerCase()))
+            .map(Map.Entry::getValue)
+            .toList();
   }
 }

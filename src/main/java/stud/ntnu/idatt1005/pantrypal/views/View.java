@@ -2,12 +2,15 @@ package stud.ntnu.idatt1005.pantrypal.views;
 
 import static javafx.stage.Screen.getPrimary;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -19,9 +22,6 @@ import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.components.NavBar;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -53,8 +53,10 @@ public class View extends Scene implements Observable {
   public View(Controller controller, Route route, String stylePath) {
     super(new BorderPane(), getPrimary().getVisualBounds().getWidth(),
             getPrimary().getVisualBounds().getHeight());
-    this.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/styles/components.css")).toExternalForm());
-    this.getStylesheets().add(Objects.requireNonNull(getClass().getResource(stylePath)).toExternalForm());
+    this.getStylesheets().add(Objects.requireNonNull(getClass()
+            .getResource("/styles/components.css")).toExternalForm());
+    this.getStylesheets().add(Objects.requireNonNull(getClass()
+            .getResource(stylePath)).toExternalForm());
     this.route = route;
     this.controller = controller;
     this.widthProperty().lessThanOrEqualTo(getPrimary().getVisualBounds().getWidth() - 100);
@@ -62,8 +64,8 @@ public class View extends Scene implements Observable {
     BorderPane borderPane = new BorderPane();
     borderPane.setPadding(new Insets(0));
     borderPane.maxWidthProperty().bind(root.widthProperty());
-    BackgroundFill backgroundColor = new BackgroundFill(ColorPalette.PRIMARY_LIGHT, CornerRadii.EMPTY,
-            Insets.EMPTY);
+    BackgroundFill backgroundColor = new BackgroundFill(ColorPalette.PRIMARY_LIGHT,
+            CornerRadii.EMPTY, Insets.EMPTY);
     root.setBackground(new Background(backgroundColor));
     this.setFill(ColorPalette.PRIMARY_LIGHT);
     this.view(root);
@@ -84,11 +86,11 @@ public class View extends Scene implements Observable {
       title.setFont(FontPalette.HEADER);
       topContainer.getChildren().addAll(
               title,
-              new NavBar(controller).getNavBar()
+              new NavBar(controller)
       );
       borderPane.setTop(topContainer);
     } else {
-      borderPane.setTop(new NavBar(controller).getNavBar());
+      borderPane.setTop(new NavBar(controller));
     }
   }
 

@@ -1,7 +1,5 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -9,17 +7,14 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import stud.ntnu.idatt1005.pantrypal.controllers.Controller;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
+import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 
 /**
- * A class for the navigation bar.
+ * A class for the navigation bar. The class extends the javaFX ToolBar class. The navigation bar
+ * contains buttons for navigating between different views in the application.
  * Goal: To be able to switch between different views in the application fast and easy.
  */
-public class NavBar extends Control {
-  /**
-   * The main toolbar that holds navigation buttons.
-   */
-  ToolBar navBar = new ToolBar();
-
+public class NavBar extends ToolBar {
   /**
    * A separator between the navigation buttons and the login button.
    */
@@ -33,22 +28,20 @@ public class NavBar extends Control {
    * @param controller The controller for the application.
    */
   public NavBar(Controller controller) {
-    // Create buttons
-    Rectangle2D primaryScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
     NavLink homeButton = createButton(
         "Home", () -> controller.onNavLinkPress(Route.HOME));
-    NavLink pantryButton = createButton(
-        "Pantry", () -> controller.onNavLinkPress(Route.PANTRY));
+    NavLink cookbookButton = createButton(
+            "Cookbook", () -> controller.onNavLinkPress(Route.COOKBOOK));
     NavLink shoppingListButton = createButton(
         "Shopping List", () -> controller.onNavLinkPress(Route.SHOPPING_LIST));
-    NavLink cookbookButton = createButton(
-        "Cookbook", () -> controller.onNavLinkPress(Route.COOKBOOK));
+    NavLink pantryButton = createButton(
+            "Pantry", () -> controller.onNavLinkPress(Route.PANTRY));
     NavLink loginButton = createButton(
         "Login", () -> controller.onNavLinkPress(Route.LOGIN));
 
     // Create an HBox for the first four buttons
     HBox navigationButtonsBox = new HBox(
-        homeButton, pantryButton, shoppingListButton, cookbookButton);
+        homeButton, cookbookButton, shoppingListButton, pantryButton);
     navigationButtonsBox.setStyle("-fx-spacing: 40; -fx-padding: 5 10 5 10;");
 
     // Create an HBox for the login button
@@ -60,11 +53,12 @@ public class NavBar extends Control {
     HBox.setHgrow(spacer, Priority.ALWAYS);
 
     // Add components to the main toolbar
-    navBar.getItems().addAll(navigationButtonsBox, spacer, separator, loginButtonBox);
+    this.getItems().addAll(navigationButtonsBox, spacer, separator, loginButtonBox);
 
     // Set styles and preferences
-    navBar.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:#000000; -fx-border-width: 1 0 1 0;");
-    navBar.setPrefWidth(primaryScreenBounds.getWidth());
+    this.setStyle("-fx-background-color: #FFFFFF; -fx-border-color:#000000; "
+            + "-fx-border-width: 1 0 1 0;");
+    this.setPrefWidth(Sizing.getScreenWidth());
   }
 
   /**
@@ -82,14 +76,5 @@ public class NavBar extends Control {
       link.setOnAction(event -> action.run());
     }
     return link;
-  }
-
-  /**
-   * Gets the main navigation bar instance.
-   *
-   * @return The ToolBar representing the navigation bar.
-   */
-  public ToolBar getNavBar() {
-    return navBar;
   }
 }
