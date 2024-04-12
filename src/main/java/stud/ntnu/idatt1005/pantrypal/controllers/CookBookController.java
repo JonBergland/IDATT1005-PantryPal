@@ -44,7 +44,7 @@ public class CookBookController extends Controller implements Observer {
     this.shoppingListController = shoppingListController;
 
     addPlaceholderRecipes();
-    this.currentSearch = recipeRegister.getRegister().values().stream().toList();
+    this.currentSearch = getRecipes().values().stream().toList();
 
     this.view = new CookbookView(this);
     this.view.addObserver(this);
@@ -60,9 +60,15 @@ public class CookBookController extends Controller implements Observer {
     return this.recipeRegister.getRegister();
   }
 
+  /**
+   * Returns the current search list.
+   *
+   * @return the current search list.
+   */
   public List<Recipe> getCurrentSearch() {
     return currentSearch;
   }
+
   /**
    * Updates the observer with the button that was pressed and the object affected
    *
@@ -81,18 +87,29 @@ public class CookBookController extends Controller implements Observer {
       case ADD_TO_SHOPPING_LIST:
         addGroceriesToShoppingList(recipe);
         break;
-      case EDIT:
+      case EDIT_FAVORITE:
         toggleIsFavorite(recipe);
         break;
+      case EDIT_RECIPE:
+        AddRecipeController addRecipeController = new AddRecipeController(
+            this.viewManager, this);
+        addRecipeController.setRecipeToAddRecipeView(recipe);
+
+        this.viewManager.setView(Route.ADD_RECIPE);
+        break;
       case ADD:
+        if (getRecipes().containsKey(recipe.getKey())) {
+          recipeRegister.removeRecipe(recipe);
+        }
         recipeRegister.addRecipe(recipe);
-        view.render();
+        currentSearch = getRecipes().values().stream().toList();
+        view.render(currentSearch);
         this.viewManager.setView(Route.COOKBOOK);
         break;
       case REMOVE:
         recipeRegister.removeRecipe(recipe);
-        currentSearch = recipeRegister.getRegister().values().stream().toList();
-        view.render();
+        currentSearch = getRecipes().values().stream().toList();
+        view.render(currentSearch);
         viewManager.setView(Route.COOKBOOK);
         break;
       default:
@@ -127,7 +144,7 @@ public class CookBookController extends Controller implements Observer {
 
   public void searchRecipes(String search) {
     currentSearch = recipeRegister.searchRecipes(search);
-    view.render();
+    view.render(currentSearch);
   }
   /**
    * Opens a recipe in the RecipeView, and sets the view to RecipeView.
@@ -200,7 +217,7 @@ public class CookBookController extends Controller implements Observer {
    */
   private void toggleIsFavorite(Recipe recipe) {
     recipe.toggleIsFavorite();
-    view.render();
+    view.render(currentSearch);
   }
 
   /**

@@ -19,6 +19,7 @@ import stud.ntnu.idatt1005.pantrypal.views.components.CookbookRecipeComponent;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The CookbookView class is responsible for creating and managing the view for the
@@ -59,7 +60,7 @@ public class CookbookView extends View {
     this.pageContainer = new VBox();
     spacing = calculateSpacing();
     addSearchBar();
-    render();
+    render(this.controller.getCurrentSearch());
   }
 
   private void addSearchBar() {
@@ -79,8 +80,8 @@ public class CookbookView extends View {
    * It creates a VBox to contain the rows of recipes, and an HBox for each row.
    * It then adds the CookbookRecipeComponents to the rows and the rows to the container.
    */
-  public void render() {
-    VBox recipeContainer = createRecipeContainer();
+  public void render(List<Recipe> currentSearch) {
+    VBox recipeContainer = createRecipeContainer(currentSearch);
     if (pageContainer.getChildren().size() < 2) {
       NodeUtils.addChildren(pageContainer, recipeContainer);
     } else {
@@ -89,12 +90,12 @@ public class CookbookView extends View {
     getBorderPane().setCenter(pageContainer);
   }
 
-  private VBox createRecipeContainer() {
+  private VBox createRecipeContainer(List<Recipe> currentSearch) {
     VBox recipeContainer = new VBox(spacing / 2);
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
 
     HBox row = new HBox(spacing);
-    ArrayList<Recipe> recipes = new ArrayList<>(controller.getCurrentSearch());
+    ArrayList<Recipe> recipes = new ArrayList<>(currentSearch);
     recipes.sort((a, b) -> Boolean.compare(b.getIsFavorite(), a.getIsFavorite()));
     for (Recipe recipe : recipes) {
       if (row.getChildren().size() >= RECIPES_PER_ROW) {

@@ -6,7 +6,8 @@ package stud.ntnu.idatt1005.pantrypal.enums;
 public enum ButtonEnum {
   ADD,
   REMOVE,
-  EDIT,
+  EDIT_FAVORITE,
+  EDIT_RECIPE,
   OPEN_RECIPE,
   ADD_TO_SHOPPING_LIST,
   ADD_TO_PANTRY
