@@ -44,7 +44,7 @@ public class CookBookController extends Controller implements Observer {
     this.shoppingListController = shoppingListController;
 
     addPlaceholderRecipes();
-    this.currentSearch = recipeRegister.getRegister().values().stream().toList();
+    this.currentSearch = getRecipes().values().stream().toList();
 
     this.view = new CookbookView(this);
     this.view.addObserver(this);
@@ -60,9 +60,6 @@ public class CookBookController extends Controller implements Observer {
     return this.recipeRegister.getRegister();
   }
 
-  public List<Recipe> getCurrentSearch() {
-    return currentSearch;
-  }
   /**
    * Updates the observer with the button that was pressed and the object affected
    *
@@ -92,18 +89,18 @@ public class CookBookController extends Controller implements Observer {
         this.viewManager.setView(Route.ADD_RECIPE);
         break;
       case ADD:
-        if (recipeRegister.getRegister().containsKey(recipe.getKey())) {
+        if (getRecipes().containsKey(recipe.getKey())) {
           recipeRegister.removeRecipe(recipe);
         }
         recipeRegister.addRecipe(recipe);
-        currentSearch = recipeRegister.getRegister().values().stream().toList();
-        view.render();
+        currentSearch = getRecipes().values().stream().toList();
+        view.render(currentSearch);
         this.viewManager.setView(Route.COOKBOOK);
         break;
       case REMOVE:
         recipeRegister.removeRecipe(recipe);
-        currentSearch = recipeRegister.getRegister().values().stream().toList();
-        view.render();
+        currentSearch = getRecipes().values().stream().toList();
+        view.render(currentSearch);
         viewManager.setView(Route.COOKBOOK);
         break;
       default:
@@ -138,7 +135,7 @@ public class CookBookController extends Controller implements Observer {
 
   public void searchRecipes(String search) {
     currentSearch = recipeRegister.searchRecipes(search);
-    view.render();
+    view.render(currentSearch);
   }
   /**
    * Opens a recipe in the RecipeView, and sets the view to RecipeView.
@@ -211,7 +208,7 @@ public class CookBookController extends Controller implements Observer {
    */
   private void toggleIsFavorite(Recipe recipe) {
     recipe.toggleIsFavorite();
-    view.render();
+    view.render(currentSearch);
   }
 
   /**
