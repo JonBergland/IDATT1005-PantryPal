@@ -16,6 +16,7 @@ import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.*;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -39,6 +40,14 @@ public class AddRecipeView extends View {
     this.description = createDescription();
   }
 
+  public AddRecipeView(AddRecipeController controller, Recipe recipe) {
+    super(controller, Route.ADD_RECIPE, "/styles/add-recipe.css");
+    this.name = new StyledTextField("Name");
+    this.description = createDescription();
+    this.name.setText(recipe.getKey());
+    this.description.setText(recipe.getDescription());
+  }
+
   /**
    * Renders the view for adding a recipe.
    * The view consists of a form with fields for name, description, ingredients, and steps.
@@ -46,7 +55,7 @@ public class AddRecipeView extends View {
    * The user can submit the form to add the recipe to the cookbook.
    *
    * @param groceryRegister The register containing the groceries to be added to the recipe.
-   * @param stepRegister The register containing the steps to be added to the recipe.
+   * @param stepRegister    The register containing the steps to be added to the recipe.
    */
   public void render(GroceryRegister groceryRegister, StepRegister stepRegister) {
     // Create the overarching VBox
@@ -84,7 +93,7 @@ public class AddRecipeView extends View {
     Text stepListTitle = new Text("Steps:");
     stepListTitle.getStyleClass().add("subtitle");
     HBox stepListTitleBox = createTitleBox(stepListTitle);
-    ScrollPane stepList = createStepList(stepRegister);
+    ScrollPane stepList = createStepList(stepRegister.getSteps());
 
     // Create the button to add a step
     HBox addStep = createAddStepBox();
@@ -177,7 +186,7 @@ public class AddRecipeView extends View {
    * @param stepRegister The register containing the steps to be added to the recipe.
    * @return A scroll pane containing the step list.
    */
-  private ScrollPane createStepList(StepRegister stepRegister) {
+  private ScrollPane createStepList(List<String> stepRegister) {
     int elementHeight = 20;
 
     ScrollPane scrollPane = new ScrollPane();
@@ -188,13 +197,13 @@ public class AddRecipeView extends View {
     VBox stepList = new VBox();
     stepList.getStyleClass().add("step-list");
 
-    for (int i = 0; i < stepRegister.getSteps().size(); i++) {
+    for (int i = 0; i < stepRegister.size(); i++) {
       Text stepNumber = new Text(i + 1 + ".");
       StackPane stepNumberPane = new StackPane(stepNumber);
       stepNumberPane.setAlignment(Pos.CENTER);
       stepNumberPane.setMaxHeight(elementHeight);
 
-      String step = stepRegister.getSteps().get(i);
+      String step = stepRegister.get(i);
       StackPane stepPane = new StackPane(new Text(step));
       stepPane.setAlignment(Pos.CENTER);
       stepPane.setMaxHeight(elementHeight);
