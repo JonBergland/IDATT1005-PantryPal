@@ -23,7 +23,7 @@ public class AddRecipeController extends Controller implements Observer {
   /**
    * The view for the AddRecipeController
    */
-  private final AddRecipeView view;
+  private AddRecipeView view;
 
   private final CookBookController cookBookController;
 
@@ -43,6 +43,20 @@ public class AddRecipeController extends Controller implements Observer {
 
     this.cookBookController = cookBookController;
 
+  }
+
+  /**
+   * Sets the view to AddRecipeView with an already existing recipe to edit
+   *
+   * @param recipe the recipe to edit
+   */
+  public void setRecipeToAddRecipeView(Recipe recipe) {
+    this.view = new AddRecipeView(this, recipe); // TODO Remove recipe before adding
+    this.viewManager.addView(Route.ADD_RECIPE, this.view);
+    this.view.addObserver(this);
+    StepRegister stepRegister = new StepRegister();
+    recipe.getRecipeSteps().forEach(stepRegister::addStep);
+    this.view.render(recipe.getRecipeGroceries(), stepRegister);
   }
 
   /**
