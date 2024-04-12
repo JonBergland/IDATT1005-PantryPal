@@ -17,6 +17,8 @@ import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.CookbookRecipeComponent;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
+import java.util.ArrayList;
+
 /**
  * The CookbookView class is responsible for creating and managing the view for the
  * cookbook in the application.
@@ -81,7 +83,9 @@ public class CookbookView extends View {
     //recipeContainer.getChildren().add(addRecipe);
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
     HBox row = new HBox(spacing);
-    for (Recipe recipe : controller.getCurrentSearch()) {
+    ArrayList<Recipe> recipes = new ArrayList<>(controller.getCurrentSearch());
+    recipes.sort((a, b) -> Boolean.compare(b.getIsFavorite(), a.getIsFavorite()));
+    for (Recipe recipe : recipes) {
       if (row.getChildren().size() >= RECIPES_PER_ROW) {
         row.setAlignment(Pos.CENTER);
         recipeContainer.getChildren().add(row);
