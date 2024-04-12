@@ -16,8 +16,8 @@ import java.util.Objects;
  * AddRecipeView.
  */
 public class AddRecipeController extends Controller implements Observer {
-  private final GroceryRegister groceryRegister;
-  private final StepRegister stepRegister;
+  private GroceryRegister groceryRegister;
+  private StepRegister stepRegister;
   private static final String BUTTON_NOT_SUPPORTED = "Button not supported";
 
   /**
@@ -51,12 +51,14 @@ public class AddRecipeController extends Controller implements Observer {
    * @param recipe the recipe to edit
    */
   public void setRecipeToAddRecipeView(Recipe recipe) {
-    this.view = new AddRecipeView(this, recipe); // TODO Remove recipe before adding
+    this.view = new AddRecipeView(this, recipe);
     this.viewManager.addView(Route.ADD_RECIPE, this.view);
     this.view.addObserver(this);
-    StepRegister stepRegister = new StepRegister();
-    recipe.getRecipeSteps().forEach(stepRegister::addStep);
-    this.view.render(recipe.getRecipeGroceries(), stepRegister);
+    StepRegister recipeStepRegister = new StepRegister();
+    recipe.getRecipeSteps().forEach(recipeStepRegister::addStep);
+    this.groceryRegister = recipe.getRecipeGroceries();
+    this.stepRegister = recipeStepRegister;
+    this.view.render(this.groceryRegister, this.stepRegister);
   }
 
   /**
