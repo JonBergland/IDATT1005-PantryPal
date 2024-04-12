@@ -149,7 +149,7 @@ public class RecipeView extends View implements Observable {
 
     StyledButton editButton = new StyledButton("Edit",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
-    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_FAVORITE));
+    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_RECIPE));
 
     StyledButton deleteButton = new StyledButton("Delete",
             StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM);
