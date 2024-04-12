@@ -148,9 +148,13 @@ public class RecipeView extends View implements Observable {
 
     FavoriteButton favoriteButton = new FavoriteButton(recipe.getIsFavorite());
     favoriteButton.setOnMouseClicked(e -> {
-      notifyObservers(ButtonEnum.EDIT);
+      notifyObservers(ButtonEnum.EDIT_FAVORITE);
       favoriteButton.toggleStarColor();
     });
+
+    StyledButton editButton = new StyledButton("Edit",
+            StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
+    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_RECIPE));
 
     StyledButton deleteButton = new StyledButton("Delete",
             StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM);
@@ -159,6 +163,7 @@ public class RecipeView extends View implements Observable {
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,
             favoriteButton,
+            editButton,
             deleteButton);
     overviewButtons.setAlignment(Pos.CENTER_LEFT);
     overviewButtons.setPadding(new Insets(0, 0, 0, 0));
