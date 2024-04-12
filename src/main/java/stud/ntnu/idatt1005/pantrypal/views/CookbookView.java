@@ -60,7 +60,7 @@ public class CookbookView extends View {
     this.pageContainer = new VBox();
     spacing = calculateSpacing();
     addSearchBar();
-    render();
+    render(this.controller.getCurrentSearch());
   }
 
   private void addSearchBar() {
