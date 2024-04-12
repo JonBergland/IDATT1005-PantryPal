@@ -78,10 +78,22 @@ public class CookbookView extends View {
    * It then adds the CookbookRecipeComponents to the rows and the rows to the container.
    */
   public void render() {
-    VBox recipeContainer = new VBox(spacing / 2);
+    VBox recipeContainer = createRecipeContainer();
     //StyledButton addRecipe = addRecipe();
     //recipeContainer.getChildren().add(addRecipe);
+
+    if (pageContainer.getChildren().size() < 2) {
+      NodeUtils.addChildren(pageContainer, recipeContainer);
+    } else {
+      pageContainer.getChildren().set(1, recipeContainer);
+    }
+    getBorderPane().setCenter(pageContainer);
+  }
+
+  private VBox createRecipeContainer() {
+    VBox recipeContainer = new VBox(spacing / 2);
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
+
     HBox row = new HBox(spacing);
     ArrayList<Recipe> recipes = new ArrayList<>(controller.getCurrentSearch());
     recipes.sort((a, b) -> Boolean.compare(b.getIsFavorite(), a.getIsFavorite()));
@@ -94,18 +106,12 @@ public class CookbookView extends View {
       CookbookRecipeComponent recipeComponent = new CookbookRecipeComponent(recipe);
       recipeComponent.addObserver(controller);
       row.getChildren().add(recipeComponent.getComponent());
-
     }
+
     row.setAlignment(Pos.CENTER);
     recipeContainer.getChildren().add(row);
-    if (pageContainer.getChildren().size() < 2) {
-      NodeUtils.addChildren(pageContainer, recipeContainer);
-    } else {
-      pageContainer.getChildren().set(1, recipeContainer);
-    }
-    getBorderPane().setCenter(pageContainer);
+    return recipeContainer;
   }
-
   private StyledButton addRecipe() {
     StyledButton button = new StyledButton("Add Recipe");
     button.setOnAction(e -> notifyObservers(ButtonEnum.ADD));
