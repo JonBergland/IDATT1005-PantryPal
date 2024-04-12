@@ -61,6 +61,15 @@ public class CookBookController extends Controller implements Observer {
   }
 
   /**
+   * Returns the current search list.
+   *
+   * @return the current search list.
+   */
+  public List<Recipe> getCurrentSearch() {
+    return currentSearch;
+  }
+
+  /**
    * Updates the observer with the button that was pressed and the object affected
    *
    * @param buttonEnum the button that was pressed
