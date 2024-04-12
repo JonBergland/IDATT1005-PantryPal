@@ -87,7 +87,12 @@ public class RecipeView extends View implements Observable {
             Sizing.getRecipeBoxSize()[1]);
     String imagePath = recipe.getImagePath();
     if (imagePath != null && !recipe.getImagePath().isEmpty()) {
-      ImagePattern imagePattern = new ImagePattern(new Image(imagePath));
+      ImagePattern imagePattern;
+      try {
+        imagePattern = new ImagePattern(new Image(imagePath));
+      } catch (Exception e){
+        imagePattern = new ImagePattern(new Image("images/PantryPalLogo.png"));
+      }
       image.setFill(imagePattern);
     } else {
       image.setFill(ColorPalette.GRAY);
@@ -274,7 +279,7 @@ public class RecipeView extends View implements Observable {
     Region spacer = new Region();
     HBox.setHgrow(spacer, Priority.ALWAYS);
 
-    Text quantityText = new Text(grocery.getQuantity() + " pcs.");
+    Text quantityText = new Text(grocery.getQuantity() + " " + grocery.getUnit());
     quantityText.getStyleClass().add("sub-groceries-text");
     quantityText.setTextAlignment(TextAlignment.RIGHT);
 

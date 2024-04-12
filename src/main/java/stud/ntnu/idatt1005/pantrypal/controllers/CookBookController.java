@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -12,6 +13,7 @@ import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.RecipeRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.ShelfRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
+import stud.ntnu.idatt1005.pantrypal.utils.SQL;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
 import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
@@ -43,12 +45,61 @@ public class CookBookController extends Controller implements Observer {
     this.shoppingListRegister = shoppingListController.getRegister();
     this.shoppingListController = shoppingListController;
 
-    addPlaceholderRecipes();
     this.currentSearch = recipeRegister.getRegister().values().stream().toList();
 
     this.view = new CookbookView(this);
     this.view.addObserver(this);
     this.viewManager.addView(Route.COOKBOOK, view);
+
+    this.load();
+
+    this.rerender();
+  }
+
+  private void load(){
+    String query = "SELECT * FROM recipe";
+    List<Map<String, Object>> recipesFromDB = SQL.executeQuery(query);
+
+    for(Map<String, Object> recipeFromDB : recipesFromDB){
+      GroceryRegister groceries = new GroceryRegister();
+      StepRegister steps = new StepRegister();
+
+      String id = recipeFromDB.get("id").toString();
+      String name = recipeFromDB.get("name").toString();
+      String description = recipeFromDB.get("description").toString();
+      String image = recipeFromDB.get("image").toString();
+
+      String groceriesQuery = "SELECT * FROM recipe_grocery WHERE recipe_id = ?";
+      List<Map<String, Object>> groceriesFromDB = SQL.executeQuery(groceriesQuery, id);
+
+      for(Map<String, Object> groceryFromDB : groceriesFromDB){
+        String groceryName = groceryFromDB.get("grocery_name").toString();
+        int quantity = (int) groceryFromDB.get("quantity");
+
+        String groceryQuery = "SELECT * FROM grocery WHERE name = ?";
+        List<Map<String, Object>> groceryDataFromDB = SQL.executeQuery(groceryQuery, groceryName);
+
+        String unit = groceryDataFromDB.getFirst().get("unit").toString();
+        //TODO: Fix shelf
+        Grocery grocery = new Grocery(groceryName, quantity, unit, "", false);
+        groceries.addGrocery(grocery);
+      }
+
+      String stepsQuery = "SELECT * FROM step WHERE recipe_id = ?";
+      List<Map<String, Object>> stepsFromDB = SQL.executeQuery(stepsQuery, id);
+
+      for(Map<String, Object> stepFromDB : stepsFromDB){
+        String step = stepFromDB.get("description").toString();
+        steps.addStep(step);
+      }
+
+      String favoriteQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
+      List<Map<String, Object>> favorite = SQL.executeQuery(favoriteQuery, id, PantryPal.userName);
+      boolean isFavorite = !favorite.isEmpty();
+
+      Recipe recipe = new Recipe(name, description, groceries, steps, image, isFavorite);
+      this.recipeRegister.addRecipe(recipe);
+    }
   }
 
   /**
@@ -184,8 +235,9 @@ public class CookBookController extends Controller implements Observer {
         if (shoppingListGrocery != null) {
           shoppingListGrocery.setQuantity(shoppingListGrocery.getQuantity() + quantityToAdd);
         } else {
+          //TODO: Fix unit
           shoppingListRegister.addGrocery(
-              new Grocery(groceryName, quantityToAdd, groceryShelf, false));
+              new Grocery(groceryName, quantityToAdd, "g", groceryShelf, false));
         }
       }
     }
@@ -203,54 +255,7 @@ public class CookBookController extends Controller implements Observer {
     view.render();
   }
 
-  /**
-   * Adds placeholder recipes to the recipe register.
-   */
-  private void addPlaceholderRecipes() {
-    String cupboard = "Cupboard";
-    // Recipe 1
-    GroceryRegister groceries1 = new GroceryRegister();
-    groceries1.addGrocery(new Grocery("Tomato", 1, cupboard, false));
-    groceries1.addGrocery(new Grocery("Onion", 1, cupboard, false));
-    groceries1.addGrocery(new Grocery("Garlic", 1, cupboard, false));
-
-    StepRegister steps1 = new StepRegister();
-    steps1.addStep("Cut groceries");
-    steps1.addStep("Cook groceries");
-    steps1.addStep("Eat groceries");
-
-    Recipe recipe1 = new Recipe("Tomato soup", "", groceries1, steps1, null, false);
-    recipeRegister.addRecipe(recipe1);
-
-    // Recipe 2
-
-    GroceryRegister groceries2 = new GroceryRegister();
-    groceries2.addGrocery(new Grocery("Milk", 1, "Fridge", false));
-    groceries2.addGrocery(new Grocery("Porridge rice", 1, cupboard, false));
-    groceries2.addGrocery(new Grocery("Sugar", 1, cupboard, false));
-    groceries2.addGrocery(new Grocery("Cinnamon", 1, cupboard, false));
-
-    StepRegister steps2 = new StepRegister();
-    steps2.addStep("Boil milk");
-    steps2.addStep("Add porridge rice");
-    steps2.addStep("Add sugar and cinnamon");
-
-    Recipe recipe2 = new Recipe("Rice porridge", "", groceries2, steps2, null, false);
-    recipeRegister.addRecipe(recipe2);
-
-    // Recipe 3
-
-    GroceryRegister groceries3 = new GroceryRegister();
-    groceries3.addGrocery(new Grocery("Pasta", 1, cupboard, false));
-    groceries3.addGrocery(new Grocery("Tomato sauce", 1, cupboard, false));
-    groceries3.addGrocery(new Grocery("Cheese", 1, "Fridge", false));
-
-    StepRegister steps3 = new StepRegister();
-    steps3.addStep("Boil pasta");
-    steps3.addStep("Add tomato sauce");
-    steps3.addStep("Add cheese");
-
-    Recipe recipe3 = new Recipe("Pasta", "", groceries3, steps3, null, false);
-    recipeRegister.addRecipe(recipe3);
+  public void rerender(){
+    view.render();
   }
 }
