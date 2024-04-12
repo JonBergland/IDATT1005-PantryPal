@@ -133,7 +133,8 @@ public class AddGroceryListElement extends HBox implements Observable {
    * @param buttonEnum the buttonEnum to be sent to the observers
    */
   private void notifyObservers(ButtonEnum buttonEnum, String name, int quantity, String shelf) {
-    Grocery grocery = new Grocery(name, quantity, shelf, false);
+    //TODO: Fix unit
+    Grocery grocery = new Grocery(name, quantity, "g", shelf, false);
     List<Observer> observerList = new ArrayList<>(this.observers);
     for (Observer observer : observerList) {
       observer.update(buttonEnum, grocery);
