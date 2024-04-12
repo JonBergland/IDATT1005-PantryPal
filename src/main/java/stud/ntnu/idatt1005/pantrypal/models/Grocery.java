@@ -9,7 +9,8 @@ import java.util.Date;
 public class Grocery extends Model{
 
   private int quantity;
-  private final String shelf;
+  private String unit;
+  private String shelf;
   private boolean isChecked = false;
   /**
    * Constructor for the Grocery class
@@ -18,11 +19,16 @@ public class Grocery extends Model{
    * @param quantity       the quantity of the grocery
    * @param shelf       the category of the grocery
    */
-  public Grocery(String name, int quantity, String shelf, boolean isChecked) {
+  public Grocery(String name, int quantity, String unit, String shelf, boolean isChecked) {
     super(name);
     this.quantity = quantity;
+    this.unit = unit;
     this.shelf = shelf;
     this.isChecked = isChecked;
+
+    if(this.shelf.isEmpty()){
+      this.shelf = "Unassigned";
+    }
   }
 
   /**
@@ -33,8 +39,13 @@ public class Grocery extends Model{
   public Grocery(Grocery grocery) {
     super(grocery.getKey());
     this.quantity = grocery.getQuantity();
+    this.unit = grocery.getUnit();
     this.shelf = grocery.getShelf();
     this.isChecked = grocery.getChecked();
+
+    if(this.shelf.isEmpty()){
+      this.shelf = "Unassigned";
+    }
   }
 
   public void setQuantity(int quantity) {
@@ -48,6 +59,15 @@ public class Grocery extends Model{
    */
   public int getQuantity() {
     return quantity;
+  }
+
+  /**
+   * Get the unit of the grocery
+   *
+   * @return the unit of the grocery
+   */
+  public String getUnit() {
+    return unit;
   }
 
   /**
