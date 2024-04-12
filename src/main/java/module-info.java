@@ -10,6 +10,7 @@ module stud.ntnu.idatt1005.pantrypal {
   requires org.kordamp.bootstrapfx.core;
   requires eu.hansolo.tilesfx;
   requires com.almasb.fxgl.all;
+  requires java.sql;
 
   opens stud.ntnu.idatt1005.pantrypal to javafx.fxml;
   exports stud.ntnu.idatt1005.pantrypal;
