@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
@@ -62,12 +63,13 @@ public class CookbookView extends View {
   }
 
   private void addSearchBar() {
-    TextField searchField = new TextField();
-    searchField.setPromptText("Search");
-    NodeUtils.addClasses(searchField, "search-field");
-    searchField.setMaxWidth(Sizing.getScreenWidth());
-    searchField.setMinWidth(Sizing.getScreenWidth());
-    NodeUtils.addChildren(pageContainer, searchField);
+    TextField searchField = createSearchField();
+    StyledButton addRecipe = createAddRecipeButton();
+
+    StackPane searchBar = new StackPane();
+    searchBar.getChildren().addAll(searchField, addRecipe);
+
+    NodeUtils.addChildren(pageContainer, searchBar);
     searchField.textProperty().addListener((observable, oldValue, newValue) ->
             this.controller.searchRecipes(newValue));
   }
@@ -79,9 +81,6 @@ public class CookbookView extends View {
    */
   public void render() {
     VBox recipeContainer = createRecipeContainer();
-    //StyledButton addRecipe = addRecipe();
-    //recipeContainer.getChildren().add(addRecipe);
-
     if (pageContainer.getChildren().size() < 2) {
       NodeUtils.addChildren(pageContainer, recipeContainer);
     } else {
@@ -112,11 +111,23 @@ public class CookbookView extends View {
     recipeContainer.getChildren().add(row);
     return recipeContainer;
   }
-  private StyledButton addRecipe() {
+  private StyledButton createAddRecipeButton() {
     StyledButton button = new StyledButton("Add Recipe");
     button.setOnAction(e -> notifyObservers(ButtonEnum.ADD));
+    StackPane.setAlignment(button, Pos.CENTER_RIGHT);
 
     return button;
+  }
+
+  private TextField createSearchField() {
+    TextField searchField = new TextField();
+    searchField.setPromptText("Search");
+    NodeUtils.addClasses(searchField, "search-field");
+    searchField.setMaxWidth(Sizing.getScreenWidth());
+    searchField.setMinWidth(Sizing.getScreenWidth());
+    searchField.textProperty().addListener((observable, oldValue, newValue) ->
+            this.controller.searchRecipes(newValue));
+    return searchField;
   }
 
   /**
