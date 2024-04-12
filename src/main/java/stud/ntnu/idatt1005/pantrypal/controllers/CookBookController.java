@@ -92,7 +92,11 @@ public class CookBookController extends Controller implements Observer {
         this.viewManager.setView(Route.ADD_RECIPE);
         break;
       case ADD:
+        if (recipeRegister.getRegister().containsKey(recipe.getKey())) {
+          recipeRegister.removeRecipe(recipe);
+        }
         recipeRegister.addRecipe(recipe);
+        currentSearch = recipeRegister.getRegister().values().stream().toList();
         view.render();
         this.viewManager.setView(Route.COOKBOOK);
         break;
