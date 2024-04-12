@@ -61,6 +61,12 @@ public class LogInView extends View {
     loginText.getStyleClass().add("login-title");
     loginButton.getStyleClass().add("login-button");
 
+    loginButton.setOnAction(e -> {
+      if(!usernameField.getText().isEmpty()) {
+        controller.logIn(usernameField.getText());
+      }
+    });
+
 
     // Add the VBox to the root of the scene
     getBorderPane().setCenter(loginContainer);
