@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
@@ -16,6 +17,9 @@ import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.CookbookRecipeComponent;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The CookbookView class is responsible for creating and managing the view for the
@@ -60,12 +64,13 @@ public class CookbookView extends View {
   }
 
   private void addSearchBar() {
-    TextField searchField = new TextField();
-    searchField.setPromptText("Search");
-    NodeUtils.addClasses(searchField, "search-field");
-    searchField.setMaxWidth(Sizing.getScreenWidth());
-    searchField.setMinWidth(Sizing.getScreenWidth());
-    NodeUtils.addChildren(pageContainer, searchField);
+    TextField searchField = createSearchField();
+    StyledButton addRecipe = createAddRecipeButton();
+
+    StackPane searchBar = new StackPane();
+    searchBar.getChildren().addAll(searchField, addRecipe);
+
+    NodeUtils.addChildren(pageContainer, searchBar);
     searchField.textProperty().addListener((observable, oldValue, newValue) ->
             this.controller.searchRecipes(newValue));
   }
@@ -75,25 +80,8 @@ public class CookbookView extends View {
    * It creates a VBox to contain the rows of recipes, and an HBox for each row.
    * It then adds the CookbookRecipeComponents to the rows and the rows to the container.
    */
-  public void render() {
-    VBox recipeContainer = new VBox(spacing / 2);
-    //StyledButton addRecipe = addRecipe();
-    //recipeContainer.getChildren().add(addRecipe);
-    recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
-    HBox row = new HBox(spacing);
-    for (Recipe recipe : controller.getCurrentSearch()) {
-      if (row.getChildren().size() >= RECIPES_PER_ROW) {
-        row.setAlignment(Pos.CENTER);
-        recipeContainer.getChildren().add(row);
-        row = new HBox(spacing);
-      }
-      CookbookRecipeComponent recipeComponent = new CookbookRecipeComponent(recipe);
-      recipeComponent.addObserver(controller);
-      row.getChildren().add(recipeComponent.getComponent());
-
-    }
-    row.setAlignment(Pos.CENTER);
-    recipeContainer.getChildren().add(row);
+  public void render(List<Recipe> currentSearch) {
+    VBox recipeContainer = createRecipeContainer(currentSearch);
     if (pageContainer.getChildren().size() < 2) {
       NodeUtils.addChildren(pageContainer, recipeContainer);
     } else {
@@ -102,11 +90,45 @@ public class CookbookView extends View {
     getBorderPane().setCenter(pageContainer);
   }
 
-  private StyledButton addRecipe() {
+  private VBox createRecipeContainer(List<Recipe> currentSearch) {
+    VBox recipeContainer = new VBox(spacing / 2);
+    recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
+
+    HBox row = new HBox(spacing);
+    ArrayList<Recipe> recipes = new ArrayList<>(currentSearch);
+    recipes.sort((a, b) -> Boolean.compare(b.getIsFavorite(), a.getIsFavorite()));
+    for (Recipe recipe : recipes) {
+      if (row.getChildren().size() >= RECIPES_PER_ROW) {
+        row.setAlignment(Pos.CENTER);
+        recipeContainer.getChildren().add(row);
+        row = new HBox(spacing);
+      }
+      CookbookRecipeComponent recipeComponent = new CookbookRecipeComponent(recipe);
+      recipeComponent.addObserver(controller);
+      row.getChildren().add(recipeComponent.getComponent());
+    }
+
+    row.setAlignment(Pos.CENTER);
+    recipeContainer.getChildren().add(row);
+    return recipeContainer;
+  }
+  private StyledButton createAddRecipeButton() {
     StyledButton button = new StyledButton("Add Recipe");
     button.setOnAction(e -> notifyObservers(ButtonEnum.ADD));
+    StackPane.setAlignment(button, Pos.CENTER_RIGHT);
 
     return button;
+  }
+
+  private TextField createSearchField() {
+    TextField searchField = new TextField();
+    searchField.setPromptText("Search");
+    NodeUtils.addClasses(searchField, "search-field");
+    searchField.setMaxWidth(Sizing.getScreenWidth());
+    searchField.setMinWidth(Sizing.getScreenWidth());
+    searchField.textProperty().addListener((observable, oldValue, newValue) ->
+            this.controller.searchRecipes(newValue));
+    return searchField;
   }
 
   /**
