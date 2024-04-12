@@ -196,7 +196,7 @@ public class GroceryListElement implements Observable {
       final Grocery finalGrocery = this.grocery;
 
       SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory =
-          new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100, finalGrocery.getQuantity());
+          new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, finalGrocery.getQuantity());
       valueFactory.setAmountToStepBy(1);
 
       valueFactory.valueProperty().addListener((observable, oldValue, newValue) ->
