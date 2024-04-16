@@ -14,22 +14,22 @@ import stud.ntnu.idatt1005.pantrypal.models.Model;
  */
 public abstract class Register<T extends Model> {
 
-  LinkedHashMap<String, T> register;
+  LinkedHashMap<String, T> registerMap;
 
   /**
    * Constructor for Register class. Initializes the register as a new LinkedHashMap.
    */
   protected Register() {
-    this.register = new LinkedHashMap<>();
+    this.registerMap = new LinkedHashMap<>();
   }
 
   /**
    * Deep-copy constructor for Register class.
    *
-   * @param register the register to be copied
+   * @param registerMap the register to be copied
    */
-  protected Register(Register<T> register) {
-    this.register = new LinkedHashMap<>(register.getRegister());
+  protected Register(Register<T> registerMap) {
+    this.registerMap = new LinkedHashMap<>(registerMap.getRegister());
   }
 
   /**
@@ -44,8 +44,8 @@ public abstract class Register<T extends Model> {
    *
    * @return the register map
    */
-  public LinkedHashMap<String, T> getRegister() {
-    return this.register;
+  public Map<String, T> getRegister() {
+    return this.registerMap;
   }
 
   /**
@@ -56,19 +56,19 @@ public abstract class Register<T extends Model> {
    * @throws IllegalArgumentException if the item does not exist in the register
    */
   protected T getModel(String key) throws IllegalArgumentException {
-    if (!register.containsKey(key)) {
+    if (!registerMap.containsKey(key)) {
       throw new IllegalArgumentException(getErrorMessage());
     }
-    return register.get(key);
+    return registerMap.get(key);
   }
 
   /**
-   * Check if a model exists in the register
+   * Check if a model exists in the register.
    *
    * @param key the key of the model to be checked
    */
   protected boolean containsModel(String key) {
-    return register.containsKey(key);
+    return registerMap.containsKey(key);
   }
 
   /**
@@ -77,7 +77,7 @@ public abstract class Register<T extends Model> {
    * @param model item to be added
    */
   protected void addModel(T model) {
-    register.put(model.getKey(), model);
+    registerMap.put(model.getKey(), model);
   }
 
   /**
@@ -87,10 +87,10 @@ public abstract class Register<T extends Model> {
    * @throws IllegalArgumentException if the item does not exist in the register
    */
   protected void removeModel(T model) throws IllegalArgumentException {
-    if (!register.containsKey(model.getKey())) {
+    if (!registerMap.containsKey(model.getKey())) {
       throw new IllegalArgumentException(getErrorMessage());
     }
-    register.remove(model.getKey());
+    registerMap.remove(model.getKey());
   }
 
   /**
@@ -101,7 +101,7 @@ public abstract class Register<T extends Model> {
    * @return a list of items with the specified name
    */
   protected List<T> searchModels(String search) {
-    return register.entrySet().stream()
+    return registerMap.entrySet().stream()
             .filter(model -> model.getKey().toLowerCase().contains(search.toLowerCase()))
             .map(Map.Entry::getValue)
             .toList();

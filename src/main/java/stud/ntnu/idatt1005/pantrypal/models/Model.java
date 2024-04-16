@@ -17,7 +17,8 @@ public abstract class Model {
   }
 
   /**
-   * Constructor for Model class
+   * Constructor for Model class.
+   *
    * @param key the key of the model
    */
   protected Model(String key) {
@@ -25,7 +26,8 @@ public abstract class Model {
   }
 
   /**
-   * Gets the string key
+   * Gets the string key.
+   *
    * @return the key
    */
   public String getKey() {
