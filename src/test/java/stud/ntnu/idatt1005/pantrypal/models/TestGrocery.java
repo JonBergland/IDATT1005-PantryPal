@@ -2,8 +2,8 @@ package stud.ntnu.idatt1005.pantrypal.models;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestGrocery {
   @Test
@@ -79,6 +79,6 @@ class TestGrocery {
 
     // Test the setChecked() method
     grocery.setChecked(true);
-    assertEquals(true, grocery.getChecked());
+    assertTrue(grocery.getChecked());
   }
 }
