@@ -6,7 +6,7 @@ import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShelfTest {
+class TestShelf {
   String name;
   Shelf shelf;
   Grocery grocery;

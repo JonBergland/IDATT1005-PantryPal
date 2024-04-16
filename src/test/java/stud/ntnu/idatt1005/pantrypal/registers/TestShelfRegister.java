@@ -6,7 +6,7 @@ import stud.ntnu.idatt1005.pantrypal.models.Shelf;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ShelfRegisterTest {
+class TestShelfRegister {
   ShelfRegister shelfRegister;
 
   @BeforeEach
