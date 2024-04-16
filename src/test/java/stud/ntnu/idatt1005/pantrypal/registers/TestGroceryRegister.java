@@ -83,7 +83,7 @@ class TestGroceryRegister {
     @Test
     @DisplayName("Test of get register")
     void getRegister() {
-      LinkedHashMap<String, Grocery> actual = groceryRegister.getRegister();
+      LinkedHashMap<String, Grocery> actual = (LinkedHashMap<String, Grocery>) groceryRegister.getRegister();
 
       assertAll("Get register",
           () -> assertEquals(grocery1.toString(), actual.get(grocery1.getKey()).toString(), "Incorrect grocery retrieved"),
