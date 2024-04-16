@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TestStepRegister {
   private static StepRegister steps;
@@ -20,63 +20,63 @@ class TestStepRegister {
   @Test
   @DisplayName("Test getSteps")
   void testGetSteps() {
-    assertEquals(steps.getSteps().get(0), "Step 1");
-    assertEquals(steps.getSteps().get(1), "Step 2");
-    assertEquals(steps.getSteps().get(2), "Step 3");
+    assertEquals("Step 1", steps.getSteps().get(0));
+    assertEquals("Step 2", steps.getSteps().get(1));
+    assertEquals("Step 3", steps.getSteps().get(2));
   }
 
   @Test
   @DisplayName("Test addStep")
   void testAddStep() {
     steps.addStep("Step 4");
-    assertEquals(steps.getSteps().get(3), "Step 4");
+    assertEquals("Step 4", steps.getSteps().get(3));
   }
 
   @Test
   @DisplayName("Test addStep with empty string")
   void testAddStepEmptyString() {
-    try {
-      steps.addStep("");
-    } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "Step cannot be empty.");
-    }
+    assertThrows(IllegalArgumentException.class, () -> steps.addStep(""));
   }
 
   @Test
   @DisplayName("Test addStep with null")
   void testAddStepNull() {
-    try {
-      steps.addStep(null);
-    } catch (IllegalArgumentException e) {
-      assertEquals(e.getMessage(), "Step cannot be empty.");
-    }
+    assertThrows(IllegalArgumentException.class, () -> steps.addStep(null));
   }
 
   @Test
   @DisplayName("Test removeStep with larger index")
   void testRemoveStepTooLargeIndex() {
-    try {
-      steps.removeStep(4);
-    } catch (IndexOutOfBoundsException e) {
-      assertEquals(e.getMessage(), "Index out of bounds must be between 0 and 2.");
-    }
+    assertThrows(IndexOutOfBoundsException.class, () -> steps.removeStep(4));
   }
 
   @Test
   @DisplayName("Test removeStep with negative index")
   void testRemoveStepNegativeIndex() {
-    try {
-      steps.removeStep(-1);
-    } catch (IndexOutOfBoundsException e) {
-      assertEquals(e.getMessage(), "Index out of bounds must be between 0 and 3.");
-    }
+    assertThrows(IndexOutOfBoundsException.class, () -> steps.removeStep(-1));
   }
 
   @Test
   @DisplayName("Test removeStep with valid index")
   void testRemoveStepValidIndex() {
     steps.removeStep(0);
-    assertEquals(steps.getSteps().get(0), "Step 2");
+    assertEquals("Step 2", steps.getSteps().getFirst());
   }
 
+  @Test
+  @DisplayName("Test removeStep with valid step")
+  void testRemoveStepValidStep() {
+    steps.removeStep("Step 1");
+    assertEquals("Step 2", steps.getSteps().getFirst());
+  }
+
+  @Test
+  @DisplayName("Test removeStep with empty string")
+  void testRemoveStepEmptyString() {
+    assertAll(
+      () -> assertThrows(IllegalArgumentException.class, () -> steps.removeStep("")),
+      () -> assertThrows(IllegalArgumentException.class, () -> steps.removeStep(null)),
+      () -> assertEquals(3, steps.getSteps().size())
+    );
+  }
 }
