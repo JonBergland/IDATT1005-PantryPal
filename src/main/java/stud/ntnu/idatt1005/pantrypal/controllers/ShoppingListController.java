@@ -46,16 +46,6 @@ public class ShoppingListController extends Controller implements Observer {
     super(viewManager);
     this.register = new GroceryRegister();
     this.pantryController = pantryController;
-//    // Add some groceries to the register
-//    String fridge = "Fridge";
-//    String cupboard = "Cupboard";
-//    this.register.addGrocery(new Grocery("Milk", 1, fridge, false));
-//    this.register.addGrocery(new Grocery("Bread", 1, cupboard, false));
-//    this.register.addGrocery(new Grocery("Butter", 1, fridge, false));
-//    this.register.addGrocery(new Grocery("Cheese", 1, fridge, false));
-//    this.register.addGrocery(new Grocery("Egg", 1, fridge, false));
-//    this.register.addGrocery(new Grocery("Apple", 1, cupboard, false));
-//    this.register.addGrocery(new Grocery("Banana", 1, cupboard, false));
     this.view = new ShoppingListView(this);
     this.view.addObserver(this);
     rerender();
