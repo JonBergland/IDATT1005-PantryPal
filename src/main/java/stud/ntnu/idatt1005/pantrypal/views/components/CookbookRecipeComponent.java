@@ -86,7 +86,7 @@ public class CookbookRecipeComponent implements Observable {
             new CornerRadii(10),
             new BorderWidths(1));
     stackPane.setBorder(new Border(borderStroke));
-    Rectangle clip = new Rectangle(getWidth(), 200);
+    Rectangle clip = new Rectangle(getWidth(), getHeight());
     clip.setArcWidth(20);
     clip.setArcHeight(20);
     stackPane.setClip(clip);
