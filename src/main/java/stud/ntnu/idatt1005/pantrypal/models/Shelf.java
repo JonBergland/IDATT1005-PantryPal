@@ -29,35 +29,11 @@ public class Shelf extends Model {
     }
 
     /**
-     * Sets the name of the shelf
-     * @param name the new name of the shelf
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Gets the name of the shelf
      * @return the name of the shelf
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * Adds a grocery item to the shelf
-     * @param grocery the grocery item to be added
-     */
-    public void addGrocery(Grocery grocery) {
-        groceryRegister.addGrocery(grocery);
-    }
-
-    /**
-     * Removes a grocery item from the shelf
-     * @param grocery the grocery item to be removed
-     */
-    public void removeGrocery(Grocery grocery) {
-        groceryRegister.removeGrocery(grocery);
     }
 
     /**
@@ -75,5 +51,29 @@ public class Shelf extends Model {
      */
     public LinkedHashMap<String, Grocery> getGroceries() {
         return groceryRegister.getRegister();
+    }
+
+    /**
+     * Sets the name of the shelf
+     * @param name the new name of the shelf
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Adds a grocery item to the shelf
+     * @param grocery the grocery item to be added
+     */
+    public void addGrocery(Grocery grocery) {
+        groceryRegister.addGrocery(grocery);
+    }
+
+    /**
+     * Removes a grocery item from the shelf
+     * @param grocery the grocery item to be removed
+     */
+    public void removeGrocery(Grocery grocery) {
+        groceryRegister.removeGrocery(grocery);
     }
 }
