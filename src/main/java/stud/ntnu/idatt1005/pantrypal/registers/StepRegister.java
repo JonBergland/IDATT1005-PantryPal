@@ -52,7 +52,8 @@ public class StepRegister {
    */
   public void removeStep(int index) throws IndexOutOfBoundsException {
     if (index < 0 || index >= steps.size()) {
-      throw new IndexOutOfBoundsException("Index out of bounds must be between 0 and " + (steps.size() - 1) + ".");
+      throw new IndexOutOfBoundsException("Index out of bounds must be between 0 and "
+          + (steps.size() - 1) + ".");
     }
     steps.remove(steps.get(index));
   }
