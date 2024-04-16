@@ -1,8 +1,11 @@
 package stud.ntnu.idatt1005.pantrypal.models;
 
 /**
- * This is an entity class representing groceries It contains the name, quantity, category and
- * expiration date of the grocery
+ * This is an entity class representing a grocery.
+ * It contains the name of the grocery, the quantity of the grocery,
+ * the unit of the grocery (g for gram and l for liter), the shelf
+ * the grocery is intended to be placed on, and a boolean value representing
+ * whether the grocery is checked or not in the shopping list.
  */
 public class Grocery extends Model{
 
