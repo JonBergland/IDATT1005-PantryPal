@@ -40,7 +40,7 @@ class TestRecipe {
   @Test
   @DisplayName("Test validImagePath() with valid path to local file")
   void testValidImagePathValidLocalFile() {
-    String path = "src/main/resources/images/PantryPalLogo.png";
+    String path = "src/main/resources/Images/PantryPalLogo.png";
     Recipe recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps,
             path, false);
     assertEquals(path, recipe.getImagePath());
