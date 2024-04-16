@@ -1,7 +1,4 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -76,7 +73,6 @@ public class ShelfRegister extends Register<Shelf> {
     List<Map<String, Object>> shelves = SQL.executeQuery(shelfQuery, username);
 
     for (Map<String, Object> shelf : shelves) {
-      System.out.println(shelf);
       int shelfId = (int) shelf.get("id");
       String shelfKey = String.valueOf(shelfId);
       String shelfName = shelf.get("name").toString();
@@ -89,7 +85,6 @@ public class ShelfRegister extends Register<Shelf> {
       List<Map<String, Object>> groceries = SQL.executeQuery(groceryQuery, shelfId);
 
       for (Map<String, Object> grocery : groceries) {
-        System.out.println(grocery);
 
         String groceryName = grocery.get("name").toString();
         int groceryQuantity = (int) grocery.get("quantity");
