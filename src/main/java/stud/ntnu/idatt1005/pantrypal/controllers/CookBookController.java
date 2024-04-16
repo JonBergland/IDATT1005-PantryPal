@@ -51,7 +51,9 @@ public class CookBookController extends Controller implements Observer {
     this.view.addObserver(this);
     this.viewManager.addView(Route.COOKBOOK, view);
 
-    this.load();
+    if(this.isLoggedIn()){
+      this.load();
+    }
 
     this.rerender();
   }
@@ -93,9 +95,13 @@ public class CookBookController extends Controller implements Observer {
         steps.addStep(step);
       }
 
+      System.out.println("id: " + id + ", username: " + PantryPal.userName);
       String favoriteQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
       List<Map<String, Object>> favorite = SQL.executeQuery(favoriteQuery, id, PantryPal.userName);
+      System.out.println(favorite);
       boolean isFavorite = !favorite.isEmpty();
+
+      System.out.println(isFavorite);
 
       Recipe recipe = new Recipe(name, description, groceries, steps, image, isFavorite);
       this.recipeRegister.addRecipe(recipe);
@@ -149,10 +155,11 @@ public class CookBookController extends Controller implements Observer {
         this.viewManager.setView(Route.ADD_RECIPE);
         break;
       case ADD:
-        if (getRecipes().containsKey(recipe.getKey())) {
-          recipeRegister.removeRecipe(recipe);
-        }
-        recipeRegister.addRecipe(recipe);
+        this.addRecipe(recipe);
+//        if (getRecipes().containsKey(recipe.getKey())) {
+//          recipeRegister.removeRecipe(recipe);
+//        }
+//        recipeRegister.addRecipe(recipe);
         currentSearch = getRecipes().values().stream().toList();
         view.render(currentSearch);
         this.viewManager.setView(Route.COOKBOOK);
@@ -261,6 +268,39 @@ public class CookBookController extends Controller implements Observer {
     shoppingListController.rerender();
   }
 
+  private void addRecipe(Recipe recipe){
+    if(recipe == null){
+      throw new IllegalArgumentException("Recipe cannot be null");
+    }
+
+    if(getRecipes().containsKey(recipe.getKey())){
+      throw new IllegalArgumentException("Recipe already exists");
+    }
+
+    String query = "INSERT INTO recipe (name, description, image) VALUES (?, ?, ?)";
+    SQL.executeUpdate(query, recipe.getKey(), recipe.getDescription(), recipe.getImagePath());
+
+    for(Grocery grocery : recipe.getRecipeGroceries().getRegister().values()){
+      String groceryQuery = "SELECT * FROM grocery WHERE name = ?";
+      List<Map<String, Object>> groceryDataFromDB = SQL.executeQuery(groceryQuery, grocery.getKey());
+
+      if(groceryDataFromDB.isEmpty()){
+        String insertGroceryQuery = "INSERT INTO grocery (name, unit) VALUES (?, ?)";
+        SQL.executeUpdate(insertGroceryQuery, grocery.getKey(), grocery.getUnit());
+      }
+
+      String insertGroceryRecipeQuery = "INSERT INTO recipe_grocery (recipe_id, grocery_name, quantity) VALUES (?, ?, ?)";
+      SQL.executeUpdate(insertGroceryRecipeQuery, recipe.getKey(), grocery.getKey(), grocery.getQuantity());
+    }
+
+    for(String step : recipe.getRecipeSteps()){
+      String insertStepQuery = "INSERT INTO step (recipe_id, description) VALUES (?, ?)";
+      SQL.executeUpdate(insertStepQuery, recipe.getKey(), step);
+    }
+
+    recipeRegister.addRecipe(recipe);
+  }
+
   /**
    * Toggles the favorite status of a recipe.
    *
@@ -268,6 +308,26 @@ public class CookBookController extends Controller implements Observer {
    */
   private void toggleIsFavorite(Recipe recipe) {
     recipe.toggleIsFavorite();
+    if(this.isLoggedIn()){
+      String name = recipe.getKey();
+
+      //TODO: fix recipe to use id, not name
+      String idQuery = "SELECT id FROM recipe WHERE name = ?";
+      List<Map<String, Object>> idResult = SQL.executeQuery(idQuery, name);
+
+      String id = idResult.getFirst().get("id").toString();
+
+      String checkQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
+      List<Map<String, Object>> favorite = SQL.executeQuery(checkQuery, id, PantryPal.userName);
+
+      if(favorite.isEmpty()){
+        String insertQuery = "INSERT INTO recipe_favorite (recipe_id, user_name) VALUES (?, ?)";
+        SQL.executeUpdate(insertQuery, id, PantryPal.userName);
+      } else {
+        String deleteQuery = "DELETE FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
+        SQL.executeUpdate(deleteQuery, id, PantryPal.userName);
+      }
+    }
     view.render(currentSearch);
   }
 
