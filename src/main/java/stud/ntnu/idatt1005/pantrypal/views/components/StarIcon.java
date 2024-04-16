@@ -11,6 +11,9 @@ import javafx.scene.shape.StrokeType;
  * The setColor method sets the fill color of the star based on if the recipe is a favorite or not.
  */
 public class StarIcon extends SVGPath {
+  /**
+   * The enum Variants represents the different variants of the star icon.
+   */
   public enum Variants {
     RECIPE,
     COOKBOOK
