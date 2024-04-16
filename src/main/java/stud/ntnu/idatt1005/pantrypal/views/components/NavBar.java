@@ -1,10 +1,13 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
+import javafx.geometry.Rectangle2D;
+import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
+import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.controllers.Controller;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
@@ -31,13 +34,19 @@ public class NavBar extends ToolBar {
     NavLink homeButton = createButton(
         "Home", () -> controller.onNavLinkPress(Route.HOME));
     NavLink cookbookButton = createButton(
-            "Cookbook", () -> controller.onNavLinkPress(Route.COOKBOOK));
+        "Cookbook", () -> controller.onNavLinkPress(Route.COOKBOOK));
     NavLink shoppingListButton = createButton(
         "Shopping List", () -> controller.onNavLinkPress(Route.SHOPPING_LIST));
     NavLink pantryButton = createButton(
-            "Pantry", () -> controller.onNavLinkPress(Route.PANTRY));
-    NavLink loginButton = createButton(
-        "Login", () -> controller.onNavLinkPress(Route.LOGIN));
+        "Pantry", () -> controller.onNavLinkPress(Route.PANTRY));
+    NavLink loginButton;
+    if(PantryPal.userName == null){
+      loginButton = createButton(
+          "Login", () -> controller.onNavLinkPress(Route.LOGIN));
+    } else{
+      loginButton = createButton(
+          "Logout", controller::logOut);
+    }
 
     // Create an HBox for the first four buttons
     HBox navigationButtonsBox = new HBox(

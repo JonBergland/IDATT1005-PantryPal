@@ -17,7 +17,13 @@ public class Shelf extends Model {
      * @param name the name of the shelf
      */
     public Shelf(String name){
-        super(name); // Calls the constructor of the parent class (Model)
+        super();
+        this.name = name;
+        this.groceryRegister = new GroceryRegister();
+    }
+
+    public Shelf(String key, String name) {
+        super(key);
         this.name = name;
         this.groceryRegister = new GroceryRegister();
     }

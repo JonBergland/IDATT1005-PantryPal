@@ -28,6 +28,7 @@ import java.util.Objects;
 public class AddRecipeView extends View {
   private final StyledTextField name;
   private final StyledTextArea description;
+  private final StyledTextField imageUrl;
 
   /**
    * Constructor for AddRecipeView.
@@ -38,6 +39,7 @@ public class AddRecipeView extends View {
     super(controller, Route.ADD_RECIPE, "/styles/add-recipe.css");
     this.name = new StyledTextField("Name");
     this.description = createDescription();
+    this.imageUrl = new StyledTextField("Image URL");
   }
 
   public AddRecipeView(AddRecipeController controller, Recipe recipe) {
@@ -46,6 +48,8 @@ public class AddRecipeView extends View {
     this.description = createDescription();
     this.name.setText(recipe.getKey());
     this.description.setText(recipe.getDescription());
+    this.imageUrl = new StyledTextField("Image URL");
+    this.imageUrl.setText(recipe.getImagePath());
   }
 
   /**
@@ -107,11 +111,11 @@ public class AddRecipeView extends View {
     StyledButton submit = new StyledButton("Add Recipe");
     submit.setMaxWidth(Double.MAX_VALUE);
     submit.setOnAction(e -> {
-      Recipe recipe = new Recipe(name.getText(), description.getText(), groceryRegister, stepRegister, null, false);
+      Recipe recipe = new Recipe(name.getText(), description.getText(), groceryRegister, stepRegister, imageUrl.getText(), false);
       notifyObservers(ButtonEnum.ADD, recipe);
     });
 
-    innerForm.getChildren().addAll(titleBox,name, description,
+    innerForm.getChildren().addAll(titleBox,name, description, imageUrl,
         groceryListTitleBox, groceryList, addGrocery,
         stepListTitleBox, stepList, addStep,
         border, submit);

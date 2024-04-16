@@ -4,6 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import stud.ntnu.idatt1005.pantrypal.controllers.AddRecipeController;
+import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
+import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
+import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
+import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 
 public class ViewManager {
@@ -12,6 +18,17 @@ public class ViewManager {
 
   public ViewManager(Stage stage) {
     this.stage = stage;
+  }
+
+  public void init() {
+    HomeController homeController = new HomeController(this);
+    PantryController pantryController = new PantryController(this);
+    ShoppingListController shoppingListController = new ShoppingListController(this, pantryController);
+    CookBookController cookBookController = new CookBookController(this, shoppingListController, pantryController);
+    LogInController logInController = new LogInController(this);
+
+    //Init view
+    this.setView(Route.HOME);
   }
 
   public void addView(Route route, Scene view) {

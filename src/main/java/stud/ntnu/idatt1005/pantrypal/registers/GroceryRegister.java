@@ -40,6 +40,15 @@ public class GroceryRegister extends Register<Grocery> {
   }
 
   /**
+   * Check if the register contains a grocery
+   *
+   * @param name the name of the grocery to be checked
+   */
+  public boolean containsGrocery(String name) {
+    return super.containsModel(name);
+  }
+
+  /**
    * Add a grocery to the register
    *
    * @param grocery the grocery to be added

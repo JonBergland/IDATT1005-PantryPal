@@ -51,7 +51,12 @@ public class CookbookRecipeComponent implements Observable {
               new CornerRadii(10), null);
       stackPane.setBackground(new Background(backgroundFill));
     } else {
-      Image image = new Image(recipe.getImagePath());
+      Image image;
+      try {
+        image = new Image(recipe.getImagePath());
+      } catch (IllegalArgumentException e) {
+        image = new Image("images/PantryPalLogo.png");
+      }
       BackgroundImage backgroundImage = new BackgroundImage(image,
               BackgroundRepeat.NO_REPEAT,
               BackgroundRepeat.NO_REPEAT,

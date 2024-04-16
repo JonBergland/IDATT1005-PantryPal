@@ -18,6 +18,7 @@ import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
  */
 public class PantryPal extends Application {
 
+  public static String userName = null;
   // View manager for the application.
   private ViewManager viewManager;
   // Controller for homeView.
@@ -43,16 +44,7 @@ public class PantryPal extends Application {
   @Override
   public void start(Stage primaryStage) {
     this.viewManager = new ViewManager(primaryStage);
-
-    // Init controllers
-    homeController = new HomeController(viewManager);
-    pantryController = new PantryController(viewManager);
-    shoppingListController = new ShoppingListController(viewManager, pantryController);
-    cookBookController = new CookBookController(viewManager, shoppingListController, pantryController);
-    logInController = new LogInController(viewManager);
-
-    //Init view
-    this.viewManager.setView(Route.HOME);
+    viewManager.init();
 
     Image icon = new Image("/images/PantryPalLogo.png");
     primaryStage.getIcons().add(icon);

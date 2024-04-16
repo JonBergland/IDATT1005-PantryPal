@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
+import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.LogInView;
@@ -24,5 +25,15 @@ public class LogInController extends Controller {
     super(viewManager);
     this.view = new LogInView(this);
     this.viewManager.addView(Route.LOGIN, this.view);
+  }
+
+  public void logIn(String username) {
+    PantryPal.userName = username;
+
+    viewManager.init();
+  }
+
+  public void logOut() {
+    PantryPal.userName = null;
   }
 }

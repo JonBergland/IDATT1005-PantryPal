@@ -63,6 +63,15 @@ public abstract class Register<T extends Model> {
   }
 
   /**
+   * Check if a model exists in the register
+   *
+   * @param key the key of the model to be checked
+   */
+  protected boolean containsModel(String key) {
+    return register.containsKey(key);
+  }
+
+  /**
    * Add an item to the register.
    *
    * @param model item to be added

@@ -1,5 +1,6 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
+import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 
@@ -30,5 +31,14 @@ public class Controller {
    */
   public void onNavLinkPress(Route route) {
     viewManager.setView(route);
+  }
+
+  public boolean isLoggedIn() {
+    return PantryPal.userName != null && !PantryPal.userName.isBlank();
+  }
+
+  public void logOut(){
+    PantryPal.userName = null;
+    viewManager.init();
   }
 }
