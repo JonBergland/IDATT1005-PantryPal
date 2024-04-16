@@ -1,7 +1,9 @@
 package stud.ntnu.idatt1005.pantrypal.models;
 
+import java.io.File;
+import java.net.URI;
 import java.util.List;
-
+import javax.imageio.ImageIO;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 
@@ -44,14 +46,43 @@ public class Recipe extends Model {
    * @param recipeGroceries the groceries needed for the recipe.
    * @param steps           the steps needed to make the recipe.
    */
-  public Recipe(String name, String description, GroceryRegister recipeGroceries, StepRegister steps,
-                String imagePath, boolean isFavorite) {
+  public Recipe(String name, String description, GroceryRegister recipeGroceries,
+                StepRegister steps, String imagePath, boolean isFavorite) {
     super(name);
     this.description = description;
     this.recipeGroceries = recipeGroceries;
     this.steps = steps;
-    this.imagePath = imagePath;
     this.isFavorite = isFavorite;
+    if (validImagePath(imagePath)) {
+      this.imagePath = imagePath;
+    } else {
+      this.imagePath = null;
+    }
+  }
+
+  /**
+   * Check if the image path is valid. By checking if the image path is a URL and then if the
+   * image path is correctly formatted. returns based on the result.
+   *
+   * @param imagePath the image path to check.
+   * @return true if the image path is valid, false if it is not.
+   */
+  private static boolean validImagePath(String imagePath) {
+    try {
+      if (imagePath.matches("^(https?|ftp)://.*(\\.(png|jpg|jpeg|gif|bmp)).*$")) {
+        ImageIO.read(new URI(imagePath).toURL());
+        return true;
+      } else {
+        File file = new File(imagePath);
+        if (file.exists() && file.isFile() && imagePath.matches(".*\\.(png|jpg|jpeg|gif|bmp)$")) {
+          ImageIO.read(file);
+          return true;
+        }
+      }
+    } catch (Exception e) {
+      return false;
+    }
+    return false;
   }
 
   /**

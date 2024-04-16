@@ -1,6 +1,5 @@
 package stud.ntnu.idatt1005.pantrypal.models;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,8 +21,8 @@ class TestRecipe {
 
   @BeforeEach
   void setUp() {
-    Grocery apple = new Grocery("apple", 1, "g", "Fridge", false);
-    Grocery banana = new Grocery("banana", 2, "g", "Fridge", false);
+    Grocery apple = new Grocery("apple", 1, "pc","Fridge", false);
+    Grocery banana = new Grocery("banana", 2, "pc", "Fridge", false);
     groceries = new GroceryRegister();
     groceries.addGrocery(apple);
     groceries.addGrocery(banana);
@@ -32,10 +31,54 @@ class TestRecipe {
     steps.addStep("Step 1");
     steps.addStep("Step 2");
 
-    description = "Dette er en oppskrift på en smoothie.";
+    description = "This is the recipe for a smoothie.";
 
     recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps, null, false);
 
+  }
+
+  @Test
+  @DisplayName("Test validImagePath() with valid path to local file")
+  void testValidImagePathValidLocalFile() {
+    String path = "src/main/resources/Images/PantryPalLogo.png";
+    Recipe recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps,
+            path, false);
+    assertEquals(path, recipe.getImagePath());
+  }
+
+  @Test
+  @DisplayName("Test validImagePath() with invalid path to local file")
+  void testValidImagePathInvalidLocalFile() {
+    Recipe recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps,
+            "src/main/resources/images/invalid.png", false);
+    assertNull(recipe.getImagePath());
+  }
+
+  @Test
+  @DisplayName("Test validImagePath() with valid path to URL")
+  void testValidImagePathValidURL() {
+    String url = "https://i.ntnu.no/documents/1305837853/1306916684/ntnu_hoeyde_eng."
+            + "png/9130ea3c-828a-497e-b469-df0c54e16bb5?t=1578568440350";
+    Recipe recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps,
+            url, false);
+    assertEquals(url, recipe.getImagePath());
+  }
+
+  @Test
+  @DisplayName("Test validImagePath() with not-existing URL")
+  void testValidImagePathInvalidURL() {
+    Recipe recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps,
+            "https://i.ntnu.no/documents/1305837853/1306916684/ntnu_hoeyde_eng."
+                    + "png/9130e16bb5?t=1578568440350", false);
+    assertNull(recipe.getImagePath());
+  }
+
+  @Test
+  @DisplayName("Test validImagePath() with  URL that does not point to an image")
+  void testValidImagePathInvalidURLNotImage() {
+    Recipe recipe = new Recipe("Apple Banana Smoothie", description, groceries, steps,
+            "https://www.ntnu.no", false);
+    assertNull(recipe.getImagePath());
   }
 
   @Test
