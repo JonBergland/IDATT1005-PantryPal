@@ -9,7 +9,7 @@ class TestGrocery {
   @Test
   void testGetShelf() {
     // Create a Grocery object
-    Grocery grocery = new Grocery("Apple", 5, "Fridge", false);
+    Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", false);
 
     // Test the getCategory() method
     assertEquals("Fridge", grocery.getShelf());
@@ -19,7 +19,7 @@ class TestGrocery {
   void testGetChecked() {
     // Create a Grocery object
     boolean checked = true;
-    Grocery grocery = new Grocery("Apple", 5, "Fridge", checked);
+    Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", checked);
 
     // Test the getExpirationDate() method
     assertEquals(checked, grocery.getChecked());
@@ -28,7 +28,7 @@ class TestGrocery {
   @Test
   void testGetName() {
     // Create a Grocery object
-    Grocery grocery = new Grocery("Apple", 5, "Fridge", false);
+    Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", false);
 
     // Test the getName() method
     assertEquals("Apple", grocery.getKey());
@@ -37,7 +37,7 @@ class TestGrocery {
   @Test
   void testGetQuantity() {
     // Create a Grocery object
-    Grocery grocery = new Grocery("Apple", 5, "Fridge", false);
+    Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", false);
 
     // Test the getQuantity() method
     assertEquals(5, grocery.getQuantity());
