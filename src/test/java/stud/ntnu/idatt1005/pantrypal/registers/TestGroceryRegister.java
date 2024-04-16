@@ -1,15 +1,11 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
-import stud.ntnu.idatt1005.pantrypal.models.Model;
-
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -62,6 +58,23 @@ class TestGroceryRegister {
     @DisplayName("Test of get grocery with grocery that does not exist")
     void getGroceryDoesNotExist() {
       assertThrows(IllegalArgumentException.class, () -> groceryRegister.getGrocery("Eggs"), "Grocery exists in register");
+    }
+  }
+
+  @Nested
+  class ContainsGrocery {
+    @Test
+    @DisplayName("Test of contains grocery")
+    void containsGrocery() {
+      assertAll("Contains grocery",
+          () -> assertTrue(groceryRegister.containsGrocery(grocery1.getKey()), "Grocery not found in register"),
+          () -> assertTrue(groceryRegister.containsGrocery(grocery2.getKey()), "Grocery not found in register"));
+    }
+
+    @Test
+    @DisplayName("Test of contains grocery with grocery that does not exist")
+    void containsGroceryDoesNotExist() {
+      assertFalse(groceryRegister.containsGrocery("Eggs"), "Grocery exists in register");
     }
   }
 
