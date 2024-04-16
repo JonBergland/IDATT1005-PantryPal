@@ -1,4 +1,5 @@
 package stud.ntnu.idatt1005.pantrypal.registers;
+
 import java.util.List;
 import java.util.Map;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -22,6 +23,7 @@ public class ShelfRegister extends Register<Shelf> {
 
   /**
    * Returns an error message when a shelf does not exist in the register.
+   *
    * @return a string error message.
    */
   protected String getErrorMessage() {
@@ -30,7 +32,9 @@ public class ShelfRegister extends Register<Shelf> {
 
   /**
    * Returns the shelf from the register that corresponds with name given.
+   *
    * @param nameOfShelf the name of the shelf to be retrieved.
+   *
    * @return the Shelf object.
    */
   public Shelf getShelfByName(String nameOfShelf) {
@@ -44,6 +48,7 @@ public class ShelfRegister extends Register<Shelf> {
 
   /**
    * Adds a shelf to the register.
+   *
    * @param shelf the Shelf object to be added.
    */
   public void addShelf(Shelf shelf) {
@@ -52,6 +57,7 @@ public class ShelfRegister extends Register<Shelf> {
 
   /**
    * Removes a shelf from the register.
+   *
    * @param shelf the Shelf object to be removed.
    */
   public void removeShelf(Shelf shelf) {
@@ -60,6 +66,7 @@ public class ShelfRegister extends Register<Shelf> {
 
   /**
    * Returns all groceries from all shelves in the register.
+   *
    * @return an array of Grocery objects.
    */
   public Grocery[] getAllGroceries() {
@@ -68,7 +75,12 @@ public class ShelfRegister extends Register<Shelf> {
         .toArray(Grocery[]::new);
   }
 
-  public void load(String username){
+  /**
+   * Loads all shelves and groceries from the database for the specified user.
+   *
+   * @param username the username of the user to load shelves for.
+   */
+  public void load(String username) {
     String shelfQuery = "SELECT * FROM pantry_shelf WHERE user_name = ?";
     List<Map<String, Object>> shelves = SQL.executeQuery(shelfQuery, username);
 
@@ -79,9 +91,9 @@ public class ShelfRegister extends Register<Shelf> {
 
       Shelf s = new Shelf(shelfKey, shelfName);
 
-      String groceryQuery = "SELECT g.*, psg.quantity AS quantity FROM pantry_shelf_grocery psg " +
-          "INNER JOIN grocery g ON g.name = psg.grocery_name " +
-          "WHERE psg.pantry_shelf_id = ?";
+      String groceryQuery = "SELECT g.*, psg.quantity AS quantity FROM pantry_shelf_grocery psg "
+          + "INNER JOIN grocery g ON g.name = psg.grocery_name "
+          + "WHERE psg.pantry_shelf_id = ?";
       List<Map<String, Object>> groceries = SQL.executeQuery(groceryQuery, shelfId);
 
       for (Map<String, Object> grocery : groceries) {
