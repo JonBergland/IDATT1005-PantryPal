@@ -29,20 +29,26 @@ public class LogInView extends View {
       "Login", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
 
   /**
-   * Constructor for LogInView.
+   * Constructor for LogInView. It initializes the view with a LogInController
+   * and sets the layout and styling for the view.
+   * The view includes a title, username input field and a login button.
    *
    * @param controller The LogInController associated with this view.
    */
   public LogInView(LogInController controller) {
     super(controller, Route.LOGIN, "/styles/login.css");
     this.controller = controller;
-    initialize();
+    render();
   }
 
   /**
-   * Initializes the LogInView by setting up the layout and styling.
+   * Initializes the LogInView by setting up the layout and styling. It crateas a VBox
+   * to contain the login elements, adds the usernameField and loginButton to the VBox,
+   * and applies styling to the loginContainer, loginText and loginButton.
+   * The loginButton is set up to call the logIn method in the controller when clicked.
+   * The VBox is then added to the center of the scene.
    */
-  public void initialize() {
+  public void render() {
     // Creates a VBox to contain the login elements
     VBox loginContainer = new VBox(10);
     loginContainer.setAlignment(Pos.CENTER);
@@ -62,7 +68,7 @@ public class LogInView extends View {
     loginButton.getStyleClass().add("login-button");
 
     loginButton.setOnAction(e -> {
-      if(!usernameField.getText().isEmpty()) {
+      if (!usernameField.getText().isEmpty()) {
         controller.logIn(usernameField.getText());
       }
     });

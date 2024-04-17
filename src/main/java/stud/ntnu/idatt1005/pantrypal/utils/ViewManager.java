@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import stud.ntnu.idatt1005.pantrypal.controllers.AddRecipeController;
-import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.controllers.CookbookController;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
@@ -24,7 +23,7 @@ public class ViewManager {
     HomeController homeController = new HomeController(this);
     PantryController pantryController = new PantryController(this);
     ShoppingListController shoppingListController = new ShoppingListController(this, pantryController);
-    CookBookController cookBookController = new CookBookController(this, shoppingListController, pantryController);
+    CookbookController cookBookController = new CookbookController(this, shoppingListController, pantryController);
     LogInController logInController = new LogInController(this);
 
     //Init view

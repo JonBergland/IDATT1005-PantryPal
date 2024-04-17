@@ -3,7 +3,6 @@ package stud.ntnu.idatt1005.pantrypal.controllers;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -19,10 +18,10 @@ import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
 import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 
 /**
- * The controller for the CookBookView and RecipeView
- * Handles the logic for the CookBookView and RecipeView, in addition to updating the view.
+ * The controller for the CookBookView and RecipeView.
+ * This class is responsible for handling the logic for the CookBookView and RecipeView.
  */
-public class CookBookController extends Controller implements Observer {
+public class CookbookController extends Controller implements Observer {
 
   private final RecipeRegister recipeRegister;
   private List<Recipe> currentSearch;
@@ -32,12 +31,18 @@ public class CookBookController extends Controller implements Observer {
   private final CookbookView view;
 
   /**
-   * Constructor that takes in a ViewManager and sets the view for the controller
-   * and also creates basic test data for the recipe register.
+   * Constructor for the CookbookController. The constructor takes in a ViewManager, a
+   * ShoppingListController, and a PantryController. The constructor creates a new RecipeRegister
+   * and sets the shelfRegister and shoppingListRegister to the registers in the PantryController
+   * and ShoppingListController. The constructor loads the recipes from the database if the user is
+   * logged in. The currentSearch is set to all the recipes in the recipeRegister. The view is
+   * created and added to the viewManager.
    *
-   * @param viewManager the ViewManager for the application
+   * @param viewManager            the ViewManager for the application
+   * @param shoppingListController the ShoppingListController for the application
+   * @param pantryController       the PantryController for the application
    */
-  public CookBookController(ViewManager viewManager, ShoppingListController shoppingListController,
+  public CookbookController(ViewManager viewManager, ShoppingListController shoppingListController,
                             PantryController pantryController) {
     super(viewManager);
     this.recipeRegister = new RecipeRegister();
@@ -45,63 +50,66 @@ public class CookBookController extends Controller implements Observer {
     this.shoppingListRegister = shoppingListController.getRegister();
     this.shoppingListController = shoppingListController;
 
-    this.currentSearch = getRecipes().values().stream().toList();
+    if (this.isLoggedIn()) {
+      this.load();
+    }
 
+    this.currentSearch = getRecipes().values().stream().toList();
     this.view = new CookbookView(this);
     this.view.addObserver(this);
     this.viewManager.addView(Route.COOKBOOK, view);
 
-    if(this.isLoggedIn()){
-      this.load();
-    }
-
     this.rerender();
   }
 
-  private void load(){
+  /**
+   * Loads the recipes from the database. This method gets all the recipes from the database and
+   * creates a new Recipe object for each recipe related to the user. The method also gets the
+   * groceries and steps for each recipe and adds them to the Recipe object. The method also
+   * checks if the recipe is a favorite for the user and sets the isFavorite boolean in the Recipe
+   * object. The Recipe object is then added to the recipeRegister.
+   */
+  private void load() {
     String query = "SELECT * FROM recipe";
-    List<Map<String, Object>> recipesFromDB = SQL.executeQuery(query);
+    List<Map<String, Object>> recipesFromDataBase = SQL.executeQuery(query);
 
-    for(Map<String, Object> recipeFromDB : recipesFromDB){
+    for (Map<String, Object> recipeFromDataBase : recipesFromDataBase) {
       GroceryRegister groceries = new GroceryRegister();
       StepRegister steps = new StepRegister();
 
-      String id = recipeFromDB.get("id").toString();
-      String name = recipeFromDB.get("name").toString();
-      String description = recipeFromDB.get("description").toString();
-      String image = recipeFromDB.get("image").toString();
+      String id = recipeFromDataBase.get("id").toString();
+      String name = recipeFromDataBase.get("name").toString();
+      String description = recipeFromDataBase.get("description").toString();
+      String image = recipeFromDataBase.get("image").toString();
 
       String groceriesQuery = "SELECT * FROM recipe_grocery WHERE recipe_id = ?";
-      List<Map<String, Object>> groceriesFromDB = SQL.executeQuery(groceriesQuery, id);
+      List<Map<String, Object>> groceriesFromDataBase = SQL.executeQuery(groceriesQuery, id);
 
-      for(Map<String, Object> groceryFromDB : groceriesFromDB){
-        String groceryName = groceryFromDB.get("grocery_name").toString();
-        int quantity = (int) groceryFromDB.get("quantity");
+      for (Map<String, Object> groceryFromDataBase : groceriesFromDataBase) {
+        String groceryName = groceryFromDataBase.get("grocery_name").toString();
+        int quantity = (int) groceryFromDataBase.get("quantity");
 
         String groceryQuery = "SELECT * FROM grocery WHERE name = ?";
-        List<Map<String, Object>> groceryDataFromDB = SQL.executeQuery(groceryQuery, groceryName);
+        List<Map<String, Object>> groceryDataFromDataBase =
+                SQL.executeQuery(groceryQuery, groceryName);
 
-        String unit = groceryDataFromDB.getFirst().get("unit").toString();
+        String unit = groceryDataFromDataBase.getFirst().get("unit").toString();
         //TODO: Fix shelf
         Grocery grocery = new Grocery(groceryName, quantity, unit, "", false);
         groceries.addGrocery(grocery);
       }
 
       String stepsQuery = "SELECT * FROM step WHERE recipe_id = ?";
-      List<Map<String, Object>> stepsFromDB = SQL.executeQuery(stepsQuery, id);
+      List<Map<String, Object>> stepsFromDataBase = SQL.executeQuery(stepsQuery, id);
 
-      for(Map<String, Object> stepFromDB : stepsFromDB){
-        String step = stepFromDB.get("description").toString();
+      for (Map<String, Object> stepFromDataBase : stepsFromDataBase) {
+        String step = stepFromDataBase.get("description").toString();
         steps.addStep(step);
       }
 
-      System.out.println("id: " + id + ", username: " + PantryPal.userName);
       String favoriteQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
       List<Map<String, Object>> favorite = SQL.executeQuery(favoriteQuery, id, PantryPal.userName);
-      System.out.println(favorite);
       boolean isFavorite = !favorite.isEmpty();
-
-      System.out.println(isFavorite);
 
       Recipe recipe = new Recipe(name, description, groceries, steps, image, isFavorite);
       this.recipeRegister.addRecipe(recipe);
@@ -109,9 +117,9 @@ public class CookBookController extends Controller implements Observer {
   }
 
   /**
-   * Returns the LinkedHashMap in the recipeRegister.
+   * Returns the register with recipes in the recipeRegister.
    *
-   * @return the LinkedHashMap in the recipeRegister.
+   * @return the register with Recipes in the recipeRegister.
    */
   public Map<String, Recipe> getRecipes() {
     return this.recipeRegister.getRegister();
@@ -127,10 +135,12 @@ public class CookBookController extends Controller implements Observer {
   }
 
   /**
-   * Updates the observer with the button that was pressed and the object affected
+   * Updates the observer with the button that was pressed and the object affected. If
+   * the object is a Recipe, it performs the action related to the buttonEnum. If the object is not
+   * a Recipe, it throws an IllegalArgumentException.
    *
    * @param buttonEnum the button that was pressed
-   * @param object     the object that was pressed
+   * @param object     the object that is related to the button
    */
   @Override
   public void update(ButtonEnum buttonEnum, Object object) {
@@ -149,17 +159,13 @@ public class CookBookController extends Controller implements Observer {
         break;
       case EDIT_RECIPE:
         AddRecipeController addRecipeController = new AddRecipeController(
-            this.viewManager, this);
+                this.viewManager, this);
         addRecipeController.setRecipeToAddRecipeView(recipe);
 
         this.viewManager.setView(Route.ADD_RECIPE);
         break;
       case ADD:
         this.addRecipe(recipe);
-//        if (getRecipes().containsKey(recipe.getKey())) {
-//          recipeRegister.removeRecipe(recipe);
-//        }
-//        recipeRegister.addRecipe(recipe);
         currentSearch = getRecipes().values().stream().toList();
         view.render(currentSearch);
         this.viewManager.setView(Route.COOKBOOK);
@@ -177,7 +183,8 @@ public class CookBookController extends Controller implements Observer {
   }
 
   /**
-   * Updates the observer with the button that was pressed
+   * Updates the observer with the button that was pressed. If the button is 'buttonEnum.ADD', it
+   * opens the AddRecipeView for the user to add a new Recipe.
    *
    * @param buttonEnum the button that was pressed
    */
@@ -200,10 +207,18 @@ public class CookBookController extends Controller implements Observer {
     this.viewManager.setView(Route.ADD_RECIPE);
   }
 
+  /**
+   * Searches for recipes in the recipeRegister based on the search string.
+   * The search string is passed to the recipeRegister, and the currentSearch is set to the result
+   * of the search. The view is then rendered with the currentSearch.
+   *
+   * @param search the search string to search for in the recipeRegister
+   */
   public void searchRecipes(String search) {
     currentSearch = recipeRegister.searchRecipes(search);
     view.render(currentSearch);
   }
+
   /**
    * Opens a recipe in the RecipeView, and sets the view to RecipeView.
    *
@@ -247,7 +262,7 @@ public class CookBookController extends Controller implements Observer {
       try {
         shoppingListGrocery = shoppingListRegister.getGrocery(groceryName);
         quantityInShoppingList = shoppingListGrocery.getQuantity();
-      } catch(Exception e){
+      } catch (Exception e) {
         quantityInShoppingList = 0;
       }
 
@@ -260,7 +275,7 @@ public class CookBookController extends Controller implements Observer {
           shoppingListGrocery.setQuantity(shoppingListGrocery.getQuantity() + quantityToAdd);
         } else {
           shoppingListRegister.addGrocery(
-              new Grocery(groceryName, quantityToAdd, "g", groceryShelf, false));
+                  new Grocery(groceryName, quantityToAdd, "g", groceryShelf, false));
         }
       }
     }
@@ -268,32 +283,40 @@ public class CookBookController extends Controller implements Observer {
     shoppingListController.rerender();
   }
 
-  private void addRecipe(Recipe recipe){
-    if(recipe == null){
+  /**
+   * Adds a recipe to the recipeRegister and the database.
+   *
+   * @param recipe the recipe to add to the recipeRegister and the database.
+   */
+  private void addRecipe(Recipe recipe) {
+    if (recipe == null) {
       throw new IllegalArgumentException("Recipe cannot be null");
     }
 
-    if(getRecipes().containsKey(recipe.getKey())){
+    if (getRecipes().containsKey(recipe.getKey())) {
       throw new IllegalArgumentException("Recipe already exists");
     }
 
     String query = "INSERT INTO recipe (name, description, image) VALUES (?, ?, ?)";
     SQL.executeUpdate(query, recipe.getKey(), recipe.getDescription(), recipe.getImagePath());
 
-    for(Grocery grocery : recipe.getRecipeGroceries().getRegister().values()){
+    for (Grocery grocery : recipe.getRecipeGroceries().getRegister().values()) {
       String groceryQuery = "SELECT * FROM grocery WHERE name = ?";
-      List<Map<String, Object>> groceryDataFromDB = SQL.executeQuery(groceryQuery, grocery.getKey());
+      List<Map<String, Object>> groceryDataFromDataBase =
+              SQL.executeQuery(groceryQuery, grocery.getKey());
 
-      if(groceryDataFromDB.isEmpty()){
+      if (groceryDataFromDataBase.isEmpty()) {
         String insertGroceryQuery = "INSERT INTO grocery (name, unit) VALUES (?, ?)";
         SQL.executeUpdate(insertGroceryQuery, grocery.getKey(), grocery.getUnit());
       }
 
-      String insertGroceryRecipeQuery = "INSERT INTO recipe_grocery (recipe_id, grocery_name, quantity) VALUES (?, ?, ?)";
-      SQL.executeUpdate(insertGroceryRecipeQuery, recipe.getKey(), grocery.getKey(), grocery.getQuantity());
+      String insertGroceryRecipeQuery = "INSERT INTO recipe_grocery "
+              + "(recipe_id, grocery_name, quantity) VALUES (?, ?, ?)";
+      SQL.executeUpdate(insertGroceryRecipeQuery, recipe.getKey(),
+              grocery.getKey(), grocery.getQuantity());
     }
 
-    for(String step : recipe.getRecipeSteps()){
+    for (String step : recipe.getRecipeSteps()) {
       String insertStepQuery = "INSERT INTO step (recipe_id, description) VALUES (?, ?)";
       SQL.executeUpdate(insertStepQuery, recipe.getKey(), step);
     }
@@ -308,7 +331,7 @@ public class CookBookController extends Controller implements Observer {
    */
   private void toggleIsFavorite(Recipe recipe) {
     recipe.toggleIsFavorite();
-    if(this.isLoggedIn()){
+    if (this.isLoggedIn()) {
       String name = recipe.getKey();
 
       //TODO: fix recipe to use id, not name
@@ -320,7 +343,7 @@ public class CookBookController extends Controller implements Observer {
       String checkQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
       List<Map<String, Object>> favorite = SQL.executeQuery(checkQuery, id, PantryPal.userName);
 
-      if(favorite.isEmpty()){
+      if (favorite.isEmpty()) {
         String insertQuery = "INSERT INTO recipe_favorite (recipe_id, user_name) VALUES (?, ?)";
         SQL.executeUpdate(insertQuery, id, PantryPal.userName);
       } else {
@@ -331,7 +354,10 @@ public class CookBookController extends Controller implements Observer {
     view.render(currentSearch);
   }
 
-  public void rerender(){
+  /**
+   * Re-renders the view with the currentSearch.
+   */
+  public void rerender() {
     view.render(currentSearch);
   }
 }

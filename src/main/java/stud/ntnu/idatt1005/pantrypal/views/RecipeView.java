@@ -16,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.controllers.CookbookController;
 import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -49,7 +49,7 @@ public class RecipeView extends View implements Observable {
    * @param controller The controller for the view.
    * @param recipe     The recipe to be displayed in the view.
    */
-  public RecipeView(CookBookController controller, Recipe recipe) {
+  public RecipeView(CookbookController controller, Recipe recipe) {
     super(controller, Route.RECIPE, "/styles/recipe.css");
     this.recipe = recipe;
     setUpView();
