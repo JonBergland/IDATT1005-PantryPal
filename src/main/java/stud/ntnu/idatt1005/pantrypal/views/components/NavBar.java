@@ -1,7 +1,5 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.control.Control;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -40,10 +38,10 @@ public class NavBar extends ToolBar {
     NavLink pantryButton = createButton(
         "Pantry", () -> controller.onNavLinkPress(Route.PANTRY));
     NavLink loginButton;
-    if(PantryPal.userName == null){
+    if (PantryPal.userName == null) {
       loginButton = createButton(
           "Login", () -> controller.onNavLinkPress(Route.LOGIN));
-    } else{
+    } else {
       loginButton = createButton(
           "Logout", controller::logOut);
     }

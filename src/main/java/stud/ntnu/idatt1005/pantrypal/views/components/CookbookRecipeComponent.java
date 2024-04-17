@@ -2,22 +2,31 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 
 import static javafx.stage.Screen.getPrimary;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
-
 import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class represents a component for displaying a recipe within the cookbook.
@@ -164,6 +173,12 @@ public class CookbookRecipeComponent implements Observable {
     }
   }
 
+  /**
+   * Notifies the observers of the component with the given buttonEnum and
+   * the recipe of the component.
+   *
+   * @param buttonEnum the buttonEnum to notify the observers with
+   */
   protected void notifyObservers(ButtonEnum buttonEnum) {
     List<Observer> observersCopy = new ArrayList<>(this.observers);
     for (Observer observer : observersCopy) {

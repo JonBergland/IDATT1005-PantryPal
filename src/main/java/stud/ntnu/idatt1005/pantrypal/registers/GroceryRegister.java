@@ -2,22 +2,20 @@ package stud.ntnu.idatt1005.pantrypal.registers;
 
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 
-import java.util.LinkedHashMap;
-
 /**
  * Represents a register of groceries. The register is a map of grocery names and grocery objects.
  */
 public class GroceryRegister extends Register<Grocery> {
 
   /**
-   * Constructor for the GroceryRegister class
+   * Constructor for the GroceryRegister class.
    */
   public GroceryRegister() {
     super();
   }
 
   /**
-   * Deep-copy constructor for the GroceryRegister class
+   * Deep-copy constructor for the GroceryRegister class.
    *
    * @param register the register to be used
    */
@@ -30,7 +28,7 @@ public class GroceryRegister extends Register<Grocery> {
   }
 
   /**
-   * Get a grocery from the register
+   * Get a grocery from the register.
    *
    * @param name the name of the grocery to be retrieved
    * @return the grocery with the specified name
@@ -40,7 +38,7 @@ public class GroceryRegister extends Register<Grocery> {
   }
 
   /**
-   * Check if the register contains a grocery
+   * Check if the register contains a grocery.
    *
    * @param name the name of the grocery to be checked
    */
@@ -49,7 +47,7 @@ public class GroceryRegister extends Register<Grocery> {
   }
 
   /**
-   * Add a grocery to the register
+   * Add a grocery to the register.
    *
    * @param grocery the grocery to be added
    * @throws IllegalArgumentException if the grocery already exists in the register

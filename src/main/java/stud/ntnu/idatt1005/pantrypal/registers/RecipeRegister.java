@@ -19,15 +19,6 @@ public class RecipeRegister extends Register<Recipe> {
   }
 
   /**
-   * Deep-copy constructor for the RecipeRegister class.
-   *
-   * @param register the register to be used.
-   */
-  public RecipeRegister(RecipeRegister register) {
-    super(register);
-  }
-
-  /**
    * Returns an error message when a recipe does not exist in the register.
    *
    * @return a string error message.

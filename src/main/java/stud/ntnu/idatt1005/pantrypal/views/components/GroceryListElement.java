@@ -1,5 +1,7 @@
 package stud.ntnu.idatt1005.pantrypal.views.components;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -12,13 +14,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
-import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
+import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class representing a shopping list element. This class implement the Observable interface
@@ -44,10 +43,10 @@ public class GroceryListElement implements Observable {
     grocery = builder.grocery;
     StackPane checkPane = builder.checkPane;
     HBox textBox = builder.textBox;
+    textBox.setAlignment(Pos.CENTER);
     Button deleteButton = createButton();
 
     pane.setLeft(checkPane);
-    textBox.setAlignment(Pos.CENTER);
     pane.setCenter(textBox);
     pane.setRight(deleteButton);
     pane.getStyleClass().add("shopping-list-element");
@@ -111,7 +110,8 @@ public class GroceryListElement implements Observable {
    * A builder class representing a list element in the shopping list.
    * This class provides a visual representation of a grocery item in the shopping list.
    * It includes a checkbox, text information about the grocery item, and a delete button.
-   * This class also implements the Observable interface, allowing it to notify observers of changes.
+   * This class also implements the Observable interface,
+   * allowing it to notify observers of changes.
    */
   public static class GroceryListElementBuilder {
     private final Grocery grocery;
