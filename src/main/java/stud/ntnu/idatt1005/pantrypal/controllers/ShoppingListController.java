@@ -1,6 +1,9 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -9,10 +12,6 @@ import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.SQL;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.ShoppingListView;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Controller class for the ShoppingListView.
@@ -54,7 +53,7 @@ public class ShoppingListController extends Controller implements Observer {
     rerender();
     this.viewManager.addView(Route.SHOPPING_LIST, view);
 
-    if(this.isLoggedIn()){
+    if (this.isLoggedIn()) {
       this.load();
     }
 
@@ -65,11 +64,11 @@ public class ShoppingListController extends Controller implements Observer {
    * Retrieve the user's shopping list from the database and adds it to the register.
    * If the user is not logged in, the shopping list is not loaded.
    */
-  private void load(){
+  private void load() {
     String query = "SELECT * FROM shopping_list_grocery WHERE user_name = ?";
     List<Map<String, Object>> groceries = SQL.executeQuery(query, PantryPal.userName);
 
-    for(Map<String, Object> grocery : groceries){
+    for (Map<String, Object> grocery : groceries) {
       String name = grocery.get("grocery_name").toString();
       int quantity = (int) grocery.get("quantity");
       String unit = grocery.get("unit").toString();
@@ -89,9 +88,11 @@ public class ShoppingListController extends Controller implements Observer {
   }
 
   /**
-   * Updates the observer based on the button pressed and the grocery item associated with the action.
-   * If the button pressed is ADD, the grocery item is added to the register and the view is re-rendered.
-   * If the button pressed is REMOVE, the grocery item is removed from the register and the view is re-rendered.
+   * Updates the observer based on the button pressed and the grocery item
+   * associated with the action.
+   * If the button pressed is ADD, the grocery item is added to the register.
+   * If the button pressed is REMOVE, the grocery item is removed from the register.
+   * The view is re-rendered after the grocery item is added or removed.
    *
    * @param buttonEnum the button that was pressed
    * @param object     the grocery item associated with the action
@@ -126,13 +127,14 @@ public class ShoppingListController extends Controller implements Observer {
 
   /**
    * Updates the observer based on the button pressed.
-   * If the button pressed is ADD_TO_PANTRY, the groceries that are checked are added to the pantry and removed from the shopping list.
+   * If the button pressed is ADD_TO_PANTRY, the groceries that are checked
+   * are added to the pantry and removed from the shopping list.
    * The view is re-rendered after the groceries are added to the pantry.
    *
    * @param buttonEnum the button that was pressed
    */
   @Override
-  public void update(ButtonEnum buttonEnum){
+  public void update(ButtonEnum buttonEnum) {
     if (Objects.requireNonNull(buttonEnum) == ButtonEnum.ADD_TO_PANTRY) {
       addGroceriesToPantry();
       rerender();
@@ -146,15 +148,15 @@ public class ShoppingListController extends Controller implements Observer {
    * The groceries in the grocery register that are checked
    * are added to the pantry and removed from the shopping list.
    */
-  public void addGroceriesToPantry(){
+  public void addGroceriesToPantry() {
     List<Grocery> groceriesToRemove = new ArrayList<>();
-    for(Grocery grocery : register.getRegister().values()){
+    for (Grocery grocery : register.getRegister().values()) {
       if (grocery.getChecked()) {
         pantryController.addGrocery(grocery.getShelf(), grocery.getName(), grocery.getQuantity());
         groceriesToRemove.add(grocery);
       }
     }
-    for(Grocery grocery : groceriesToRemove){
+    for (Grocery grocery : groceriesToRemove) {
       this.removeGrocery(grocery);
     }
   }
@@ -165,37 +167,42 @@ public class ShoppingListController extends Controller implements Observer {
    *
    * @param grocery the grocery to be added to the register
    */
-  private void addGrocery(Grocery grocery){
+  private void addGrocery(Grocery grocery) {
     if (grocery == null) {
       throw new IllegalArgumentException("Grocery cannot be null");
     }
 
     //TODO: check if works
-    if(register.containsGrocery(grocery.getName())){
+    if (register.containsGrocery(grocery.getName())) {
       Grocery oldGrocery = register.getGrocery(grocery.getName());
 
       int oldAmount = oldGrocery.getQuantity();
       int newAmount = grocery.getQuantity();
 
-      if(this.isLoggedIn()){
-        String query = "UPDATE shopping_list_grocery SET quantity = ? WHERE user_name = ? AND grocery_name = ?";
-        SQL.executeUpdate(query, oldGrocery.getQuantity() + grocery.getQuantity(), PantryPal.userName, grocery.getName());
+      if (this.isLoggedIn()) {
+        String query = "UPDATE shopping_list_grocery SET quantity = ? "
+            + "WHERE user_name = ? AND grocery_name = ?";
+        SQL.executeUpdate(query, oldGrocery.getQuantity() + grocery.getQuantity(),
+            PantryPal.userName, grocery.getName());
       }
 
       oldGrocery.setQuantity(oldAmount + newAmount);
     } else {
-      if(this.isLoggedIn()){
+      if (this.isLoggedIn()) {
         //Check if grocery exists in grocery table
         String checkGroceryQuery = "SELECT * FROM grocery WHERE name = ?";
-        List<Map<String, Object>> groceries = SQL.executeQuery(checkGroceryQuery, grocery.getName());
-        if(groceries.isEmpty()){
+        List<Map<String, Object>> groceries =
+            SQL.executeQuery(checkGroceryQuery, grocery.getName());
+        if (groceries.isEmpty()) {
           String groceryQuery = "INSERT INTO grocery (name, unit) VALUES (?, ?)";
           SQL.executeUpdate(groceryQuery, grocery.getName(), "g");
         }
 
         //Add grocery to shopping list
-        String shoppingListGroceryQuery = "INSERT INTO shopping_list_grocery (grocery_name, user_name, quantity, is_bought, shelf_name) VALUES (?, ?, ?, ?, ?)";
-        SQL.executeUpdate(shoppingListGroceryQuery, grocery.getName(), PantryPal.userName, grocery.getQuantity(), grocery.getChecked(), grocery.getShelf());
+        String shoppingListGroceryQuery = "INSERT INTO shopping_list_grocery "
+            + "(grocery_name, user_name, quantity, is_bought, shelf_name) VALUES (?, ?, ?, ?, ?)";
+        SQL.executeUpdate(shoppingListGroceryQuery, grocery.getName(), PantryPal.userName,
+            grocery.getQuantity(), grocery.getChecked(), grocery.getShelf());
       }
       register.addGrocery(grocery);
     }
@@ -218,12 +225,12 @@ public class ShoppingListController extends Controller implements Observer {
    *
    * @param grocery the grocery to be removed from the register
    */
-  private void removeGrocery(Grocery grocery){
-    if(grocery == null) {
+  private void removeGrocery(Grocery grocery) {
+    if (grocery == null) {
       throw new IllegalArgumentException("Grocery cannot be null");
     }
 
-    if(this.isLoggedIn()){
+    if (this.isLoggedIn()) {
       String query = "DELETE FROM shopping_list_grocery WHERE user_name = ? AND grocery_name = ?";
       SQL.executeUpdate(query, PantryPal.userName, grocery.getName());
     }
@@ -235,7 +242,7 @@ public class ShoppingListController extends Controller implements Observer {
    * Re-renders the view.
    * Used to update the view with the current grocery register.
    */
-  public void rerender(){
+  public void rerender() {
     view.render(this.register);
   }
 }

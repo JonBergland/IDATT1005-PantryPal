@@ -1,13 +1,17 @@
 package stud.ntnu.idatt1005.pantrypal.views;
 
+import static javafx.stage.Screen.getPrimary;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
-import javafx.scene.text.Text;
-
-
+import javafx.scene.layout.Background;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
@@ -18,9 +22,6 @@ import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
 import stud.ntnu.idatt1005.pantrypal.views.components.AddGroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.GroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
-
-
-import static javafx.stage.Screen.getPrimary;
 
 /**
  * A class that extends View and creates a view for the shopping list.
@@ -72,6 +73,7 @@ public class ShoppingListView extends View {
   /**
    * Creates an overarching VBox to hold the shopping list elements.
    * The VBox is styled with the shopping-list-box class.
+   *
    * @return the VBox to hold the shopping list elements
    */
   private VBox createShoppingListBox() {
@@ -85,6 +87,7 @@ public class ShoppingListView extends View {
 
   /**
    * Creates a HBox to hold the title for the shopping list.
+   *
    * @return the HBox to hold the title for the shopping list
    */
   private HBox createTitleBox() {
@@ -107,6 +110,7 @@ public class ShoppingListView extends View {
 
   /**
    * Creates a scroll pane to hold the shopping list elements.
+   *
    * @return the scroll pane to hold the shopping list.
    */
   private ScrollPane createScrollPane() {
@@ -151,16 +155,18 @@ public class ShoppingListView extends View {
    * @return the button to add groceries to the pantry
    */
   private StyledButton createAddToPantryButton() {
-    StyledButton addToPantry = new StyledButton("Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
+    StyledButton addToPantry = new StyledButton(
+        "Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addToPantry.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_PANTRY));
-    addToPantry.setMinWidth(getPrimary().getVisualBounds().getWidth()* 0.5);
+    addToPantry.setMinWidth(getPrimary().getVisualBounds().getWidth() * 0.5);
     return addToPantry;
   }
 
   /**
    * Creates an AddGroceryListElement to add groceries to the shopping list.
-   * The AddGroceryListElement contains text fields for the name, shelf, and quantity of the grocery,
-   * in addition to an add button that adds the grocery to the list.
+   * The AddGroceryListElement contains text fields for the name, shelf,
+   * and quantity of the grocery, in addition to an add button that adds the grocery to the list.
+   *
    * @return the AddGroceryListElement to add groceries to the shopping list
    */
   private AddGroceryListElement createAddGroceryListElement() {
