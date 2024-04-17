@@ -73,9 +73,12 @@ public class PantryController extends Controller implements Observer {
 
   /**
    * Updates the observer based on the button pressed and the grocery item associated with the
-   * action. If the button pressed is ADD, the grocery item is added to the register and the view is
-   * re-rendered. If the button pressed is REMOVE, the grocery item is removed from the register and
+   * action.
+   * If the button pressed is ADD, the grocery item is added to the register and the view is
+   * re-rendered.
+   * If the button pressed is REMOVE, the grocery item is removed from the register and
    * the view is re-rendered.
+   * If the object is not of type Grocery, an IllegalArgumentException is thrown.
    *
    * @param buttonEnum the button that was pressed
    * @param object     the grocery item associated with the action
@@ -111,6 +114,7 @@ public class PantryController extends Controller implements Observer {
 
   /**
    * Updates the observer based on the button pressed.
+   * If the button pressed is ADD_TO_PANTRY, the view is re-rendered.
    *
    * @param buttonEnum the button that was pressed
    */
@@ -146,7 +150,7 @@ public class PantryController extends Controller implements Observer {
   }
 
   /**
-   * Adds a shelf to the register
+   * Adds a shelf to the register.
    *
    * @param name the name of the shelf
    */
