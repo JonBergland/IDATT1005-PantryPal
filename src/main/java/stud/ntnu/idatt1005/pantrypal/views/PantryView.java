@@ -31,25 +31,32 @@ import static stud.ntnu.idatt1005.pantrypal.utils.NodeUtils.addChildren;
  */
 public class PantryView extends View {
 
-    /**
-     * The controller responsible for managing the logic and
-     * actions associated with the pantry functionality.
-     */
-    private final PantryController controller;
+  /**
+   * The controller responsible for managing the logic and
+   * actions associated with the pantry functionality.
+   */
+  private final PantryController controller;
 
-    /**
-     * Constructor for PantryView.
-     *
-     * @param controller The controller for the view.
-     */
-    public PantryView(PantryController controller) {
-        super(controller, Route.PANTRY, "/styles/pantry.css");
-        this.controller = controller;
-        this.setScrollPane();
-    }
+  /**
+   * Constructor for PantryView.
+   *
+   * @param controller The controller for the view.
+   */
+  public PantryView(PantryController controller) {
+    super(controller, Route.PANTRY, "/styles/pantry.css");
+    this.controller = controller;
+    this.setScrollPane();
+  }
 
-    public void render(Shelf[] shelves) {
-        GridPane shelfGrid = new GridPane();
+  /**
+   * This method renders the pantry view.
+   * It creates a grid of shelves and groceries.
+   * It also creates a button to add a new shelf.
+   *
+   * @param shelves the shelves to be shown
+   */
+  public void render(Shelf[] shelves) {
+    GridPane shelfGrid = new GridPane();
 
         int row = 0;
         int col = 0;
@@ -73,17 +80,31 @@ public class PantryView extends View {
         this.getBorderPane().setCenter(shelfGrid);
     }
 
-    private Button addShelfButton() {
-        Button addShelfButton = new Button("Add new shelf");
-        NodeUtils.addClasses(addShelfButton, "add-shelf-button");
+  /**
+   * Creates a button for adding a shelf.
+   *
+   * @return a button for adding a shelf
+   */
+  private Button addShelfButton() {
+    Button addShelfButton = new Button("Add new shelf");
+    NodeUtils.addClasses(addShelfButton, "add-shelf-button");
 
         return addShelfButton;
     }
 
-    private VBox shelf(Shelf shelf) {
-        VBox container = new VBox();
-        container.setAlignment(Pos.TOP_CENTER);
-        NodeUtils.addClasses(container, "shelf");
+  /**
+   * Creates a VBox for representing a single shelf.
+   * It contains a header with the shelf name and
+   * buttons for editing and deleting the shelf.
+   * It also contains a list of groceries in the shelf.
+   *
+   * @param shelf the shelf object to be shown
+   * @return a VBox containing the visual representation of a shelf
+   */
+  private VBox shelf(Shelf shelf) {
+    VBox container = new VBox();
+    container.setAlignment(Pos.TOP_CENTER);
+    NodeUtils.addClasses(container, "shelf");
 
         HBox header = new HBox();
         header.setAlignment(Pos.CENTER);
@@ -121,15 +142,21 @@ public class PantryView extends View {
         return container;
     }
 
-    private VBox GroceryList(Shelf shelf, Grocery[] groceries){
-        VBox container = new VBox();
-
-        ScrollPane scrollContainer = new ScrollPane();
-        NodeUtils.addClasses(scrollContainer, "grocery-list-scroll-container");
-        VBox groceryList = new VBox();
-        NodeUtils.addClasses(groceryList, "grocery-list");
-        scrollContainer.setContent(groceryList);
-        scrollContainer.setFitToWidth(true);
+  /**
+   * Creates a VBox for representing a list of groceries.
+   * Used to display the groceries in a shelf.
+   *
+   * @param shelf     the shelf containing the groceries to be shown
+   * @param groceries the groceries to be shown
+   * @return a VBox containing the visual representation of a list of groceries
+   */
+  private VBox groceryList(Shelf shelf, Grocery[] groceries) {
+    ScrollPane scrollContainer = new ScrollPane();
+    NodeUtils.addClasses(scrollContainer, "grocery-list-scroll-container");
+    VBox groceryList = new VBox();
+    NodeUtils.addClasses(groceryList, "grocery-list");
+    scrollContainer.setContent(groceryList);
+    scrollContainer.setFitToWidth(true);
 
         for(Grocery grocery : groceries){
             GroceryListElement element = new GroceryListElement.GroceryListElementBuilder(grocery)
