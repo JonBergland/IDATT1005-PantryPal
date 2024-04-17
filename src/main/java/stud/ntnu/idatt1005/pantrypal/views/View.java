@@ -138,9 +138,7 @@ public class View extends Scene implements Observable {
   @Override
   public void removeObserver(Observer observer) throws IllegalArgumentException {
     if (observer != null) {
-      if (observers.contains(observer)) {
-        observers.remove(observer);
-      }
+      observers.remove(observer);
     } else {
       throw new IllegalArgumentException("Observer cannot be null");
     }
