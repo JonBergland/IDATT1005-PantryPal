@@ -1,6 +1,5 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
-import java.util.HashMap;
 import java.util.Map;
 import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
@@ -17,7 +16,9 @@ import java.util.Objects;
 
 /**
  * Controller class for the ShoppingListView.
- * Handles the logic for the ShoppingListView, including managing the grocery register and updating the view.
+ * Handles the logic for the ShoppingListView,
+ * including managing the grocery register and updating the view.
+ * Implements the Observer interface to listen for changes in the view.
  */
 public class ShoppingListController extends Controller implements Observer {
 
@@ -38,9 +39,11 @@ public class ShoppingListController extends Controller implements Observer {
   private final PantryController pantryController;
 
   /**
-   * Constructs a new ShoppingListController with a given view manager.
+   * Constructs a new ShoppingListController with a given view manager
+   * and pantry controller. Initializes the grocery register and the shopping list view.
    *
    * @param viewManager The view manager for the application.
+   * @param pantryController The controller for the pantry.
    */
   public ShoppingListController(ViewManager viewManager, PantryController pantryController) {
     super(viewManager);
@@ -58,6 +61,10 @@ public class ShoppingListController extends Controller implements Observer {
     rerender();
   }
 
+  /**
+   * Retrieve the user's shopping list from the database and adds it to the register.
+   * If the user is not logged in, the shopping list is not loaded.
+   */
   private void load(){
     String query = "SELECT * FROM shopping_list_grocery WHERE user_name = ?";
     List<Map<String, Object>> groceries = SQL.executeQuery(query, PantryPal.userName);
@@ -72,6 +79,11 @@ public class ShoppingListController extends Controller implements Observer {
     }
   }
 
+  /**
+   * Returns the grocery register.
+   *
+   * @return the grocery register
+   */
   public GroceryRegister getRegister() {
     return this.register;
   }
@@ -131,7 +143,8 @@ public class ShoppingListController extends Controller implements Observer {
 
   /**
    * Adds groceries to the pantry.
-   * The groceries that are checked are added to the pantry and removed from the shopping list.
+   * The groceries in the grocery register that are checked
+   * are added to the pantry and removed from the shopping list.
    */
   public void addGroceriesToPantry(){
     List<Grocery> groceriesToRemove = new ArrayList<>();
@@ -146,6 +159,12 @@ public class ShoppingListController extends Controller implements Observer {
     }
   }
 
+  /**
+   * Adds a grocery to the register.
+   * If the user is logged in, the grocery is also added to the database.
+   *
+   * @param grocery the grocery to be added to the register
+   */
   private void addGrocery(Grocery grocery){
     if (grocery == null) {
       throw new IllegalArgumentException("Grocery cannot be null");
@@ -193,6 +212,12 @@ public class ShoppingListController extends Controller implements Observer {
 
   }
 
+  /**
+   * Removes a grocery from the register.
+   * If the user is logged in, the grocery is also removed from the database.
+   *
+   * @param grocery the grocery to be removed from the register
+   */
   private void removeGrocery(Grocery grocery){
     if(grocery == null) {
       throw new IllegalArgumentException("Grocery cannot be null");
@@ -206,6 +231,10 @@ public class ShoppingListController extends Controller implements Observer {
     register.removeGrocery(grocery);
   }
 
+  /**
+   * Re-renders the view.
+   * Used to update the view with the current grocery register.
+   */
   public void rerender(){
     view.render(this.register);
   }

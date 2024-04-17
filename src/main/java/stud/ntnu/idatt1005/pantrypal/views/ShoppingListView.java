@@ -25,16 +25,14 @@ import static javafx.stage.Screen.getPrimary;
 /**
  * A class that extends View and creates a view for the shopping list.
  * The goal is to provide a dedicated view for users to view their shopping list.
- * This class is associated with an ShoppingListController to handle the logic
- * and actions related to the shopping list.
  */
 public class ShoppingListView extends View {
 
   /**
    * Constructor for ShoppingListView.
    *
-   * @param controller The controller for the view. This controller is responsible for handling
-   *                   the logic and actions associated with the shopping list functionality.
+   * @param controller The controller for the view. This controller is passed to the
+   *                   super class View.
    */
   public ShoppingListView(ShoppingListController controller) {
     super(controller, Route.SHOPPING_LIST, "/styles/shopping-list.css");
@@ -71,6 +69,11 @@ public class ShoppingListView extends View {
     getBorderPane().setCenter(shoppingListBox);
   }
 
+  /**
+   * Creates an overarching VBox to hold the shopping list elements.
+   * The VBox is styled with the shopping-list-box class.
+   * @return the VBox to hold the shopping list elements
+   */
   private VBox createShoppingListBox() {
     VBox shoppingListBox = new VBox();
     shoppingListBox.setMaxWidth(getPrimary().getVisualBounds().getWidth() * 0.5);
@@ -80,6 +83,10 @@ public class ShoppingListView extends View {
     return shoppingListBox;
   }
 
+  /**
+   * Creates a HBox to hold the title for the shopping list.
+   * @return the HBox to hold the title for the shopping list
+   */
   private HBox createTitleBox() {
     HBox titleBox = new HBox();
     titleBox.setAlignment(Pos.CENTER);
@@ -98,6 +105,10 @@ public class ShoppingListView extends View {
     return titleBox;
   }
 
+  /**
+   * Creates a scroll pane to hold the shopping list elements.
+   * @return the scroll pane to hold the shopping list.
+   */
   private ScrollPane createScrollPane() {
     ScrollPane scrollPane = new ScrollPane();
     scrollPane.setFitToWidth(true);
@@ -108,6 +119,12 @@ public class ShoppingListView extends View {
     return scrollPane;
   }
 
+  /**
+   * Creates a VBox to hold the shopping list elements.
+   *
+   * @param register The register containing the groceries.
+   * @return the VBox to hold the shopping list elements
+   */
   private VBox createShoppingList(GroceryRegister register) {
     VBox shoppingList = new VBox();
     for (Grocery grocery : register.getRegister().values()) {
@@ -126,6 +143,13 @@ public class ShoppingListView extends View {
     return shoppingList;
   }
 
+  /**
+   * Creates a button to add groceries to the pantry.
+   * The button is styled with the solid variant and medium size.
+   * The button has an action that notifies the observers of the view.
+   *
+   * @return the button to add groceries to the pantry
+   */
   private StyledButton createAddToPantryButton() {
     StyledButton addToPantry = new StyledButton("Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addToPantry.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_PANTRY));
@@ -133,6 +157,12 @@ public class ShoppingListView extends View {
     return addToPantry;
   }
 
+  /**
+   * Creates an AddGroceryListElement to add groceries to the shopping list.
+   * The AddGroceryListElement contains text fields for the name, shelf, and quantity of the grocery,
+   * in addition to an add button that adds the grocery to the list.
+   * @return the AddGroceryListElement to add groceries to the shopping list
+   */
   private AddGroceryListElement createAddGroceryListElement() {
     AddGroceryListElement addGroceryListElement = new AddGroceryListElement("");
     for (Observer observer : observers) {
