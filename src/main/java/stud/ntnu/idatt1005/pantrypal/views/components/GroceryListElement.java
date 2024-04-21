@@ -204,6 +204,7 @@ public class GroceryListElement implements Observable {
       );
 
       spinner.setValueFactory(valueFactory);
+      spinner.setEditable(true);
       return spinner;
     }
 
