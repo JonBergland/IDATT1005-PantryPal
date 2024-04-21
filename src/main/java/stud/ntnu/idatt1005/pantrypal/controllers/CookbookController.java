@@ -274,7 +274,7 @@ public class CookbookController extends Controller implements Observer {
         if (shoppingListGrocery != null) {
           shoppingListGrocery.setQuantity(shoppingListGrocery.getQuantity() + quantityToAdd);
         } else {
-          shoppingListRegister.addGrocery(
+          shoppingListController.addGrocery(
                   new Grocery(groceryName, quantityToAdd, "g", groceryShelf, false));
         }
       }

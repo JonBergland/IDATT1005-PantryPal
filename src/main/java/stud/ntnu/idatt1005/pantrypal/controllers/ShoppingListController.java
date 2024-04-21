@@ -167,7 +167,7 @@ public class ShoppingListController extends Controller implements Observer {
    *
    * @param grocery the grocery to be added to the register
    */
-  private void addGrocery(Grocery grocery) {
+  public void addGrocery(Grocery grocery) {
     if (grocery == null) {
       throw new IllegalArgumentException("Grocery cannot be null");
     }
