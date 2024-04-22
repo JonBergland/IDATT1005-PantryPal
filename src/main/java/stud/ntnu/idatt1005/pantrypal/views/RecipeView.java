@@ -86,7 +86,7 @@ public class RecipeView extends View {
       ImagePattern imagePattern;
       try {
         imagePattern = new ImagePattern(new Image(imagePath));
-      } catch (Exception e){
+      } catch (Exception e) {
         imagePattern = new ImagePattern(new Image("images/PantryPalLogo.png"));
       }
       image.setFill(imagePattern);
@@ -115,7 +115,7 @@ public class RecipeView extends View {
     Text header = new Text(this.recipe.getKey());
     header.setFont(new Font("Times new roman", 60));
     Text description = new Text();
-    if(recipe.getDescription() != null && !recipe.getDescription().isEmpty()) {
+    if (recipe.getDescription() != null && !recipe.getDescription().isEmpty()) {
       description.setText(recipe.getDescription());
     } else {
       description = new Text("Recipe description - Lorem ipsum dolor sit amet, "
@@ -140,7 +140,8 @@ public class RecipeView extends View {
     StyledButton addNeededGroceriesButton = new StyledButton("Add groceries",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addNeededGroceriesButton.getStyleClass().add("overview-buttons");
-    addNeededGroceriesButton.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST, this.recipe));
+    addNeededGroceriesButton.setOnAction(e ->
+        notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST, this.recipe));
 
     FavoriteButton favoriteButton = new FavoriteButton(recipe.getIsFavorite());
     favoriteButton.setOnMouseClicked(e -> {
@@ -298,14 +299,4 @@ public class RecipeView extends View {
 
     return groceryTextWithSeparator;
   }
-
-  /**
-   * Updates the observer based on the button pressed.
-   *
-   * @param buttonEnum the button that was pressed
-   */
-//  @Override
-//  protected void notifyObservers(ButtonEnum buttonEnum) {
-//    this.notifyObservers(buttonEnum, recipe);
-//  }
 }
