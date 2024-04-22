@@ -32,14 +32,9 @@ import stud.ntnu.idatt1005.pantrypal.views.Observable;
  * This class represents a component for displaying a recipe within the cookbook.
  * It provides methods to create a visual representation of a recipe, including its image and name.
  */
-public class CookbookRecipeComponent implements Observable {
+public class CookbookRecipeComponent extends StackPane implements Observable {
 
   private final Recipe recipe;
-
-  /**
-   * The StackPane displaying the recipe component.
-   */
-  private StackPane stackPane;
   private final List<Observer> observers;
 
   /**
@@ -59,7 +54,7 @@ public class CookbookRecipeComponent implements Observable {
     if (recipe.getImagePath() == null || recipe.getImagePath().isEmpty()) {
       BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
               new CornerRadii(10), null);
-      stackPane.setBackground(new Background(backgroundFill));
+      this.setBackground(new Background(backgroundFill));
     } else {
       Image image;
       try {
@@ -72,7 +67,7 @@ public class CookbookRecipeComponent implements Observable {
               BackgroundRepeat.NO_REPEAT,
               BackgroundPosition.CENTER,
               backgroundSize);
-      stackPane.setBackground(new Background(backgroundImage));
+      this.setBackground(new Background(backgroundImage));
     }
 
     setLabel(recipe.getKey());
@@ -86,21 +81,20 @@ public class CookbookRecipeComponent implements Observable {
    */
 
   private void setUpStackPane() {
-    stackPane = new StackPane();
-    stackPane.setMaxWidth(getWidth());
-    stackPane.setMaxHeight(getHeight());
-    stackPane.setMinWidth(getWidth());
-    stackPane.setMinHeight(getHeight());
+    this.setMaxWidth(getComponentWidth());
+    this.setMaxHeight(getComponentHeight());
+    this.setMinWidth(getComponentWidth());
+    this.setMinHeight(getComponentHeight());
     BorderStroke borderStroke = new BorderStroke(ColorPalette.BLACK,
             BorderStrokeStyle.SOLID,
             new CornerRadii(10),
             new BorderWidths(1));
-    stackPane.setBorder(new Border(borderStroke));
-    Rectangle clip = new Rectangle(getWidth(), getHeight());
+    this.setBorder(new Border(borderStroke));
+    Rectangle clip = new Rectangle(getComponentWidth(), getComponentHeight());
     clip.setArcWidth(20);
     clip.setArcHeight(20);
-    stackPane.setClip(clip);
-    stackPane.setOnMouseClicked(e -> notifyObservers(ButtonEnum.OPEN_RECIPE));
+    this.setClip(clip);
+    this.setOnMouseClicked(e -> notifyObservers(ButtonEnum.OPEN_RECIPE));
   }
 
   /**
@@ -112,7 +106,7 @@ public class CookbookRecipeComponent implements Observable {
     Label label = new Label(recipeName);
     label.setFont(FontPalette.BUTTON);
     StackPane.setAlignment(label, Pos.CENTER);
-    stackPane.getChildren().add(label);
+    this.getChildren().add(label);
   }
 
   /**
@@ -123,16 +117,7 @@ public class CookbookRecipeComponent implements Observable {
   private void setStarIcon(boolean isFavorite) {
     StarIcon starIcon = new StarIcon(StarIcon.Variants.COOKBOOK, isFavorite);
     StackPane.setAlignment(starIcon, Pos.TOP_RIGHT);
-    stackPane.getChildren().add(starIcon);
-  }
-
-  /**
-   * Returns the BorderPane representing the recipe component.
-   *
-   * @return The BorderPane representing the recipe component.
-   */
-  public StackPane getComponent() {
-    return stackPane;
+    this.getChildren().add(starIcon);
   }
 
   /**
@@ -140,7 +125,7 @@ public class CookbookRecipeComponent implements Observable {
    *
    * @return The width of the recipe component.
    */
-  public static double getWidth() {
+  public static double getComponentWidth() {
     Rectangle2D visualBounds = getPrimary().getVisualBounds();
     return visualBounds.getWidth() / 4 - 40;
   }
@@ -150,8 +135,8 @@ public class CookbookRecipeComponent implements Observable {
    *
    * @return The height of the recipe component.
    */
-  public static double getHeight() {
-    return getWidth() * 0.625;
+  public static double getComponentHeight() {
+    return getComponentWidth() * 0.625;
   }
 
   @Override

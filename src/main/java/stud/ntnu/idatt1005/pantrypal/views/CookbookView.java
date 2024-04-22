@@ -116,7 +116,7 @@ public class CookbookView extends View {
       }
       CookbookRecipeComponent recipeComponent = new CookbookRecipeComponent(recipe);
       recipeComponent.addObserver(controller);
-      row.getChildren().add(recipeComponent.getComponent());
+      row.getChildren().add(recipeComponent);
     }
 
     row.setAlignment(Pos.CENTER);
@@ -163,7 +163,7 @@ public class CookbookView extends View {
    */
   private double calculateSpacing() {
     Rectangle2D visualBounds = getPrimary().getVisualBounds();
-    return ((visualBounds.getWidth() - RECIPES_PER_ROW * CookbookRecipeComponent.getWidth())
+    return ((visualBounds.getWidth() - RECIPES_PER_ROW * CookbookRecipeComponent.getComponentWidth())
             / (RECIPES_PER_ROW + 1));
   }
 }
