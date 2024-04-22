@@ -44,10 +44,45 @@ public class PantryController extends Controller implements Observer {
     this.register = new ShelfRegister();
 
     if (this.isLoggedIn()) {
-      this.register.load(PantryPal.userName);
+      load(PantryPal.userName);
     }
 
     rerender();
+  }
+
+  /**
+   * Loads all shelves and groceries from the database for the specified user.
+   *
+   * @param username the username of the user to load shelves for.
+   */
+  private void load(String username) {
+    String shelfQuery = "SELECT * FROM pantry_shelf WHERE user_name = ?";
+    List<Map<String, Object>> shelves = SQL.executeQuery(shelfQuery, username);
+
+    for (Map<String, Object> shelf : shelves) {
+      int shelfId = (int) shelf.get("id");
+      String shelfKey = String.valueOf(shelfId);
+      String shelfName = shelf.get("name").toString();
+
+      Shelf s = new Shelf(shelfKey, shelfName);
+
+      String groceryQuery = "SELECT g.*, psg.quantity AS quantity FROM pantry_shelf_grocery psg "
+          + "INNER JOIN grocery g ON g.name = psg.grocery_name "
+          + "WHERE psg.pantry_shelf_id = ?";
+      List<Map<String, Object>> groceries = SQL.executeQuery(groceryQuery, shelfId);
+
+      for (Map<String, Object> grocery : groceries) {
+
+        String groceryName = grocery.get("name").toString();
+        int groceryQuantity = (int) grocery.get("quantity");
+        String groceryUnit = grocery.get("unit").toString();
+
+
+        Grocery g = new Grocery(groceryName, groceryQuantity, groceryUnit, shelfName, false);
+        s.addGrocery(g);
+      }
+      this.register.addShelf(s);
+    }
   }
 
   /**
@@ -253,11 +288,9 @@ public class PantryController extends Controller implements Observer {
             + "(pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
         SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
 
-        //TODO: Fix unit
         Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
         shelf.addGrocery(grocery);
       } else {
-        //TODO: Fix unit
         Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
         shelf.addGrocery(grocery);
 
@@ -281,7 +314,6 @@ public class PantryController extends Controller implements Observer {
     } catch (IllegalArgumentException e) {
       shelf = this.addShelf(shelfName);
     } finally {
-      //TODO Make name of models (ie. Shelf, Grocery, etc.) lowercase when used as keys in registers
       if (shelf == null) {
         shelf = this.addShelf(shelfName);
       }
