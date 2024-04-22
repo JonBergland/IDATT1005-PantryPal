@@ -74,7 +74,7 @@ public class ShoppingListController extends Controller implements Observer {
       int quantity = grocery.get("quantity") != null
           ? (int) grocery.get("quantity") : 0;
       String unit = grocery.get("unit") != null
-          ? grocery.get("unit").toString() : null;
+          ? grocery.get("unit").toString() : "g";
       String shelf = grocery.get("shelf_name") != null
           ? grocery.get("shelf_name").toString() : null;
       boolean isBought = grocery.get("is_bought") != null && ((int) grocery.get("is_bought")) != 0;
