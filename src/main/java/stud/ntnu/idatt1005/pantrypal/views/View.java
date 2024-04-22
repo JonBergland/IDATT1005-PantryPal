@@ -155,4 +155,17 @@ public class View extends Scene implements Observable {
       observer.update(buttonEnum);
     }
   }
+
+  /**
+   * Notifies all observers with the given ButtonEnum and object.
+   *
+   * @param buttonEnum The ButtonEnum to notify the observers with.
+   * @param object     The object to notify the observers with.
+   */
+  protected void notifyObservers(ButtonEnum buttonEnum, Object object) {
+    List<Observer> observersCopy = new ArrayList<>(this.observers);
+    for (Observer observer : observersCopy) {
+      observer.update(buttonEnum, object);
+    }
+  }
 }
