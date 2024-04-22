@@ -138,9 +138,7 @@ public class View extends Scene implements Observable {
   @Override
   public void removeObserver(Observer observer) throws IllegalArgumentException {
     if (observer != null) {
-      if (observers.contains(observer)) {
-        observers.remove(observer);
-      }
+      observers.remove(observer);
     } else {
       throw new IllegalArgumentException("Observer cannot be null");
     }
@@ -155,6 +153,19 @@ public class View extends Scene implements Observable {
     List<Observer> observersCopy = new ArrayList<>(this.observers);
     for (Observer observer : observersCopy) {
       observer.update(buttonEnum);
+    }
+  }
+
+  /**
+   * Notifies all observers with the given ButtonEnum and object.
+   *
+   * @param buttonEnum The ButtonEnum to notify the observers with.
+   * @param object     The object to notify the observers with.
+   */
+  protected void notifyObservers(ButtonEnum buttonEnum, Object object) {
+    List<Observer> observersCopy = new ArrayList<>(this.observers);
+    for (Observer observer : observersCopy) {
+      observer.update(buttonEnum, object);
     }
   }
 }

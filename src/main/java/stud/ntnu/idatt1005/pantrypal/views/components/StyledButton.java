@@ -64,7 +64,7 @@ public class StyledButton extends Button {
     if (variant == Variant.BLACK) {
       this.addStyleClass("button-black");
     }
-    if (variant == Variant.DELETE){
+    if (variant == Variant.DELETE) {
       this.addStyleClass("button-delete");
     }
   }
@@ -104,7 +104,7 @@ public class StyledButton extends Button {
       this.addStyleClass("button-medium");
     }
     if (size == Size.LARGE) {
-        this.addStyleClass("button-large");
+      this.addStyleClass("button-large");
     }
 
     if (variant == Variant.SOLID) {
@@ -119,7 +119,7 @@ public class StyledButton extends Button {
     if (variant == Variant.BLACK) {
       this.addStyleClass("button-black");
     }
-    if (variant == Variant.DELETE){
+    if (variant == Variant.DELETE) {
       this.addStyleClass("button-delete");
     }
   }

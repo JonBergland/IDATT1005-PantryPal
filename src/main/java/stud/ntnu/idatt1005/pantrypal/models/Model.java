@@ -6,7 +6,7 @@ import java.util.UUID;
  * This is an abstract class representing a model. It contains the key of the model
  */
 public abstract class Model {
-  private String key;
+  private final String key;
 
   /**
    * Default constructor for Model class.
@@ -17,7 +17,8 @@ public abstract class Model {
   }
 
   /**
-   * Constructor for Model class
+   * Constructor for Model class.
+   *
    * @param key the key of the model
    */
   protected Model(String key) {
@@ -25,23 +26,8 @@ public abstract class Model {
   }
 
   /**
-   * Deep-copy constructor of Model-class
-   * @param model the model to be copied
-   */
-  protected Model(Model model) {
-    this.key = model.getKey();
-  }
-
-  /**
-   * Sets the key of the model.
-   * @param key the new key
-   */
-  public void setKey(String key) {
-    this.key = key;
-  }
-
-  /**
-   * Gets the string key
+   * Gets the string key.
+   *
    * @return the key
    */
   public String getKey() {

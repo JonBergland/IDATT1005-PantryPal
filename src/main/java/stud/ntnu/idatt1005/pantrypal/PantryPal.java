@@ -3,12 +3,11 @@ package stud.ntnu.idatt1005.pantrypal;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.controllers.CookbookController;
 import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
 import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
 import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
-import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 
 /**
@@ -24,7 +23,7 @@ public class PantryPal extends Application {
   // Controller for homeView.
   private HomeController homeController;
   // Controllers for the cookBook.
-  private CookBookController cookBookController;
+  private CookbookController cookBookController;
   // Controllers for adding a recipe.
   // Controllers for the pantry.
   private PantryController pantryController;

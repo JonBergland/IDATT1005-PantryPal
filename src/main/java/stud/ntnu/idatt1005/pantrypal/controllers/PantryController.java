@@ -1,7 +1,9 @@
 package stud.ntnu.idatt1005.pantrypal.controllers;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import stud.ntnu.idatt1005.pantrypal.PantryPal;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -13,12 +15,10 @@ import stud.ntnu.idatt1005.pantrypal.utils.SQL;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 import stud.ntnu.idatt1005.pantrypal.views.PantryView;
 
-import java.util.Collection;
-import java.util.Objects;
-
 /**
- * Controller for the PantryView. This class is responsible for handling the logic for the
- * PantryView.
+ * Controller for the PantryView.
+ * This class is responsible for handling the logic for the PantryView.
+ * It is responsible for adding, removing and editing shelves and groceries.
  */
 public class PantryController extends Controller implements Observer {
 
@@ -44,11 +44,45 @@ public class PantryController extends Controller implements Observer {
     this.register = new ShelfRegister();
 
     if (this.isLoggedIn()) {
-      System.out.println("Loading pantry for user: " + PantryPal.userName);
-      this.register.load(PantryPal.userName);
+      load(PantryPal.userName);
     }
 
     rerender();
+  }
+
+  /**
+   * Loads all shelves and groceries from the database for the specified user.
+   *
+   * @param username the username of the user to load shelves for.
+   */
+  private void load(String username) {
+    String shelfQuery = "SELECT * FROM pantry_shelf WHERE user_name = ?";
+    List<Map<String, Object>> shelves = SQL.executeQuery(shelfQuery, username);
+
+    for (Map<String, Object> shelf : shelves) {
+      int shelfId = (int) shelf.get("id");
+      String shelfKey = String.valueOf(shelfId);
+      String shelfName = shelf.get("name").toString();
+
+      Shelf s = new Shelf(shelfKey, shelfName);
+
+      String groceryQuery = "SELECT g.*, psg.quantity AS quantity FROM pantry_shelf_grocery psg "
+          + "INNER JOIN grocery g ON g.name = psg.grocery_name "
+          + "WHERE psg.pantry_shelf_id = ?";
+      List<Map<String, Object>> groceries = SQL.executeQuery(groceryQuery, shelfId);
+
+      for (Map<String, Object> grocery : groceries) {
+
+        String groceryName = grocery.get("name").toString();
+        int groceryQuantity = (int) grocery.get("quantity");
+        String groceryUnit = grocery.get("unit").toString();
+
+
+        Grocery g = new Grocery(groceryName, groceryQuantity, groceryUnit, shelfName, false);
+        s.addGrocery(g);
+      }
+      this.register.addShelf(s);
+    }
   }
 
   /**
@@ -73,9 +107,12 @@ public class PantryController extends Controller implements Observer {
 
   /**
    * Updates the observer based on the button pressed and the grocery item associated with the
-   * action. If the button pressed is ADD, the grocery item is added to the register and the view is
-   * re-rendered. If the button pressed is REMOVE, the grocery item is removed from the register and
+   * action.
+   * If the button pressed is ADD, the grocery item is added to the register and the view is
+   * re-rendered.
+   * If the button pressed is REMOVE, the grocery item is removed from the register and
    * the view is re-rendered.
+   * If the object is not of type Grocery, an IllegalArgumentException is thrown.
    *
    * @param buttonEnum the button that was pressed
    * @param object     the grocery item associated with the action
@@ -111,6 +148,7 @@ public class PantryController extends Controller implements Observer {
 
   /**
    * Updates the observer based on the button pressed.
+   * If the button pressed is ADD_TO_PANTRY, the view is re-rendered.
    *
    * @param buttonEnum the button that was pressed
    */
@@ -128,30 +166,32 @@ public class PantryController extends Controller implements Observer {
    */
   public void addShelf() {
     shelfCount++;
+    String newShelf = "New Shelf " + shelfCount;
 
-    if(isLoggedIn()){
+    if (isLoggedIn()) {
       String query = "INSERT INTO pantry_shelf (name, user_name) VALUES (?, ?)";
-      int id = SQL.executeUpdateWithGeneratedKeys(query, "New Shelf " + shelfCount, PantryPal.userName);
+      int id = SQL.executeUpdateWithGeneratedKeys(query,
+          newShelf, PantryPal.userName);
 
-      Shelf shelf = new Shelf(String.valueOf(id), "New Shelf " + shelfCount);
+      Shelf shelf = new Shelf(String.valueOf(id), newShelf);
       register.addShelf(shelf);
       rerender();
 
       return;
     }
 
-    Shelf shelf = new Shelf("New Shelf " + shelfCount);
+    Shelf shelf = new Shelf(newShelf);
     register.addShelf(shelf);
     rerender();
   }
 
   /**
-   * Adds a shelf to the register
+   * Adds a shelf to the register.
    *
    * @param name the name of the shelf
    */
   public Shelf addShelf(String name) {
-    if(isLoggedIn()){
+    if (isLoggedIn()) {
       String query = "INSERT INTO pantry_shelf (name, user_name) VALUES (?, ?)";
       int id = SQL.executeUpdateWithGeneratedKeys(query, name, PantryPal.userName);
 
@@ -190,13 +230,10 @@ public class PantryController extends Controller implements Observer {
    * @param name  the new name of the shelf
    */
   public void editShelfName(Shelf shelf, String name) {
-    System.out.println(shelf.getKey());
-    String oldName = shelf.getName();
     shelf.setName(name);
     rerender();
 
     if (isLoggedIn()) {
-      System.out.println("Updating shelf name" + oldName + " to " + name);
       SQL.executeUpdate("UPDATE pantry_shelf SET name = ? WHERE id = ?", name,
           shelf.getKey());
     }
@@ -227,36 +264,37 @@ public class PantryController extends Controller implements Observer {
       Grocery grocery = groceryRegister.getGrocery(name);
       int oldAmount = grocery.getQuantity();
 
-      if(isLoggedIn()){
-        String groceryQuery = "UPDATE pantry_shelf_grocery SET quantity = ? WHERE pantry_shelf_id = ? AND grocery_name = ?";
+      if (isLoggedIn()) {
+        String groceryQuery = "UPDATE pantry_shelf_grocery SET quantity = ?  "
+            + "WHERE pantry_shelf_id = ? AND grocery_name = ?";
         SQL.executeUpdate(groceryQuery, oldAmount + amount, shelf.getKey(), grocery.getName());
       }
       grocery.setQuantity(oldAmount + amount);
     } else {
-        if(isLoggedIn()){
-          //Check if grocery exists in grocery table
-          String checkGroceryQuery = "SELECT * FROM grocery WHERE name = ?";
-          List<Map<String, Object>> groceries = SQL.executeQuery(checkGroceryQuery, name);
-          if(groceries.isEmpty()){
-            String groceryQuery = "INSERT INTO grocery (name, unit) VALUES (?, ?)";
-            SQL.executeUpdate(groceryQuery, name, "g");
+      if (isLoggedIn()) {
+        //Check if grocery exists in grocery table
+        String checkGroceryQuery = "SELECT * FROM grocery WHERE name = ?";
+        List<Map<String, Object>> groceries = SQL.executeQuery(checkGroceryQuery, name);
+        if (groceries.isEmpty()) {
+          String groceryQuery = "INSERT INTO grocery (name, unit) VALUES (?, ?)";
+          SQL.executeUpdate(groceryQuery, name, "g");
 
-            String shelfGroceryQuery = "INSERT INTO pantry_shelf_grocery (pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
-            SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
-          }
-          //Add grocery to pantry shelf
-          String shelfGroceryQuery = "INSERT INTO pantry_shelf_grocery (pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
+          String shelfGroceryQuery = "INSERT INTO pantry_shelf_grocery "
+              + "(pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
           SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
-
-          //TODO: Fix unit
-          Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
-          shelf.addGrocery(grocery);
-        } else {
-          //TODO: Fix unit
-          Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
-          shelf.addGrocery(grocery);
-
         }
+        //Add grocery to pantry shelf
+        String shelfGroceryQuery = "INSERT INTO pantry_shelf_grocery "
+            + "(pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
+        SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
+
+        Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
+        shelf.addGrocery(grocery);
+      } else {
+        Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
+        shelf.addGrocery(grocery);
+
+      }
     }
     rerender();
   }
@@ -276,7 +314,6 @@ public class PantryController extends Controller implements Observer {
     } catch (IllegalArgumentException e) {
       shelf = this.addShelf(shelfName);
     } finally {
-      //TODO Make name of models (ie. Shelf, Grocery, etc.) lowercase when used as keys in registers
       if (shelf == null) {
         shelf = this.addShelf(shelfName);
       }
@@ -296,7 +333,8 @@ public class PantryController extends Controller implements Observer {
     rerender();
 
     if (isLoggedIn()) {
-      String query = "DELETE FROM pantry_shelf_grocery WHERE pantry_shelf_id = ? AND grocery_name = ?";
+      String query = "DELETE FROM pantry_shelf_grocery WHERE pantry_shelf_id = ? "
+          + "AND grocery_name = ?";
       SQL.executeUpdate(query, shelf.getKey(), grocery.getName());
     }
   }

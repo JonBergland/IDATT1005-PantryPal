@@ -16,8 +16,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
-import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
+import stud.ntnu.idatt1005.pantrypal.controllers.CookbookController;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
@@ -27,16 +26,13 @@ import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.FavoriteButton;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This class represents the RecipeView in the application. It extends the View class and sets the
  * scene for the stage. The RecipeView is responsible for displaying a single recipe in
  * the application.
  * It includes the recipe overview, steps, and groceries.
  */
-public class RecipeView extends View implements Observable {
+public class RecipeView extends View {
 
   /**
    * The recipe to be displayed in the view.
@@ -49,7 +45,7 @@ public class RecipeView extends View implements Observable {
    * @param controller The controller for the view.
    * @param recipe     The recipe to be displayed in the view.
    */
-  public RecipeView(CookBookController controller, Recipe recipe) {
+  public RecipeView(CookbookController controller, Recipe recipe) {
     super(controller, Route.RECIPE, "/styles/recipe.css");
     this.recipe = recipe;
     setUpView();
@@ -79,7 +75,7 @@ public class RecipeView extends View implements Observable {
    *
    * @return The recipe overview
    */
-  public HBox createRecipeOverview() {
+  private HBox createRecipeOverview() {
     HBox recipeOverview = new HBox(80);
     recipeOverview.setMaxSize(Sizing.getRecipeBoxSize()[0], Sizing.getRecipeBoxSize()[1]);
 
@@ -90,7 +86,7 @@ public class RecipeView extends View implements Observable {
       ImagePattern imagePattern;
       try {
         imagePattern = new ImagePattern(new Image(imagePath));
-      } catch (Exception e){
+      } catch (Exception e) {
         imagePattern = new ImagePattern(new Image("images/PantryPalLogo.png"));
       }
       image.setFill(imagePattern);
@@ -119,7 +115,7 @@ public class RecipeView extends View implements Observable {
     Text header = new Text(this.recipe.getKey());
     header.setFont(new Font("Times new roman", 60));
     Text description = new Text();
-    if(recipe.getDescription() != null && !recipe.getDescription().isEmpty()) {
+    if (recipe.getDescription() != null && !recipe.getDescription().isEmpty()) {
       description.setText(recipe.getDescription());
     } else {
       description = new Text("Recipe description - Lorem ipsum dolor sit amet, "
@@ -144,21 +140,22 @@ public class RecipeView extends View implements Observable {
     StyledButton addNeededGroceriesButton = new StyledButton("Add groceries",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addNeededGroceriesButton.getStyleClass().add("overview-buttons");
-    addNeededGroceriesButton.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST));
+    addNeededGroceriesButton.setOnAction(e ->
+        notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST, this.recipe));
 
     FavoriteButton favoriteButton = new FavoriteButton(recipe.getIsFavorite());
     favoriteButton.setOnMouseClicked(e -> {
-      notifyObservers(ButtonEnum.EDIT_FAVORITE);
+      notifyObservers(ButtonEnum.EDIT_FAVORITE, this.recipe);
       favoriteButton.toggleStarColor();
     });
 
     StyledButton editButton = new StyledButton("Edit",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
-    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_RECIPE));
+    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_RECIPE, this.recipe));
 
     StyledButton deleteButton = new StyledButton("Delete",
             StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM);
-    deleteButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.REMOVE));
+    deleteButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.REMOVE, this.recipe));
     HBox overviewButtons = new HBox(20);
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,
@@ -301,18 +298,5 @@ public class RecipeView extends View implements Observable {
     );
 
     return groceryTextWithSeparator;
-  }
-
-  /**
-   * Updates the observer based on the button pressed.
-   *
-   * @param buttonEnum the button that was pressed
-   */
-  @Override
-  protected void notifyObservers(ButtonEnum buttonEnum) {
-    List<Observer> observersCopy = new ArrayList<>(this.observers);
-    for (Observer observer : observersCopy) {
-      observer.update(buttonEnum, this.recipe);
-    }
   }
 }

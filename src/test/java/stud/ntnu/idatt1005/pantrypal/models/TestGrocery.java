@@ -2,8 +2,8 @@ package stud.ntnu.idatt1005.pantrypal.models;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.Date;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestGrocery {
   @Test
@@ -16,6 +16,16 @@ class TestGrocery {
   }
 
   @Test
+  void testShelfIsEmpty() {
+    // Create a Grocery object
+    Grocery grocery = new Grocery("Apple", 5, "g", "", false);
+
+    // Test the getCategory() method
+    assertEquals("Unassigned", grocery.getShelf());
+  }
+
+
+  @Test
   void testGetChecked() {
     // Create a Grocery object
     boolean checked = true;
@@ -26,12 +36,21 @@ class TestGrocery {
   }
 
   @Test
-  void testGetName() {
+  void testGetKey() {
     // Create a Grocery object
     Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", false);
 
     // Test the getName() method
     assertEquals("Apple", grocery.getKey());
+  }
+
+  @Test
+  void testGetName() {
+    // Create a Grocery object
+    Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", false);
+
+    // Test the getName() method
+    assertEquals("Apple", grocery.getName());
   }
 
   @Test
@@ -41,5 +60,25 @@ class TestGrocery {
 
     // Test the getQuantity() method
     assertEquals(5, grocery.getQuantity());
+  }
+
+  @Test
+  void testSetQuantity() {
+    // Create a Grocery object
+    Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", false);
+
+    // Test the setQuantity() method
+    grocery.setQuantity(10);
+    assertEquals(10, grocery.getQuantity());
+  }
+
+  @Test
+  void setChecked() {
+    // Create a Grocery object
+    Grocery grocery = new Grocery("Apple", 5, "g", "Fridge", false);
+
+    // Test the setChecked() method
+    grocery.setChecked(true);
+    assertTrue(grocery.getChecked());
   }
 }

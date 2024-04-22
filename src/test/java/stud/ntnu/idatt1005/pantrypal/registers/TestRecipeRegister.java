@@ -110,4 +110,24 @@ class TestRecipeRegister {
     }
   }
 
+  @Nested
+  @DisplayName("Tests for searchRecipe()")
+  class SearchRecipeTests {
+    @Test
+    @DisplayName("Test searchRecipe() with search query")
+    void testSearchRecipeWithSearchQuery() {
+      Recipe newRecipe = new Recipe("Fruit salad", "", groceries, steps, null, false);
+      recipeRegister.addRecipe(newRecipe);
+      assertEquals(1, recipeRegister.searchRecipes("Fruit").size());
+    }
+
+    @Test
+    @DisplayName("Test searchRecipe() with empty search query")
+    void testSearchRecipeWithEmptySearchQuery() {
+      Recipe newRecipe = new Recipe("Fruit salad", "", groceries, steps, null, false);
+      recipeRegister.addRecipe(newRecipe);
+      assertEquals(2, recipeRegister.searchRecipes("").size());
+    }
+  }
+
 }

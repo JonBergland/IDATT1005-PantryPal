@@ -2,6 +2,8 @@ package stud.ntnu.idatt1005.pantrypal.views;
 
 import static javafx.stage.Screen.getPrimary;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -9,7 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import stud.ntnu.idatt1005.pantrypal.controllers.CookBookController;
+import stud.ntnu.idatt1005.pantrypal.controllers.CookbookController;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
@@ -18,8 +20,6 @@ import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.views.components.CookbookRecipeComponent;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The CookbookView class is responsible for creating and managing the view for the
@@ -41,7 +41,7 @@ public class CookbookView extends View {
   /**
    * A map containing the recipes to be displayed in the view.
    */
-  private final CookBookController controller;
+  private final CookbookController controller;
 
   private final VBox pageContainer;
 
@@ -53,7 +53,7 @@ public class CookbookView extends View {
    *
    * @param controller the CookBookController that this view interacts with
    */
-  public CookbookView(CookBookController controller) {
+  public CookbookView(CookbookController controller) {
     super(controller, Route.COOKBOOK, "/styles/cookbook.css");
     this.controller = controller;
     this.setScrollPane();
@@ -63,6 +63,10 @@ public class CookbookView extends View {
     render(this.controller.getCurrentSearch());
   }
 
+  /**
+   * Adds a search bar to the view.vThe search bar contains a text field for searching
+   * recipes and a button for adding a new recipe.
+   */
   private void addSearchBar() {
     TextField searchField = createSearchField();
     StyledButton addRecipe = createAddRecipeButton();
@@ -90,6 +94,13 @@ public class CookbookView extends View {
     getBorderPane().setCenter(pageContainer);
   }
 
+  /**
+   * Creates a VBox to contain the rows of recipes.
+   * It creates an HBox for each row and adds the CookbookRecipeComponents to the rows.
+   *
+   * @param currentSearch the list of recipes to be displayed
+   * @return the VBox containing the rows of recipes
+   */
   private VBox createRecipeContainer(List<Recipe> currentSearch) {
     VBox recipeContainer = new VBox(spacing / 2);
     recipeContainer.setPadding(new Insets(spacing, 0, spacing, 0));
@@ -105,13 +116,20 @@ public class CookbookView extends View {
       }
       CookbookRecipeComponent recipeComponent = new CookbookRecipeComponent(recipe);
       recipeComponent.addObserver(controller);
-      row.getChildren().add(recipeComponent.getComponent());
+      row.getChildren().add(recipeComponent);
     }
 
     row.setAlignment(Pos.CENTER);
     recipeContainer.getChildren().add(row);
     return recipeContainer;
   }
+
+  /**
+   * Creates a button for adding a new recipe.
+   * The button is styled and has an action that notifies the observers of the view.
+   *
+   * @return the styled button for adding a new recipe
+   */
   private StyledButton createAddRecipeButton() {
     StyledButton button = new StyledButton("Add Recipe");
     button.setOnAction(e -> notifyObservers(ButtonEnum.ADD));
@@ -120,6 +138,12 @@ public class CookbookView extends View {
     return button;
   }
 
+  /**
+   * Creates a text field for searching recipes.
+   * The text field is styled and has an action that notifies the observers of the view.
+   *
+   * @return the styled text field for searching recipes
+   */
   private TextField createSearchField() {
     TextField searchField = new TextField();
     searchField.setPromptText("Search");
@@ -139,7 +163,7 @@ public class CookbookView extends View {
    */
   private double calculateSpacing() {
     Rectangle2D visualBounds = getPrimary().getVisualBounds();
-    return ((visualBounds.getWidth() - RECIPES_PER_ROW * CookbookRecipeComponent.getWidth())
-        / (RECIPES_PER_ROW + 1));
+    return ((visualBounds.getWidth() - RECIPES_PER_ROW * CookbookRecipeComponent.getComponentWidth())
+            / (RECIPES_PER_ROW + 1));
   }
 }
