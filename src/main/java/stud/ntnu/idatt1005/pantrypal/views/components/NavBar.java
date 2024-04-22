@@ -19,7 +19,7 @@ public class NavBar extends ToolBar {
   /**
    * A separator between the navigation buttons and the login button.
    */
-  Rectangle separator = new Rectangle(2, 38);
+  private final Rectangle separator = new Rectangle(2, 38);
 
   /**
    * Constructor for NavBar.
