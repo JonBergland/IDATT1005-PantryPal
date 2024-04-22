@@ -36,7 +36,7 @@ public class HomeView extends View {
   private final Text pantryText = new Text("Pantry");
 
   // Text for the "Cook Book" section header.
-  private final Text cookBookText = new Text("Cook Book");
+  private final Text cookbookText = new Text("Cook Book");
 
   // Text for the "Shopping List" section header.
   private final Text shoppingListText = new Text("Shopping List");
@@ -45,13 +45,12 @@ public class HomeView extends View {
   private final Text pantryUndertext = new Text("Check out what you have, or update it.");
 
   // Text for the "Cook Book" section subheader.
-  private final Text cookBookUndertext = new Text(
+  private final Text cookbookUndertext = new Text(
           "Browse different recipes and auto generate shopping list.");
 
   // Text for the "Shopping List" section subheader.
   private final Text shoppingListUndertext = new Text(
           "Start generating a shopping list for your next trip to the store.");
-
 
   // Background for the "Pantry" section.
   private final VBox homeViewPantryBackground = new VBox();
@@ -67,7 +66,7 @@ public class HomeView extends View {
           "Pantry", StyledButton.Variant.BLACK, StyledButton.Size.LARGE);
 
   // Button for the "Cook Book" section.
-  private final StyledButton cookBookButton = new StyledButton(
+  private final StyledButton cookbookButton = new StyledButton(
           "Cook Book", StyledButton.Variant.BLACK, StyledButton.Size.LARGE);
 
   // Button for the "Shopping List" section.
@@ -111,7 +110,7 @@ public class HomeView extends View {
     homeViewCookbookBackground.getStyleClass().add("cookbook-background");
     setBoxSize(homeViewCookbookBackground, 1.0);
     getBorderPane().setLeft(homeViewCookbookBackground);
-    VBox cookbookTextBox = createTextBox(cookBookText, cookBookUndertext, cookBookButton);
+    VBox cookbookTextBox = createTextBox(cookbookText, cookbookUndertext, cookbookButton);
 
     ImageView icon = createIcon("images/icons/cookbookIcon.png");
     NodeUtils.addChildren(cookBookBox, cookbookTextBox, icon);
@@ -208,7 +207,7 @@ public class HomeView extends View {
    */
   private void applyButtons() {
     createButton(pantryButton, () -> controller.onNavLinkPress(Route.PANTRY));
-    createButton(cookBookButton, () -> controller.onNavLinkPress(Route.COOKBOOK));
+    createButton(cookbookButton, () -> controller.onNavLinkPress(Route.COOKBOOK));
     createButton(shoppingListButton, () -> controller.onNavLinkPress(Route.SHOPPING_LIST));
   }
 
