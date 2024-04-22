@@ -14,7 +14,7 @@ public class Controller {
   /**
    * The view manager for the application.
    */
-  final ViewManager viewManager;
+  public final ViewManager viewManager;
 
   /**
    * Creates an instance of the controller, and sets the viewManager.
