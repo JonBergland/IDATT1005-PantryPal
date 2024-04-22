@@ -151,7 +151,7 @@ public class RecipeView extends View {
 
     StyledButton editButton = new StyledButton("Edit",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
-    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_RECIPE));
+    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_RECIPE, this.recipe));
 
     StyledButton deleteButton = new StyledButton("Delete",
             StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM);
