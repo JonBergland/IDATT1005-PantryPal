@@ -11,6 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
@@ -34,6 +36,8 @@ public class PantryView extends View {
    * actions associated with the pantry functionality.
    */
   private final PantryController controller;
+  private static final String FX_FONT_SIZE = "-fx-font-size: ";
+  private double fontSize = 35;
 
   /**
    * Constructor for PantryView.
@@ -104,10 +108,15 @@ public class PantryView extends View {
 
     HBox header = new HBox();
     header.setAlignment(Pos.CENTER);
-
     TextField title = new TextField(shelf.getName());
+    title.setMinWidth(200);
     NodeUtils.addClasses(title, "shelf-title-textfield");
     title.setEditable(false);
+    title.setStyle(FX_FONT_SIZE + fontSize + "px;");
+
+    title.textProperty().addListener((observable, oldValue, newValue) ->
+        updateShelfTextSize(title, newValue));
+
     StyledButton edit = new StyledButton("Edit");
     edit.setStyle("-fx-min-width: 80px;");
     edit.setOnAction(e -> {
@@ -118,6 +127,7 @@ public class PantryView extends View {
         title.setEditable(false);
         edit.setText("Edit");
         this.controller.editShelfName(shelf, title.getText());
+        title.setStyle(FX_FONT_SIZE + fontSize + "px;");
       }
     });
     StyledButton delete = new StyledButton(
@@ -126,6 +136,7 @@ public class PantryView extends View {
     delete.setOnAction(e -> this.controller.deleteShelf(shelf));
 
     addChildren(header, title, edit, delete);
+    updateShelfTextSize(title, shelf.getName());
 
     Separator separator = new Separator();
     addClasses(separator, "shelf-separator");
@@ -135,6 +146,27 @@ public class PantryView extends View {
     addChildren(container, header, separator, groceryList);
 
     return container;
+  }
+
+  private void updateShelfTextSize(TextField textField, String newValue) {
+    Text text = new Text(newValue);
+    text.setFont(textField.getFont());
+    double textWidth = text.getLayoutBounds().getWidth();
+    double textFieldWidth = (textField.getWidth() > 0 ? textField.getWidth() : 300);
+
+    while (textWidth * 1.2 > textFieldWidth) {
+      String currentFontName = textField.getFont().getName();
+      double currentFontSize = textField.getFont().getSize();
+
+      Font newFont = new Font(currentFontName, currentFontSize - 0.5);
+
+      textField.setStyle(FX_FONT_SIZE + (currentFontSize - 0.5) + "px;");
+      textField.setFont(newFont);
+
+      text.setFont(newFont);
+      textWidth = text.getLayoutBounds().getWidth();
+      this.fontSize = currentFontSize;
+    }
   }
 
   /**
