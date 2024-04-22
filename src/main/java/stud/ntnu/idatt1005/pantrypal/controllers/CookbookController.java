@@ -80,8 +80,12 @@ public class CookbookController extends Controller implements Observer {
       String id = recipeFromDataBase.get("id").toString();
       String name = recipeFromDataBase.get("name").toString();
       String description = recipeFromDataBase.get("description").toString();
-      String image = recipeFromDataBase.get("image").toString();
-
+      String image;
+      try {
+        image = recipeFromDataBase.get("image").toString();
+      } catch (NullPointerException e) {
+        image = null;
+      }
       String groceriesQuery = "SELECT * FROM recipe_grocery WHERE recipe_id = ?";
       List<Map<String, Object>> groceriesFromDataBase = SQL.executeQuery(groceriesQuery, id);
 
@@ -294,7 +298,7 @@ public class CookbookController extends Controller implements Observer {
     }
 
     if (getRecipes().containsKey(recipe.getKey())) {
-      throw new IllegalArgumentException("Recipe already exists");
+      getRecipes().remove(recipe.getKey());
     }
 
     String query = "INSERT INTO recipe (name, description, image) VALUES (?, ?, ?)";
