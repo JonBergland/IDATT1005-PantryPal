@@ -40,7 +40,7 @@ public class CookbookRecipeComponent implements Observable {
    * The StackPane displaying the recipe component.
    */
   private StackPane stackPane;
-  private final List<Observer> observers = new ArrayList<>();
+  private final List<Observer> observers;
 
   /**
    * Constructs a CookbookRecipeComponent for a Recipe.
@@ -51,6 +51,7 @@ public class CookbookRecipeComponent implements Observable {
    */
   public CookbookRecipeComponent(Recipe recipe) {
     this.recipe = recipe;
+    this.observers = new ArrayList<>();
     BackgroundSize backgroundSize = new BackgroundSize(320, 200,
             true, true, false, true);
     setUpStackPane();
