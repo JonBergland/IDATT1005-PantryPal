@@ -21,11 +21,11 @@ public class LogInView extends View {
   private final LogInController controller;
 
   // Text representing the login title
-  Text loginText = new Text("Login");
+  private static final Text loginText = new Text("Login");
   // Username input field
-  StyledTextField usernameField = new StyledTextField("Username");
+  private static final StyledTextField usernameField = new StyledTextField("Username");
   // Login button
-  StyledButton loginButton = new StyledButton(
+  private static final StyledButton loginButton = new StyledButton(
       "Login", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
 
   /**
@@ -42,7 +42,7 @@ public class LogInView extends View {
   }
 
   /**
-   * Initializes the LogInView by setting up the layout and styling. It crateas a VBox
+   * Initializes the LogInView by setting up the layout and styling. It creates a VBox
    * to contain the login elements, adds the usernameField and loginButton to the VBox,
    * and applies styling to the loginContainer, loginText and loginButton.
    * The loginButton is set up to call the logIn method in the controller when clicked.
