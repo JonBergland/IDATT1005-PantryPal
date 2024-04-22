@@ -28,7 +28,6 @@
 }
 
 .shelf-title-textfield {
-    -fx-font-size: 40px;
     -fx-font-weight: bolder;
     -fx-text-fill: black;
     -fx-pref-width: 300px;
