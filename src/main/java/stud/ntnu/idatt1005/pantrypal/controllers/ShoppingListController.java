@@ -69,12 +69,14 @@ public class ShoppingListController extends Controller implements Observer {
     List<Map<String, Object>> groceries = SQL.executeQuery(query, PantryPal.userName);
 
     for (Map<String, Object> grocery : groceries) {
-      String name = grocery.get("grocery_name").toString();
-      int quantity = (int) grocery.get("quantity");
-      String unit = grocery.get("unit").toString();
-      String shelf = grocery.get("shelf_name").toString();
-      boolean isBought = ((int) grocery.get("is_bought")) != 0;
-      this.register.addGrocery(new Grocery(name, quantity, unit, shelf, isBought));
+      String name = grocery.get("grocery_name") != null ? grocery.get("grocery_name").toString() : null;
+      int quantity = grocery.get("quantity") != null ? (int) grocery.get("quantity") : 0;
+      String unit = grocery.get("unit") != null ? grocery.get("unit").toString() : null;
+      String shelf = grocery.get("shelf_name") != null ? grocery.get("shelf_name").toString() : null;
+      boolean isBought = grocery.get("is_bought") != null && ((int) grocery.get("is_bought")) != 0;
+      if (name != null && unit != null && shelf != null) {
+        this.register.addGrocery(new Grocery(name, quantity, unit, shelf, isBought));
+      }
     }
   }
 
@@ -198,25 +200,24 @@ public class ShoppingListController extends Controller implements Observer {
           SQL.executeUpdate(groceryQuery, grocery.getName(), "g");
         }
 
-        //Add grocery to shopping list
-        String shoppingListGroceryQuery = "INSERT INTO shopping_list_grocery "
-            + "(grocery_name, user_name, quantity, is_bought, shelf_name) VALUES (?, ?, ?, ?, ?)";
-        SQL.executeUpdate(shoppingListGroceryQuery, grocery.getName(), PantryPal.userName,
-            grocery.getQuantity(), grocery.getChecked(), grocery.getShelf());
+//        //Add grocery to shopping list
+        String checkQuery = "SELECT * FROM shopping_list_grocery WHERE grocery_name = ? AND user_name = ?";
+        List<Map<String, Object>> result = SQL.executeQuery(checkQuery, grocery.getName(), PantryPal.userName);
+
+        if (result.isEmpty()) {
+          String insertQuery = "INSERT INTO shopping_list_grocery "
+              + "(grocery_name, user_name, quantity, is_bought, shelf_name) VALUES (?, ?, ?, ?, ?)";
+          SQL.executeUpdate(insertQuery, grocery.getName(), PantryPal.userName,
+              grocery.getQuantity(), grocery.getChecked(), grocery.getShelf());
+        } else {
+          String updateQuery = "UPDATE shopping_list_grocery SET quantity = quantity + ? "
+              + "WHERE grocery_name = ? AND user_name = ?";
+          SQL.executeUpdate(updateQuery, grocery.getQuantity(), grocery.getName(), PantryPal.userName);
+        }
+
       }
       register.addGrocery(grocery);
     }
-
-//    try {
-//      if (register.getGrocery(grocery.getName()) != null) {
-//        int oldAmount = register.getGrocery(grocery.getName()).getQuantity();
-//        register.getGrocery(grocery.getName()).setQuantity(oldAmount + grocery.getQuantity());
-//
-//      }
-//    } catch (IllegalArgumentException e) {
-//      register.addGrocery(grocery);
-//    }
-
   }
 
   /**
