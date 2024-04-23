@@ -56,6 +56,11 @@ public class GroceryRegister extends Register<Grocery> {
     super.addModel(grocery);
   }
 
+  /**
+   * Remove a grocery from the register.
+   *
+   * @param grocery the grocery to be removed
+   */
   public void removeGrocery(Grocery grocery) {
     super.removeModel(grocery);
   }
