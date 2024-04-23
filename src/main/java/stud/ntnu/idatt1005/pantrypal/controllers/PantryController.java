@@ -283,10 +283,6 @@ public class PantryController extends Controller implements Observer {
               + "(pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
           SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
         }
-        //Add grocery to pantry shelf
-        String shelfGroceryQuery = "INSERT INTO pantry_shelf_grocery "
-            + "(pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
-        SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
 
         Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
         shelf.addGrocery(grocery);
