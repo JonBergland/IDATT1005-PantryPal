@@ -220,6 +220,7 @@ public class HomeView extends View {
   private void createButton(StyledButton button, Runnable action) {
     button.setBackground(new Background(
             new BackgroundFill(Color.BLACK, new CornerRadii(10), Insets.EMPTY)));
+    NodeUtils.addClasses(button, "home-button");
     if (action != null) {
       button.setOnAction(event -> action.run());
     }

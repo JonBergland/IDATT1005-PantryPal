@@ -64,9 +64,16 @@
     -fx-text-fill: white;
 }
 
+.button-black:hover {
+    -fx-background-color: #333;
+}
+
 .button-delete {
     -fx-background-color: transparent;
     -fx-text-fill: black;
+}
+.button-delete:hover {
+    -fx-background-color: lightgray;
 }
 
 .favorite-button {

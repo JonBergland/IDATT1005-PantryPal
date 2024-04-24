@@ -19,6 +19,7 @@ import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
+import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.components.AddGroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.GroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
@@ -158,7 +159,10 @@ public class ShoppingListView extends View {
   private StyledButton createAddToPantryButton() {
     StyledButton addToPantry = new StyledButton(
         "Add to pantry", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
-    addToPantry.setOnAction(e -> notifyObservers(ButtonEnum.ADD_TO_PANTRY));
+    addToPantry.setOnAction(e -> {
+      notifyObservers(ButtonEnum.ADD_TO_PANTRY);
+      SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
+    });
     addToPantry.setMinWidth(getPrimary().getVisualBounds().getWidth() * 0.5);
     return addToPantry;
   }

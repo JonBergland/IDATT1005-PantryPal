@@ -17,6 +17,7 @@ import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
+import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
 
 /**
@@ -70,7 +71,10 @@ public class GroceryListElement implements Observable {
   private StyledButton createButton() {
     StyledButton newButton = new StyledButton(
         "X", StyledButton.Variant.DELETE, StyledButton.Size.MEDIUM);
-    newButton.setOnAction(e -> notifyObservers(ButtonEnum.REMOVE));
+    newButton.setOnAction(e -> {
+      notifyObservers(ButtonEnum.REMOVE);
+      SoundPlayer.playSound(SoundPlayer.Sound.DELETE);
+    });
     return newButton;
   }
 

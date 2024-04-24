@@ -23,6 +23,7 @@ import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
+import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.components.FavoriteButton;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
@@ -119,9 +120,9 @@ public class RecipeView extends View {
       description.setText(recipe.getDescription());
     } else {
       description = new Text("Recipe description - Lorem ipsum dolor sit amet, "
-          + "consectetur adipiscing elit. Morbi malesuada nulla diam, quis vulputate augue "
-          + "porta sed. Sed semper neque ac tempus molestie. Suspendisse ultricies erat nunc, "
-          + "ut fringilla leo porta id. Vivamus euismod fringilla leo.");
+              + "consectetur adipiscing elit. Morbi malesuada nulla diam, quis vulputate augue "
+              + "porta sed. Sed semper neque ac tempus molestie. Suspendisse ultricies erat nunc, "
+              + "ut fringilla leo porta id. Vivamus euismod fringilla leo.");
     }
     description.setWrappingWidth(400);
 
@@ -140,22 +141,31 @@ public class RecipeView extends View {
     StyledButton addNeededGroceriesButton = new StyledButton("Add groceries",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     addNeededGroceriesButton.getStyleClass().add("overview-buttons");
-    addNeededGroceriesButton.setOnAction(e ->
-        notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST, this.recipe));
+    addNeededGroceriesButton.setOnAction(e -> {
+      notifyObservers(ButtonEnum.ADD_TO_SHOPPING_LIST, this.recipe);
+      SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
+    });
 
     FavoriteButton favoriteButton = new FavoriteButton(recipe.getIsFavorite());
     favoriteButton.setOnMouseClicked(e -> {
       notifyObservers(ButtonEnum.EDIT_FAVORITE, this.recipe);
       favoriteButton.toggleStarColor();
+      SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
     });
 
     StyledButton editButton = new StyledButton("Edit",
             StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
-    editButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.EDIT_RECIPE, this.recipe));
+    editButton.setOnMouseClicked(e -> {
+      notifyObservers(ButtonEnum.EDIT_RECIPE, this.recipe);
+      SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
+    });
 
     StyledButton deleteButton = new StyledButton("Delete",
             StyledButton.Variant.DANGER, StyledButton.Size.MEDIUM);
-    deleteButton.setOnMouseClicked(e -> notifyObservers(ButtonEnum.REMOVE, this.recipe));
+    deleteButton.setOnMouseClicked(e -> {
+      notifyObservers(ButtonEnum.REMOVE, this.recipe);
+      SoundPlayer.playSound(SoundPlayer.Sound.DELETE);
+    });
     HBox overviewButtons = new HBox(20);
     overviewButtons.getChildren().addAll(
             addNeededGroceriesButton,

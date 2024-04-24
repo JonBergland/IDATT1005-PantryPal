@@ -21,6 +21,7 @@ import stud.ntnu.idatt1005.pantrypal.registers.GroceryRegister;
 import stud.ntnu.idatt1005.pantrypal.registers.StepRegister;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
+import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.components.AddGroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.GroceryListElement;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
@@ -130,6 +131,7 @@ public class AddRecipeView extends View {
       Recipe recipe = new Recipe(name.getText(), description.getText(),
               groceryRegister, stepRegister, imageUrl.getText(), false);
       notifyObservers(ButtonEnum.ADD, recipe);
+      SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
     });
 
     innerForm.getChildren().addAll(titleBox, name, description, imageUrl,
@@ -239,7 +241,10 @@ public class AddRecipeView extends View {
 
       StyledButton removeStep = new StyledButton("X", StyledButton.Variant.DELETE,
               StyledButton.Size.MEDIUM);
-      removeStep.setOnAction(e -> notifyObservers(ButtonEnum.REMOVE, step));
+      removeStep.setOnAction(e -> {
+        notifyObservers(ButtonEnum.REMOVE, step);
+        SoundPlayer.playSound(SoundPlayer.Sound.DELETE);
+      });
       removeStep.setMaxHeight(elementHeight);
 
       BorderPane stepElement = new BorderPane();
@@ -278,6 +283,7 @@ public class AddRecipeView extends View {
       if (!stepField.getText().isEmpty()) {
         notifyObservers(ButtonEnum.ADD, stepField.getText());
         stepField.clear();
+        SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
       }
     });
 

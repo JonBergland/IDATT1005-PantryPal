@@ -11,6 +11,7 @@ import stud.ntnu.idatt1005.pantrypal.controllers.Observer;
 import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
+import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
 
 
@@ -97,6 +98,7 @@ public class AddGroceryListElement extends HBox implements Observable {
         shelf.clear();
         quantity.clear();
         unit.clear();
+        SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
       }
     });
     return addButton;

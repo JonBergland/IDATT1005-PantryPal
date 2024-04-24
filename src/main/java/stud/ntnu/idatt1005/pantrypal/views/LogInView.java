@@ -5,6 +5,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
 import stud.ntnu.idatt1005.pantrypal.enums.Route;
+import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledTextField;
 
@@ -70,6 +71,7 @@ public class LogInView extends View {
     loginButton.setOnAction(e -> {
       if (!usernameField.getText().isEmpty()) {
         controller.logIn(usernameField.getText());
+        SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
       }
     });
 

@@ -17,6 +17,7 @@ import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
+import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.components.CookbookRecipeComponent;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
 
@@ -132,7 +133,10 @@ public class CookbookView extends View {
    */
   private StyledButton createAddRecipeButton() {
     StyledButton button = new StyledButton("Add Recipe");
-    button.setOnAction(e -> notifyObservers(ButtonEnum.ADD));
+    button.setOnAction(e -> {
+      notifyObservers(ButtonEnum.ADD);
+      SoundPlayer.playSound(SoundPlayer.Sound.DEFAULT);
+    });
     StackPane.setAlignment(button, Pos.CENTER_RIGHT);
 
     return button;
