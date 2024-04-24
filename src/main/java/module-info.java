@@ -12,6 +12,7 @@ module stud.ntnu.idatt1005.pantrypal {
   requires com.almasb.fxgl.all;
   requires java.desktop;
   requires java.sql;
+  requires javafx.media;
 
   opens stud.ntnu.idatt1005.pantrypal to javafx.fxml;
   exports stud.ntnu.idatt1005.pantrypal;
