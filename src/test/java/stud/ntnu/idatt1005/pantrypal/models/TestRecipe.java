@@ -117,6 +117,8 @@ class TestRecipe {
   void testToggleIsFavorite() {
     recipe.toggleIsFavorite();
     assertTrue(recipe.getIsFavorite());
+    recipe.toggleIsFavorite();
+    assertFalse(recipe.getIsFavorite());
   }
 
   @Test
