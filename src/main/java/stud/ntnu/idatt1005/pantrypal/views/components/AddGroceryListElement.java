@@ -3,6 +3,7 @@ package stud.ntnu.idatt1005.pantrypal.views.components;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -33,24 +34,29 @@ public class AddGroceryListElement extends HBox implements Observable {
     StyledTextField name = new StyledTextField("Name");
     StyledTextField shelf = createShelfTextField(shelfName);
     StyledTextField quantity = new StyledTextField("Quantity");
-    StyledButton addButton = getStyledButton(name, shelf, quantity);
+    StyledTextField unit = new StyledTextField("Unit");
+    StyledButton addButton = getStyledButton(name, shelf, quantity, unit);
 
     this.getStylesheets().add(Objects.requireNonNull(
-        getClass().getResource("/styles/pantry.css")).toExternalForm());
+            getClass().getResource("/styles/pantry.css")).toExternalForm());
     this.setAlignment(Pos.CENTER);
     NodeUtils.addClasses(this, "add-grocery-container");
 
     if (shelf.getText().isEmpty()) {
       this.getChildren().addAll(
-          styleText(name, 200),
-          styleText(shelf, 200),
-          styleText(quantity, 100),
-          addButton);
+              styleText(name, 125),
+              styleText(shelf, 125),
+              styleText(quantity, 125),
+              styleText(unit, 125),
+              addButton
+      );
     } else {
       this.getChildren().addAll(
-          styleText(name, 100),
-          styleText(quantity, 100),
-          addButton);
+              styleText(name, 100),
+              styleText(quantity, 100),
+              styleText(unit, 100),
+              addButton
+      );
     }
   }
 
@@ -58,16 +64,17 @@ public class AddGroceryListElement extends HBox implements Observable {
    * Creates a styled addButton with the given text fields and returns it.
    * The addButton is styled with the add-grocery-addButton class.
    *
-   * @param name the name text field
-   * @param shelf the shelf text field
+   * @param name     the name text field
+   * @param shelf    the shelf text field
    * @param quantity the quantity text field
+   * @param unit     the unit text field
    * @return a styled addButton
    */
-  private StyledButton getStyledButton(StyledTextField name,
-                                       StyledTextField shelf, StyledTextField quantity) {
+  private StyledButton getStyledButton(StyledTextField name, StyledTextField shelf,
+                                       StyledTextField quantity,
+                                       StyledTextField unit) {
     StyledButton addButton = new StyledButton(
-        "Add", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
-
+            "Add", StyledButton.Variant.SOLID, StyledButton.Size.MEDIUM);
     // Set the action for the add addButton
     addButton.setOnAction(e -> {
       if (!name.getText().isEmpty()) {
@@ -81,11 +88,15 @@ public class AddGroceryListElement extends HBox implements Observable {
           String str = shelf.getText();
           shelf.setText(str.substring(0, 1).toUpperCase() + str.substring(1));
         }
-        notifyObservers(ButtonEnum.ADD, name.getText(), Integer.parseInt(quantity.getText()),
-            shelf.getText());
+        if (unit.getText().isEmpty()) {
+          unit.setText("Pc");
+        }
+        notifyObservers(ButtonEnum.ADD, name.getText(), shelf.getText(), Integer.parseInt(quantity.getText()),
+                unit.getText());
         name.clear();
         shelf.clear();
         quantity.clear();
+        unit.clear();
       }
     });
     return addButton;
@@ -98,7 +109,7 @@ public class AddGroceryListElement extends HBox implements Observable {
    * and has a max width of the given width.
    *
    * @param textField the text field to be styled
-   * @param width the width of the text field
+   * @param width     the width of the text field
    * @return A Stack pane with the styled text field
    */
   private StackPane styleText(StyledTextField textField, int width) {
@@ -120,7 +131,7 @@ public class AddGroceryListElement extends HBox implements Observable {
    */
   private StyledTextField createShelfTextField(String shelfName) {
     StyledTextField shelf = new StyledTextField("Shelf");
-    if (!shelfName.isEmpty())  {
+    if (!shelfName.isEmpty()) {
       shelf.setText(shelfName);
     }
     return shelf;
@@ -145,13 +156,16 @@ public class AddGroceryListElement extends HBox implements Observable {
   }
 
   /**
-   * Notifies the observers in the observer list with the given buttonEnum.
+   * Notifies the observers in the observer list with the given buttonEnum and grocery.
    *
    * @param buttonEnum the buttonEnum to be sent to the observers
+   * @param name       the name of the grocery
+   * @param shelf      the shelf of the grocery
+   * @param quantity   the quantity of the grocery
+   * @param unit       the unit of the grocery
    */
-  private void notifyObservers(ButtonEnum buttonEnum, String name, int quantity, String shelf) {
-    //TODO: Fix unit
-    Grocery grocery = new Grocery(name, quantity, "g", shelf, false);
+  private void notifyObservers(ButtonEnum buttonEnum, String name, String shelf, int quantity, String unit) {
+    Grocery grocery = new Grocery(name, quantity, unit, shelf, false);
     List<Observer> observerList = new ArrayList<>(this.observers);
     for (Observer observer : observerList) {
       observer.update(buttonEnum, grocery);

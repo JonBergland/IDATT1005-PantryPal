@@ -126,7 +126,8 @@ public class PantryController extends Controller implements Observer {
     switch (buttonEnum) {
       case ADD:
         try {
-          addGrocery(grocery.getShelf(), grocery.getName(), grocery.getQuantity());
+          addGrocery(grocery.getShelf(), grocery.getName(), grocery.getQuantity(),
+                  grocery.getUnit());
           rerender();
           break;
         } catch (IllegalArgumentException e) {
@@ -257,7 +258,7 @@ public class PantryController extends Controller implements Observer {
    * @param name   the name of the grocery item
    * @param amount the amount of the grocery item
    */
-  public void addGrocery(Shelf shelf, String name, int amount) {
+  public void addGrocery(Shelf shelf, String name, int amount, String unit) {
     //Check if grocery already exists in shelf
     if (shelf.getGroceries().containsKey(name)) {
       GroceryRegister groceryRegister = shelf.getGroceryRegister();
@@ -277,17 +278,16 @@ public class PantryController extends Controller implements Observer {
         List<Map<String, Object>> groceries = SQL.executeQuery(checkGroceryQuery, name);
         if (groceries.isEmpty()) {
           String groceryQuery = "INSERT INTO grocery (name, unit) VALUES (?, ?)";
-          SQL.executeUpdate(groceryQuery, name, "g");
-
-          String shelfGroceryQuery = "INSERT INTO pantry_shelf_grocery "
-              + "(pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
-          SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
+          SQL.executeUpdate(groceryQuery, name, unit);
         }
+        String shelfGroceryQuery = "INSERT INTO pantry_shelf_grocery "
+                + "(pantry_shelf_id, grocery_name, quantity) VALUES (?, ?, ?)";
+        SQL.executeUpdate(shelfGroceryQuery, shelf.getKey(), name, amount);
 
-        Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
+        Grocery grocery = new Grocery(name, amount, unit, shelf.getName(), false);
         shelf.addGrocery(grocery);
       } else {
-        Grocery grocery = new Grocery(name, amount, "g", shelf.getName(), false);
+        Grocery grocery = new Grocery(name, amount, unit, shelf.getName(), false);
         shelf.addGrocery(grocery);
 
       }
@@ -303,7 +303,7 @@ public class PantryController extends Controller implements Observer {
    * @param name      the name of the grocery item
    * @param amount    the amount of the grocery item
    */
-  public void addGrocery(String shelfName, String name, int amount) {
+  public void addGrocery(String shelfName, String name, int amount, String unit) {
     Shelf shelf = null;
     try {
       shelf = register.getShelfByName(shelfName);
@@ -313,7 +313,7 @@ public class PantryController extends Controller implements Observer {
       if (shelf == null) {
         shelf = this.addShelf(shelfName);
       }
-      this.addGrocery(shelf, name, amount);
+      this.addGrocery(shelf, name, amount, unit);
     }
   }
 

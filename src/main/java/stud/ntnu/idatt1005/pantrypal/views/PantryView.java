@@ -189,6 +189,7 @@ public class PantryView extends View {
       GroceryListElement element = new GroceryListElement.GroceryListElementBuilder(grocery)
           .text(grocery.getName())
           .quantity()
+          .text(grocery.getUnit())
           .build();
       for (Observer observer : observers) {
         element.addObserver(observer);

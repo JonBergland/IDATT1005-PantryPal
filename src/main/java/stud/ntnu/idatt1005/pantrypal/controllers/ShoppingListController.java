@@ -158,7 +158,8 @@ public class ShoppingListController extends Controller implements Observer {
     List<Grocery> groceriesToRemove = new ArrayList<>();
     for (Grocery grocery : register.getRegister().values()) {
       if (grocery.getChecked()) {
-        pantryController.addGrocery(grocery.getShelf(), grocery.getName(), grocery.getQuantity());
+        pantryController.addGrocery(grocery.getShelf(), grocery.getName(),
+                grocery.getQuantity(), grocery.getUnit());
         groceriesToRemove.add(grocery);
       }
     }

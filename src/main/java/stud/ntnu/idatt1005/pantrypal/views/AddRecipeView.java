@@ -174,6 +174,7 @@ public class AddRecipeView extends View {
           .text(grocery.getName())
           .text(grocery.getShelf())
           .quantity()
+          .text(grocery.getUnit())
           .build();
 
       for (Observer observer : observers) {
