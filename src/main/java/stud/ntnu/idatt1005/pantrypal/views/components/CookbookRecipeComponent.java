@@ -26,11 +26,12 @@ import stud.ntnu.idatt1005.pantrypal.enums.ButtonEnum;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
 import stud.ntnu.idatt1005.pantrypal.utils.FontPalette;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.views.Observable;
 
 /**
- * This class represents a component for displaying a recipe within the cookbook.
- * It provides methods to create a visual representation of a recipe, including its image and name.
+ * This class represents a component for displaying a recipe within the cookbook. It provides
+ * methods to create a visual representation of a recipe, including its image and name.
  */
 public class CookbookRecipeComponent extends StackPane implements Observable {
 
@@ -38,46 +39,38 @@ public class CookbookRecipeComponent extends StackPane implements Observable {
   private final List<Observer> observers;
 
   /**
-   * Constructs a CookbookRecipeComponent for a Recipe.
-   * This constructor sets up the visual representation of the recipe
-   * using the image if it exists, and the name of the recipe.
+   * Constructs a CookbookRecipeComponent for a Recipe. This constructor sets up the visual
+   * representation of the recipe using the image if it exists, and the name of the recipe.
    *
-   * @param recipe     The recipe to be displayed.
+   * @param recipe The recipe to be displayed.
    */
   public CookbookRecipeComponent(Recipe recipe) {
     this.recipe = recipe;
     this.observers = new ArrayList<>();
     BackgroundSize backgroundSize = new BackgroundSize(320, 200,
-            true, true, false, true);
+        true, true, false, true);
     setUpStackPane();
 
     if (recipe.getImagePath() == null || recipe.getImagePath().isEmpty()) {
       BackgroundFill backgroundFill = new BackgroundFill(ColorPalette.GRAY,
-              new CornerRadii(10), null);
+          new CornerRadii(10), null);
       this.setBackground(new Background(backgroundFill));
     } else {
-      Image image;
-      try {
-        image = new Image(recipe.getImagePath());
-      } catch (IllegalArgumentException e) {
-        image = new Image("images/PantryPalLogo.png");
-      }
-      BackgroundImage backgroundImage = new BackgroundImage(image,
-              BackgroundRepeat.NO_REPEAT,
-              BackgroundRepeat.NO_REPEAT,
-              BackgroundPosition.CENTER,
-              backgroundSize);
-      this.setBackground(new Background(backgroundImage));
+      this.setStyle("-fx-background-image: url(" + recipe.getImagePath() + ");" +
+          "-fx-background-size: cover;" +
+          "-fx-background-position: center;" +
+          "-fx-background-repeat: no-repeat;");
     }
 
     setLabel(recipe.getKey());
     setStarIcon(recipe.getIsFavorite());
+
+    NodeUtils.addClasses(this, "recipe-component");
   }
 
 
   /**
    * Sets up the BorderPane for the recipe component.
-   *
    */
 
   private void setUpStackPane() {
@@ -86,9 +79,9 @@ public class CookbookRecipeComponent extends StackPane implements Observable {
     this.setMinWidth(getComponentWidth());
     this.setMinHeight(getComponentHeight());
     BorderStroke borderStroke = new BorderStroke(ColorPalette.BLACK,
-            BorderStrokeStyle.SOLID,
-            new CornerRadii(10),
-            new BorderWidths(1));
+        BorderStrokeStyle.SOLID,
+        new CornerRadii(10),
+        new BorderWidths(1));
     this.setBorder(new Border(borderStroke));
     Rectangle clip = new Rectangle(getComponentWidth(), getComponentHeight());
     clip.setArcWidth(20);
@@ -163,8 +156,8 @@ public class CookbookRecipeComponent extends StackPane implements Observable {
   }
 
   /**
-   * Notifies the observers of the component with the given buttonEnum and
-   * the recipe of the component.
+   * Notifies the observers of the component with the given buttonEnum and the recipe of the
+   * component.
    *
    * @param buttonEnum the buttonEnum to notify the observers with
    */
