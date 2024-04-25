@@ -199,3 +199,7 @@
     -fx-pref-width: 0;
     -fx-pref-height: 0;
 }
+
+.recipe-component:hover{
+    -fx-cursor: hand;
+}
