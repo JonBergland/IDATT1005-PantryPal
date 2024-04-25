@@ -105,6 +105,9 @@ public class CookbookRecipeComponent extends StackPane implements Observable {
   private void setLabel(String recipeName) {
     Label label = new Label(recipeName);
     label.setFont(FontPalette.BUTTON);
+    label.setTextFill(ColorPalette.PRIMARY_LIGHT);
+    label.setBackground(new Background(new BackgroundFill(ColorPalette.BLACK, null, null)));
+    NodeUtils.addClasses(label, "recipe-label");
     StackPane.setAlignment(label, Pos.CENTER);
     this.getChildren().add(label);
   }
