@@ -18,8 +18,8 @@ import stud.ntnu.idatt1005.pantrypal.views.CookbookView;
 import stud.ntnu.idatt1005.pantrypal.views.RecipeView;
 
 /**
- * The controller for the CookBookView and RecipeView.
- * This class is responsible for handling the logic for the CookBookView and RecipeView.
+ * The controller for the CookBookView and RecipeView. This class is responsible for handling the
+ * logic for the CookBookView and RecipeView.
  */
 public class CookbookController extends Controller implements Observer {
 
@@ -43,7 +43,7 @@ public class CookbookController extends Controller implements Observer {
    * @param pantryController       the PantryController for the application
    */
   public CookbookController(ViewManager viewManager, ShoppingListController shoppingListController,
-                            PantryController pantryController) {
+      PantryController pantryController) {
     super(viewManager);
     this.recipeRegister = new RecipeRegister();
     this.shelfRegister = pantryController.getRegister();
@@ -63,9 +63,9 @@ public class CookbookController extends Controller implements Observer {
   /**
    * Loads the recipes from the database. This method gets all the recipes from the database and
    * creates a new Recipe object for each recipe related to the user. The method also gets the
-   * groceries and steps for each recipe and adds them to the Recipe object. The method also
-   * checks if the recipe is a favorite for the user and sets the isFavorite boolean in the Recipe
-   * object. The Recipe object is then added to the recipeRegister.
+   * groceries and steps for each recipe and adds them to the Recipe object. The method also checks
+   * if the recipe is a favorite for the user and sets the isFavorite boolean in the Recipe object.
+   * The Recipe object is then added to the recipeRegister.
    */
   private void load() {
     String query = "SELECT * FROM recipe";
@@ -93,9 +93,12 @@ public class CookbookController extends Controller implements Observer {
 
         String groceryQuery = "SELECT * FROM grocery WHERE name = ?";
         List<Map<String, Object>> groceryDataFromDataBase =
-                SQL.executeQuery(groceryQuery, groceryName);
+            SQL.executeQuery(groceryQuery, groceryName);
 
-        String unit = groceryDataFromDataBase.getFirst().get("unit").toString();
+        String unit = "pcs";
+        if (!groceryDataFromDataBase.isEmpty()) {
+          unit = groceryDataFromDataBase.getFirst().get("unit").toString();
+        }
         //TODO: Fix shelf
         Grocery grocery = new Grocery(groceryName, quantity, unit, "", false);
         groceries.addGrocery(grocery);
@@ -110,9 +113,10 @@ public class CookbookController extends Controller implements Observer {
       }
 
       boolean isFavorite = false;
-      if(isLoggedIn()){
+      if (isLoggedIn()) {
         String favoriteQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
-        List<Map<String, Object>> favorite = SQL.executeQuery(favoriteQuery, id, PantryPal.userName);
+        List<Map<String, Object>> favorite = SQL.executeQuery(favoriteQuery, id,
+            PantryPal.userName);
         isFavorite = !favorite.isEmpty();
       }
 
@@ -140,9 +144,9 @@ public class CookbookController extends Controller implements Observer {
   }
 
   /**
-   * Updates the observer with the button that was pressed and the object affected. If
-   * the object is a Recipe, it performs the action related to the buttonEnum. If the object is not
-   * a Recipe, it throws an IllegalArgumentException.
+   * Updates the observer with the button that was pressed and the object affected. If the object is
+   * a Recipe, it performs the action related to the buttonEnum. If the object is not a Recipe, it
+   * throws an IllegalArgumentException.
    *
    * @param buttonEnum the button that was pressed
    * @param object     the object that is related to the button
@@ -164,7 +168,7 @@ public class CookbookController extends Controller implements Observer {
         break;
       case EDIT_RECIPE:
         AddRecipeController addRecipeController = new AddRecipeController(
-                this.viewManager, this);
+            this.viewManager, this);
         addRecipeController.setRecipeToAddRecipeView(recipe);
 
         this.viewManager.setView(Route.ADD_RECIPE);
@@ -197,15 +201,16 @@ public class CookbookController extends Controller implements Observer {
   public void update(ButtonEnum buttonEnum) {
     if (Objects.requireNonNull(buttonEnum) == ButtonEnum.ADD) {
       openAddRecipe();
+    } else if(buttonEnum == ButtonEnum.BACK) {
+      this.viewManager.setView(Route.COOKBOOK);
     } else {
       throw new UnsupportedOperationException("Button not supported: " + buttonEnum);
     }
   }
 
   /**
-   * Opens the AddRecipeView and sets the view to AddRecipeView.
-   * Creates a new AddRecipeController and AddRecipeView and
-   * set the view to AddRecipeView.
+   * Opens the AddRecipeView and sets the view to AddRecipeView. Creates a new AddRecipeController
+   * and AddRecipeView and set the view to AddRecipeView.
    */
   private void openAddRecipe() {
     new AddRecipeController(this.viewManager, this);
@@ -213,9 +218,9 @@ public class CookbookController extends Controller implements Observer {
   }
 
   /**
-   * Searches for recipes in the recipeRegister based on the search string.
-   * The search string is passed to the recipeRegister, and the currentSearch is set to the result
-   * of the search. The view is then rendered with the currentSearch.
+   * Searches for recipes in the recipeRegister based on the search string. The search string is
+   * passed to the recipeRegister, and the currentSearch is set to the result of the search. The
+   * view is then rendered with the currentSearch.
    *
    * @param search the search string to search for in the recipeRegister
    */
@@ -237,13 +242,10 @@ public class CookbookController extends Controller implements Observer {
   }
 
   /**
-   * Adds the groceries from a recipe to the shopping list.
-   * This method gets the grocery from the recipe and checks
-   * if the grocery is already in the shopping list or pantry.
-   * If the grocery is in the pantry, it checks if the quantity
-   * is enough. If not, it adds the difference to the shopping list.
-   * If the grocery is not in the pantry, it adds the grocery to the
-   * shopping list.
+   * Adds the groceries from a recipe to the shopping list. This method gets the grocery from the
+   * recipe and checks if the grocery is already in the shopping list or pantry. If the grocery is
+   * in the pantry, it checks if the quantity is enough. If not, it adds the difference to the
+   * shopping list. If the grocery is not in the pantry, it adds the grocery to the shopping list.
    *
    * @param recipe the recipe to add groceries from.
    */
@@ -251,6 +253,7 @@ public class CookbookController extends Controller implements Observer {
     for (Map.Entry<String, Grocery> entry : recipe.getRecipeGroceries().getRegister().entrySet()) {
       String groceryName = entry.getKey();
       String groceryShelf = entry.getValue().getShelf();
+      String unit = entry.getValue().getUnit();
       int quantityNeeded = entry.getValue().getQuantity();
 
       Grocery[] shelfGroceries = shelfRegister.getAllGroceries();
@@ -271,7 +274,6 @@ public class CookbookController extends Controller implements Observer {
         quantityInShoppingList = 0;
       }
 
-
       int totalQuantityAvailable = quantityInShelf + quantityInShoppingList;
 
       if (quantityNeeded > totalQuantityAvailable) {
@@ -280,7 +282,7 @@ public class CookbookController extends Controller implements Observer {
           shoppingListGrocery.setQuantity(shoppingListGrocery.getQuantity() + quantityToAdd);
         } else {
           shoppingListController.addGrocery(
-                  new Grocery(groceryName, quantityToAdd, "g", groceryShelf, false));
+              new Grocery(groceryName, quantityToAdd, unit, groceryShelf, false));
         }
       }
     }
@@ -308,7 +310,7 @@ public class CookbookController extends Controller implements Observer {
     for (Grocery grocery : recipe.getRecipeGroceries().getRegister().values()) {
       String groceryQuery = "SELECT * FROM grocery WHERE name = ?";
       List<Map<String, Object>> groceryDataFromDataBase =
-              SQL.executeQuery(groceryQuery, grocery.getKey());
+          SQL.executeQuery(groceryQuery, grocery.getKey());
 
       if (groceryDataFromDataBase.isEmpty()) {
         String insertGroceryQuery = "INSERT INTO grocery (name, unit) VALUES (?, ?)";
@@ -316,9 +318,9 @@ public class CookbookController extends Controller implements Observer {
       }
 
       String insertGroceryRecipeQuery = "INSERT INTO recipe_grocery "
-              + "(recipe_id, grocery_name, quantity) VALUES (?, ?, ?)";
+          + "(recipe_id, grocery_name, quantity) VALUES (?, ?, ?)";
       SQL.executeUpdate(insertGroceryRecipeQuery, recipe.getKey(),
-              grocery.getKey(), grocery.getQuantity());
+          grocery.getKey(), grocery.getQuantity());
     }
 
     for (String step : recipe.getRecipeSteps()) {
