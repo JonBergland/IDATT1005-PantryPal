@@ -22,10 +22,12 @@ import stud.ntnu.idatt1005.pantrypal.enums.Route;
 import stud.ntnu.idatt1005.pantrypal.models.Grocery;
 import stud.ntnu.idatt1005.pantrypal.models.Recipe;
 import stud.ntnu.idatt1005.pantrypal.utils.ColorPalette;
+import stud.ntnu.idatt1005.pantrypal.utils.NodeUtils;
 import stud.ntnu.idatt1005.pantrypal.utils.Sizing;
 import stud.ntnu.idatt1005.pantrypal.utils.SoundPlayer;
 import stud.ntnu.idatt1005.pantrypal.views.components.FavoriteButton;
 import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton;
+import stud.ntnu.idatt1005.pantrypal.views.components.StyledButton.Variant;
 
 /**
  * This class represents the RecipeView in the application. It extends the View class and sets the
@@ -94,6 +96,16 @@ public class RecipeView extends View {
     } else {
       image.setFill(ColorPalette.GRAY);
     }
+
+    //back button
+    HBox backButtonContainer = new HBox();
+    backButtonContainer.setAlignment(Pos.TOP_LEFT);
+    StyledButton backButton = new StyledButton("Back",
+            Variant.BLACK, StyledButton.Size.MEDIUM);
+    backButton.setOnAction(e -> notifyObservers(ButtonEnum.BACK));
+    NodeUtils.addClasses(backButton, "back-button");
+    NodeUtils.addChildren(backButtonContainer, backButton);
+    NodeUtils.addChildren(recipeOverview, backButtonContainer);
 
     recipeOverview.getChildren().addAll(
             image,
