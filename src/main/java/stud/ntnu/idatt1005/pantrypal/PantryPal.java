@@ -3,11 +3,6 @@ package stud.ntnu.idatt1005.pantrypal;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import stud.ntnu.idatt1005.pantrypal.controllers.CookbookController;
-import stud.ntnu.idatt1005.pantrypal.controllers.HomeController;
-import stud.ntnu.idatt1005.pantrypal.controllers.LogInController;
-import stud.ntnu.idatt1005.pantrypal.controllers.PantryController;
-import stud.ntnu.idatt1005.pantrypal.controllers.ShoppingListController;
 import stud.ntnu.idatt1005.pantrypal.utils.ViewManager;
 
 /**
@@ -20,17 +15,6 @@ public class PantryPal extends Application {
   public static String userName = null;
   // View manager for the application.
   private ViewManager viewManager;
-  // Controller for homeView.
-  private HomeController homeController;
-  // Controllers for the cookBook.
-  private CookbookController cookBookController;
-  // Controllers for adding a recipe.
-  // Controllers for the pantry.
-  private PantryController pantryController;
-  // Controllers for the shopping list.
-  private ShoppingListController shoppingListController;
-  // Controllers for the log in functionality.
-  private LogInController logInController;
 
   /**
    * The start method is called after the init method has returned,
@@ -48,7 +32,6 @@ public class PantryPal extends Application {
     Image icon = new Image("/images/PantryPalLogo.png");
     primaryStage.getIcons().add(icon);
     primaryStage.show();
-
   }
 
   /**

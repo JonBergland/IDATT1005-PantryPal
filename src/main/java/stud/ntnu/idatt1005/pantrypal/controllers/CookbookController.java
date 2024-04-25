@@ -50,9 +50,7 @@ public class CookbookController extends Controller implements Observer {
     this.shoppingListRegister = shoppingListController.getRegister();
     this.shoppingListController = shoppingListController;
 
-    if (this.isLoggedIn()) {
-      this.load();
-    }
+    this.load();
 
     this.currentSearch = getRecipes().values().stream().toList();
     this.view = new CookbookView(this);
@@ -111,9 +109,12 @@ public class CookbookController extends Controller implements Observer {
         steps.addStep(step);
       }
 
-      String favoriteQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
-      List<Map<String, Object>> favorite = SQL.executeQuery(favoriteQuery, id, PantryPal.userName);
-      boolean isFavorite = !favorite.isEmpty();
+      boolean isFavorite = false;
+      if(isLoggedIn()){
+        String favoriteQuery = "SELECT * FROM recipe_favorite WHERE recipe_id = ? AND user_name = ?";
+        List<Map<String, Object>> favorite = SQL.executeQuery(favoriteQuery, id, PantryPal.userName);
+        isFavorite = !favorite.isEmpty();
+      }
 
       Recipe recipe = new Recipe(name, description, groceries, steps, image, isFavorite);
       this.recipeRegister.addRecipe(recipe);
