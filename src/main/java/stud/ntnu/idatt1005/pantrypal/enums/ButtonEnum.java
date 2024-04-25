@@ -10,5 +10,6 @@ public enum ButtonEnum {
   EDIT_RECIPE,
   OPEN_RECIPE,
   ADD_TO_SHOPPING_LIST,
-  ADD_TO_PANTRY
+  ADD_TO_PANTRY,
+  BACK
 }
